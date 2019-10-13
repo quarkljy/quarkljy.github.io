@@ -65,33 +65,33 @@
 <meta property="og:site_name" content="夸克的博客">
 <meta property="og:description" content="在写项目demo的发现一个项目需要好多注解，不容易理清楚。趁着项目写完了，总结一下各个注解的分类和用法，加深印象。注解主要分为 项目配置注解、controller层注解、service层注解和其他的常用注解。引入其他的框架中间件也会需要额外注解，比如Swagger、Redis、Feigm、tk.mybatis等，这里留个坑，以后再补充。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="https://quarkljy.github.io/2019/10/13/springboot常用的注解/F:%5Cmyblog%5Chexo%5Csource_posts%5Cspringboot%E5%B8%B8%E7%94%A8%E7%9A%84%E6%B3%A8%E8%A7%A3%5C1570962471550.png">
-<meta property="og:image" content="https://quarkljy.github.io/2019/10/13/springboot常用的注解/F:%5Cmyblog%5Chexo%5Csource_posts%5Cspringboot%E5%B8%B8%E7%94%A8%E7%9A%84%E6%B3%A8%E8%A7%A3%5C1570962519383.png">
-<meta property="og:image" content="https://quarkljy.github.io/2019/10/13/springboot常用的注解/F:%5Cmyblog%5Chexo%5Csource_posts%5Cspringboot%E5%B8%B8%E7%94%A8%E7%9A%84%E6%B3%A8%E8%A7%A3%5C1570962417468.png">
-<meta property="og:image" content="https://quarkljy.github.io/2019/10/13/springboot常用的注解/F:%5Cmyblog%5Chexo%5Csource_posts%5Cspringboot%E5%B8%B8%E7%94%A8%E7%9A%84%E6%B3%A8%E8%A7%A3%5C1570964825888.png">
-<meta property="og:image" content="https://quarkljy.github.io/2019/10/13/springboot常用的注解/F:%5Cmyblog%5Chexo%5Csource_posts%5Cspringboot%E5%B8%B8%E7%94%A8%E7%9A%84%E6%B3%A8%E8%A7%A3%5C1570964995269.png">
-<meta property="og:image" content="https://quarkljy.github.io/2019/10/13/springboot常用的注解/F:%5Cmyblog%5Chexo%5Csource_posts%5Cspringboot%E5%B8%B8%E7%94%A8%E7%9A%84%E6%B3%A8%E8%A7%A3%5C1570965135235.png">
-<meta property="og:image" content="https://quarkljy.github.io/2019/10/13/springboot常用的注解/F:%5Cmyblog%5Chexo%5Csource_posts%5Cspringboot%E5%B8%B8%E7%94%A8%E7%9A%84%E6%B3%A8%E8%A7%A3%5C1570965323087.png">
-<meta property="og:image" content="https://quarkljy.github.io/2019/10/13/springboot常用的注解/F:%5Cmyblog%5Chexo%5Csource_posts%5Cspringboot%E5%B8%B8%E7%94%A8%E7%9A%84%E6%B3%A8%E8%A7%A3%5C1570965698919.png">
-<meta property="og:image" content="https://quarkljy.github.io/2019/10/13/springboot常用的注解/F:%5Cmyblog%5Chexo%5Csource_posts%5Cspringboot%E5%B8%B8%E7%94%A8%E7%9A%84%E6%B3%A8%E8%A7%A3%5C1570966176453.png">
-<meta property="og:image" content="https://quarkljy.github.io/2019/10/13/springboot常用的注解/F:%5Cmyblog%5Chexo%5Csource_posts%5Cspringboot%E5%B8%B8%E7%94%A8%E7%9A%84%E6%B3%A8%E8%A7%A3%5C1570966461360.png">
-<meta property="og:image" content="https://quarkljy.github.io/2019/10/13/springboot常用的注解/F:%5Cmyblog%5Chexo%5Csource_posts%5Cspringboot%E5%B8%B8%E7%94%A8%E7%9A%84%E6%B3%A8%E8%A7%A3%5C1570967628744.png">
-<meta property="og:image" content="https://quarkljy.github.io/2019/10/13/springboot常用的注解/F:%5Cmyblog%5Chexo%5Csource_posts%5Cspringboot%E5%B8%B8%E7%94%A8%E7%9A%84%E6%B3%A8%E8%A7%A3%5C1570967263260.png">
-<meta property="og:image" content="https://quarkljy.github.io/2019/10/13/springboot常用的注解/F:%5Cmyblog%5Chexo%5Csource_posts%5Cspringboot%E5%B8%B8%E7%94%A8%E7%9A%84%E6%B3%A8%E8%A7%A3%5C1570963660733.png">
-<meta property="og:image" content="https://quarkljy.github.io/2019/10/13/springboot常用的注解/F:%5Cmyblog%5Chexo%5Csource_posts%5Cspringboot%E5%B8%B8%E7%94%A8%E7%9A%84%E6%B3%A8%E8%A7%A3%5C1570963727265.png">
-<meta property="og:image" content="https://quarkljy.github.io/2019/10/13/springboot常用的注解/F:%5Cmyblog%5Chexo%5Csource_posts%5Cspringboot%E5%B8%B8%E7%94%A8%E7%9A%84%E6%B3%A8%E8%A7%A3%5C1570963505796.png">
-<meta property="og:image" content="https://quarkljy.github.io/2019/10/13/springboot常用的注解/F:%5Cmyblog%5Chexo%5Csource_posts%5Cspringboot%E5%B8%B8%E7%94%A8%E7%9A%84%E6%B3%A8%E8%A7%A3%5C1570964090806.png">
-<meta property="og:image" content="https://quarkljy.github.io/2019/10/13/springboot常用的注解/F:%5Cmyblog%5Chexo%5Csource_posts%5Cspringboot%E5%B8%B8%E7%94%A8%E7%9A%84%E6%B3%A8%E8%A7%A3%5C1570963939336.png">
-<meta property="og:image" content="https://quarkljy.github.io/2019/10/13/springboot常用的注解/F:%5Cmyblog%5Chexo%5Csource_posts%5Cspringboot%E5%B8%B8%E7%94%A8%E7%9A%84%E6%B3%A8%E8%A7%A3%5C1570968137122.png">
-<meta property="og:image" content="https://quarkljy.github.io/2019/10/13/springboot常用的注解/F:%5Cmyblog%5Chexo%5Csource_posts%5Cspringboot%E5%B8%B8%E7%94%A8%E7%9A%84%E6%B3%A8%E8%A7%A3%5C1570964713213.png">
-<meta property="og:image" content="https://quarkljy.github.io/2019/10/13/springboot常用的注解/F:%5Cmyblog%5Chexo%5Csource_posts%5Cspringboot%E5%B8%B8%E7%94%A8%E7%9A%84%E6%B3%A8%E8%A7%A3%5C1570967984096.png">
-<meta property="og:image" content="https://quarkljy.github.io/2019/10/13/springboot常用的注解/F:%5Cmyblog%5Chexo%5Csource_posts%5Cspringboot%E5%B8%B8%E7%94%A8%E7%9A%84%E6%B3%A8%E8%A7%A3%5C1570966962558.png">
-<meta property="og:image" content="https://quarkljy.github.io/2019/10/13/springboot常用的注解/F:%5Cmyblog%5Chexo%5Csource_posts%5Cspringboot%E5%B8%B8%E7%94%A8%E7%9A%84%E6%B3%A8%E8%A7%A3%5C1570968626631.png">
-<meta property="og:updated_time" content="2019-10-13T12:51:04.456Z">
+<meta property="og:image" content="https://quarkljy.github.io/2019/10/13/springboot常用的注解/springboot%E5%B8%B8%E7%94%A8%E7%9A%84%E6%B3%A8%E8%A7%A3%5C1570962471550.png">
+<meta property="og:image" content="https://quarkljy.github.io/2019/10/13/springboot常用的注解/springboot%E5%B8%B8%E7%94%A8%E7%9A%84%E6%B3%A8%E8%A7%A3%5C1570962519383.png">
+<meta property="og:image" content="https://quarkljy.github.io/2019/10/13/springboot常用的注解/springboot%E5%B8%B8%E7%94%A8%E7%9A%84%E6%B3%A8%E8%A7%A3%5C1570962417468.png">
+<meta property="og:image" content="https://quarkljy.github.io/2019/10/13/springboot常用的注解/springboot%E5%B8%B8%E7%94%A8%E7%9A%84%E6%B3%A8%E8%A7%A3%5C1570964825888.png">
+<meta property="og:image" content="https://quarkljy.github.io/2019/10/13/springboot常用的注解/springboot%E5%B8%B8%E7%94%A8%E7%9A%84%E6%B3%A8%E8%A7%A3%5C1570964995269.png">
+<meta property="og:image" content="https://quarkljy.github.io/2019/10/13/springboot常用的注解/springboot%E5%B8%B8%E7%94%A8%E7%9A%84%E6%B3%A8%E8%A7%A3%5C1570965135235.png">
+<meta property="og:image" content="https://quarkljy.github.io/2019/10/13/springboot常用的注解/springboot%E5%B8%B8%E7%94%A8%E7%9A%84%E6%B3%A8%E8%A7%A3%5C1570965323087.png">
+<meta property="og:image" content="https://quarkljy.github.io/2019/10/13/springboot常用的注解/springboot%E5%B8%B8%E7%94%A8%E7%9A%84%E6%B3%A8%E8%A7%A3%5C1570965698919.png">
+<meta property="og:image" content="https://quarkljy.github.io/2019/10/13/springboot常用的注解/springboot%E5%B8%B8%E7%94%A8%E7%9A%84%E6%B3%A8%E8%A7%A3%5C1570966176453.png">
+<meta property="og:image" content="https://quarkljy.github.io/2019/10/13/springboot常用的注解/springboot%E5%B8%B8%E7%94%A8%E7%9A%84%E6%B3%A8%E8%A7%A3%5C1570966461360.png">
+<meta property="og:image" content="https://quarkljy.github.io/2019/10/13/springboot常用的注解/springboot%E5%B8%B8%E7%94%A8%E7%9A%84%E6%B3%A8%E8%A7%A3%5C1570967628744.png">
+<meta property="og:image" content="https://quarkljy.github.io/2019/10/13/springboot常用的注解/springboot%E5%B8%B8%E7%94%A8%E7%9A%84%E6%B3%A8%E8%A7%A3%5C1570967263260.png">
+<meta property="og:image" content="https://quarkljy.github.io/2019/10/13/springboot常用的注解/springboot%E5%B8%B8%E7%94%A8%E7%9A%84%E6%B3%A8%E8%A7%A3%5C1570963660733.png">
+<meta property="og:image" content="https://quarkljy.github.io/2019/10/13/springboot常用的注解/springboot%E5%B8%B8%E7%94%A8%E7%9A%84%E6%B3%A8%E8%A7%A3%5C1570963727265.png">
+<meta property="og:image" content="https://quarkljy.github.io/2019/10/13/springboot常用的注解/springboot%E5%B8%B8%E7%94%A8%E7%9A%84%E6%B3%A8%E8%A7%A3%5C1570963505796.png">
+<meta property="og:image" content="https://quarkljy.github.io/2019/10/13/springboot常用的注解/springboot%E5%B8%B8%E7%94%A8%E7%9A%84%E6%B3%A8%E8%A7%A3%5C1570964090806.png">
+<meta property="og:image" content="https://quarkljy.github.io/2019/10/13/springboot常用的注解/springboot%E5%B8%B8%E7%94%A8%E7%9A%84%E6%B3%A8%E8%A7%A3%5C1570963939336.png">
+<meta property="og:image" content="https://quarkljy.github.io/2019/10/13/springboot常用的注解/springboot%E5%B8%B8%E7%94%A8%E7%9A%84%E6%B3%A8%E8%A7%A3%5C1570968137122.png">
+<meta property="og:image" content="https://quarkljy.github.io/2019/10/13/springboot常用的注解/springboot%E5%B8%B8%E7%94%A8%E7%9A%84%E6%B3%A8%E8%A7%A3%5C1570964713213.png">
+<meta property="og:image" content="https://quarkljy.github.io/2019/10/13/springboot常用的注解/springboot%E5%B8%B8%E7%94%A8%E7%9A%84%E6%B3%A8%E8%A7%A3%5C1570967984096.png">
+<meta property="og:image" content="https://quarkljy.github.io/2019/10/13/springboot常用的注解/springboot%E5%B8%B8%E7%94%A8%E7%9A%84%E6%B3%A8%E8%A7%A3%5C1570966962558.png">
+<meta property="og:image" content="https://quarkljy.github.io/2019/10/13/springboot常用的注解/springboot%E5%B8%B8%E7%94%A8%E7%9A%84%E6%B3%A8%E8%A7%A3%5C1570968626631.png">
+<meta property="og:updated_time" content="2019-10-13T13:05:41.648Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="springboot常用的注解">
 <meta name="twitter:description" content="在写项目demo的发现一个项目需要好多注解，不容易理清楚。趁着项目写完了，总结一下各个注解的分类和用法，加深印象。注解主要分为 项目配置注解、controller层注解、service层注解和其他的常用注解。引入其他的框架中间件也会需要额外注解，比如Swagger、Redis、Feigm、tk.mybatis等，这里留个坑，以后再补充。">
-<meta name="twitter:image" content="https://quarkljy.github.io/2019/10/13/springboot常用的注解/F:%5Cmyblog%5Chexo%5Csource_posts%5Cspringboot%E5%B8%B8%E7%94%A8%E7%9A%84%E6%B3%A8%E8%A7%A3%5C1570962471550.png">
+<meta name="twitter:image" content="https://quarkljy.github.io/2019/10/13/springboot常用的注解/springboot%E5%B8%B8%E7%94%A8%E7%9A%84%E6%B3%A8%E8%A7%A3%5C1570962471550.png">
   <link rel="canonical" href="https://quarkljy.github.io/2019/10/13/springboot常用的注解/">
 
 
@@ -294,7 +294,7 @@
                 
               
 
-              <time title="创建时间：2019-10-13 18:01:04 / 修改时间：20:51:04" itemprop="dateCreated datePublished" datetime="2019-10-13T18:01:04+08:00">2019-10-13</time>
+              <time title="创建时间：2019-10-13 18:01:04 / 修改时间：21:05:41" itemprop="dateCreated datePublished" datetime="2019-10-13T18:01:04+08:00">2019-10-13</time>
             </span>
           
             
@@ -343,7 +343,7 @@
         <p>spring boot中，摒弃了spring以往项目中大量繁琐的配置，遵循<strong>约定大于配置</strong>的原则，通过自身默认配置，极大的降低了项目搭建的复杂度。本文中将spring boot项目中常用的一些核心注解归类总结，并结合实际使用的角度来解释其作用。</p>
 <h3 id="项目配置注解"><a href="#项目配置注解" class="headerlink" title="项目配置注解"></a>项目配置注解</h3><ol>
 <li><h6 id="SpringBootApplication"><a href="#SpringBootApplication" class="headerlink" title="@SpringBootApplication"></a>@SpringBootApplication</h6><p>这是一个符合注解，包含包含了<code>@SpringBootConfiguration，@EnableAutoConfiguration，@ComponentScan</code>这三个注解。大多数情况下，这3个注解会被同时使用，基于最佳实践，这三个注解就被做了包装，成为了<code>@SpringBootApplication</code>注解</p>
-<p><img src="/2019/10/13/springboot常用的注解/F:%5Cmyblog%5Chexo%5Csource_posts%5Cspringboot%E5%B8%B8%E7%94%A8%E7%9A%84%E6%B3%A8%E8%A7%A3%5C1570962471550.png" alt="1570962471550"></p>
+<p><img src="//quarkljy.github.io/2019/10/13/springboot常用的注解/springboot%E5%B8%B8%E7%94%A8%E7%9A%84%E6%B3%A8%E8%A7%A3%5C1570962471550.png" alt="1570962471550"></p>
 <ul>
 <li><strong>@SpringBootConfiguration:</strong>标注当前类是配置类，这个注解继承自<code>@Configuration</code>。并会将当前类内声明的一个或多个以@Bean注解标记的方法的实例纳入到srping容器中，并且实例名就是方法名。</li>
 <li><strong>@EnableAutoConfiguration:</strong>是自动配置的注解，这个注解会根据我们添加的组件jar来完成一些默认配置，我们做微服时会添加spring-boot-starter-web这个组件jar的pom依赖，这样配置会默认配置springmvc 和tomcat。</li>
@@ -353,36 +353,36 @@
 <li><h6 id="ServletComponentScan"><a href="#ServletComponentScan" class="headerlink" title="@ServletComponentScan"></a>@ServletComponentScan</h6><p>这个注解用得少。<code>Servlet、Filter、Listener</code>可以直接通过<code>@WebServlet、@WebFilter、@WebListener</code> 注解自动注册，这样通过注解servlet ，拦截器，监听器的功能而无需其他配置，项目中哟啊实现filter用到了这个注解。</p>
 </li>
 <li><h6 id="MapperScan"><a href="#MapperScan" class="headerlink" title="@MapperScan"></a>@MapperScan</h6><p>spring-boot支持mybatis组件的一个注解，通过此注解指定mybatis接口类的路径，即可完成对mybatis接口的扫描。它和@mapper注解是一样的作用，不同的地方是扫描入口不一样。@mapper需要加在每一个mapper接口类上面。所以大多数情况下，都是在规划好工程目录之后，通过@MapperScan注解配置路径完成mapper接口的注入。添加mybatis相应组建依赖之后。就可以使用该注解。</p>
-<p><img src="/2019/10/13/springboot常用的注解/F:%5Cmyblog%5Chexo%5Csource_posts%5Cspringboot%E5%B8%B8%E7%94%A8%E7%9A%84%E6%B3%A8%E8%A7%A3%5C1570962519383.png" alt="1570962519383"></p>
-<p><img src="/2019/10/13/springboot常用的注解/F:%5Cmyblog%5Chexo%5Csource_posts%5Cspringboot%E5%B8%B8%E7%94%A8%E7%9A%84%E6%B3%A8%E8%A7%A3%5C1570962417468.png" alt="1570962417468"></p>
+<p><img src="//quarkljy.github.io/2019/10/13/springboot常用的注解/springboot%E5%B8%B8%E7%94%A8%E7%9A%84%E6%B3%A8%E8%A7%A3%5C1570962519383.png" alt="1570962519383"></p>
+<p><img src="//quarkljy.github.io/2019/10/13/springboot常用的注解/springboot%E5%B8%B8%E7%94%A8%E7%9A%84%E6%B3%A8%E8%A7%A3%5C1570962417468.png" alt="1570962417468"></p>
 </li>
 <li><h6 id="其他的资源注入注解"><a href="#其他的资源注入注解" class="headerlink" title="其他的资源注入注解"></a>其他的资源注入注解</h6><ul>
 <li><p>@ImportResource 、@Import 、@PropertySource</p>
-<p>这三个注解都是用来导入自定义的一些配置文件。<code>@ImportResource(locations={})</code>导入其他xml配置文件，需要标准在主配置类上。导入property的配置文件<code>@PropertySource</code>指定文件路径，这个相当于使用spring的<code>&lt;importresource/&gt;</code>标签来完成配置项的引入。<code>@import</code>注解是一个可以将普通类导入到spring容器中做管理。<img src="/2019/10/13/springboot常用的注解/F:%5Cmyblog%5Chexo%5Csource_posts%5Cspringboot%E5%B8%B8%E7%94%A8%E7%9A%84%E6%B3%A8%E8%A7%A3%5C1570964825888.png" alt="1570964825888"></p>
+<p>这三个注解都是用来导入自定义的一些配置文件。<code>@ImportResource(locations={})</code>导入其他xml配置文件，需要标准在主配置类上。导入property的配置文件<code>@PropertySource</code>指定文件路径，这个相当于使用spring的<code>&lt;importresource/&gt;</code>标签来完成配置项的引入。<code>@import</code>注解是一个可以将普通类导入到spring容器中做管理。<img src="//quarkljy.github.io/2019/10/13/springboot常用的注解/springboot%E5%B8%B8%E7%94%A8%E7%9A%84%E6%B3%A8%E8%A7%A3%5C1570964825888.png" alt="1570964825888"></p>
 </li>
 <li><p>@EnableDiscoveryClient</p>
 <p>服务注册发现的注解，当这个是微服务时候，需要配置这个注解，好让eureka发现这个服务。还需要再application.yml文件中配置euraka的信息。</p>
-<p><img src="/2019/10/13/springboot常用的注解/F:%5Cmyblog%5Chexo%5Csource_posts%5Cspringboot%E5%B8%B8%E7%94%A8%E7%9A%84%E6%B3%A8%E8%A7%A3%5C1570964995269.png" alt="1570964995269"></p>
+<p><img src="//quarkljy.github.io/2019/10/13/springboot常用的注解/springboot%E5%B8%B8%E7%94%A8%E7%9A%84%E6%B3%A8%E8%A7%A3%5C1570964995269.png" alt="1570964995269"></p>
 </li>
 <li><p>@EnableZuulProxy</p>
 <p>启用网关Zuul代理，表示这是Zuul网关微服务。还需要再application.yml文件中配置Zuul的代理的网址。通过代理可以把实际网址缩短去掉prefix前缀，变成微服务可以匹配的网址。</p>
-<p><img src="/2019/10/13/springboot常用的注解/F:%5Cmyblog%5Chexo%5Csource_posts%5Cspringboot%E5%B8%B8%E7%94%A8%E7%9A%84%E6%B3%A8%E8%A7%A3%5C1570965135235.png" alt="1570965135235"></p>
-<p><img src="/2019/10/13/springboot常用的注解/F:%5Cmyblog%5Chexo%5Csource_posts%5Cspringboot%E5%B8%B8%E7%94%A8%E7%9A%84%E6%B3%A8%E8%A7%A3%5C1570965323087.png" alt="1570965323087"></p>
+<p><img src="//quarkljy.github.io/2019/10/13/springboot常用的注解/springboot%E5%B8%B8%E7%94%A8%E7%9A%84%E6%B3%A8%E8%A7%A3%5C1570965135235.png" alt="1570965135235"></p>
+<p><img src="//quarkljy.github.io/2019/10/13/springboot常用的注解/springboot%E5%B8%B8%E7%94%A8%E7%9A%84%E6%B3%A8%E8%A7%A3%5C1570965323087.png" alt="1570965323087"></p>
 </li>
 <li><p>@Configuration、@Bean、@Value</p>
 <p>指示类声明一个或多个@Bean方法，并且可以由Spring容器处理，以在运行时为这些bean生成bean定义和服务请求。表示这是一个配置类。通过配置类，可以不用再书写XML文件。</p>
-<p><img src="/2019/10/13/springboot常用的注解/F:%5Cmyblog%5Chexo%5Csource_posts%5Cspringboot%E5%B8%B8%E7%94%A8%E7%9A%84%E6%B3%A8%E8%A7%A3%5C1570965698919.png" alt="1570965698919"></p>
+<p><img src="//quarkljy.github.io/2019/10/13/springboot常用的注解/springboot%E5%B8%B8%E7%94%A8%E7%9A%84%E6%B3%A8%E8%A7%A3%5C1570965698919.png" alt="1570965698919"></p>
 <p>@Value从yml文件获取配置信息。</p>
-<p><img src="/2019/10/13/springboot常用的注解/F:%5Cmyblog%5Chexo%5Csource_posts%5Cspringboot%E5%B8%B8%E7%94%A8%E7%9A%84%E6%B3%A8%E8%A7%A3%5C1570966176453.png" alt="1570966176453"></p>
+<p><img src="//quarkljy.github.io/2019/10/13/springboot常用的注解/springboot%E5%B8%B8%E7%94%A8%E7%9A%84%E6%B3%A8%E8%A7%A3%5C1570966176453.png" alt="1570966176453"></p>
 </li>
 <li><p>@EnableEurekaServer</p>
 <p>表示这是eureka的微服务端。eureka是微服务的注册和发现中心，通过配置心跳信息检测微服务状态，是否正常、堵塞、宕机等。</p>
-<p><img src="/2019/10/13/springboot常用的注解/F:%5Cmyblog%5Chexo%5Csource_posts%5Cspringboot%E5%B8%B8%E7%94%A8%E7%9A%84%E6%B3%A8%E8%A7%A3%5C1570966461360.png" alt="1570966461360"></p>
+<p><img src="//quarkljy.github.io/2019/10/13/springboot常用的注解/springboot%E5%B8%B8%E7%94%A8%E7%9A%84%E6%B3%A8%E8%A7%A3%5C1570966461360.png" alt="1570966461360"></p>
 </li>
 <li><p>@FeignClient</p>
 <p>@FeignClient(value = “服务名字”)，需要继承服务接口一般再interface的子工程下书写。是跟controller层对应的，需要那个查询方法就写那个查询方法。</p>
-<p><img src="/2019/10/13/springboot常用的注解/F:%5Cmyblog%5Chexo%5Csource_posts%5Cspringboot%E5%B8%B8%E7%94%A8%E7%9A%84%E6%B3%A8%E8%A7%A3%5C1570967628744.png" alt="1570967628744"></p>
-<p><img src="/2019/10/13/springboot常用的注解/F:%5Cmyblog%5Chexo%5Csource_posts%5Cspringboot%E5%B8%B8%E7%94%A8%E7%9A%84%E6%B3%A8%E8%A7%A3%5C1570967263260.png" alt="1570967263260"></p>
+<p><img src="//quarkljy.github.io/2019/10/13/springboot常用的注解/springboot%E5%B8%B8%E7%94%A8%E7%9A%84%E6%B3%A8%E8%A7%A3%5C1570967628744.png" alt="1570967628744"></p>
+<p><img src="//quarkljy.github.io/2019/10/13/springboot常用的注解/springboot%E5%B8%B8%E7%94%A8%E7%9A%84%E6%B3%A8%E8%A7%A3%5C1570967263260.png" alt="1570967263260"></p>
 </li>
 </ul>
 </li>
@@ -419,22 +419,22 @@
 </tbody></table>
 <ol start="3">
 <li><h6 id="Autowired"><a href="#Autowired" class="headerlink" title="@Autowired"></a>@Autowired</h6><p>这是个最熟悉的注解，是spring的自动装配，这个个注解可以用到构造器，变量域，方法，注解类型上。当我们需要从bean 工厂中获取一个bean时，Spring会自动为我们装配该bean中标记为@Autowired的元素。service层也会用到，总之需要自动装配的时候都会用到。</p>
-<p><img src="/2019/10/13/springboot常用的注解/F:%5Cmyblog%5Chexo%5Csource_posts%5Cspringboot%E5%B8%B8%E7%94%A8%E7%9A%84%E6%B3%A8%E8%A7%A3%5C1570963660733.png" alt="1570963660733"></p>
-<p><img src="/2019/10/13/springboot常用的注解/F:%5Cmyblog%5Chexo%5Csource_posts%5Cspringboot%E5%B8%B8%E7%94%A8%E7%9A%84%E6%B3%A8%E8%A7%A3%5C1570963727265.png" alt="1570963727265"></p>
+<p><img src="//quarkljy.github.io/2019/10/13/springboot常用的注解/springboot%E5%B8%B8%E7%94%A8%E7%9A%84%E6%B3%A8%E8%A7%A3%5C1570963660733.png" alt="1570963660733"></p>
+<p><img src="//quarkljy.github.io/2019/10/13/springboot常用的注解/springboot%E5%B8%B8%E7%94%A8%E7%9A%84%E6%B3%A8%E8%A7%A3%5C1570963727265.png" alt="1570963727265"></p>
 </li>
 <li><h6 id="RequestMapping、-PathVariable和-RequestParam"><a href="#RequestMapping、-PathVariable和-RequestParam" class="headerlink" title="@RequestMapping、@PathVariable和@RequestParam"></a>@RequestMapping、@PathVariable和@RequestParam</h6><ul>
 <li><code>@RequestMapping</code>是表示匹配路径的，放置在类的前面，可以放参数，也可以不放参数。其中路径参数前面加不加斜杠<code>\</code>没有区别。</li>
 </ul>
-<p><img src="/2019/10/13/springboot常用的注解/F:%5Cmyblog%5Chexo%5Csource_posts%5Cspringboot%E5%B8%B8%E7%94%A8%E7%9A%84%E6%B3%A8%E8%A7%A3%5C1570963505796.png" alt="1570963505796"></p>
+<p><img src="//quarkljy.github.io/2019/10/13/springboot常用的注解/springboot%E5%B8%B8%E7%94%A8%E7%9A%84%E6%B3%A8%E8%A7%A3%5C1570963505796.png" alt="1570963505796"></p>
 <ul>
 <li><code>@PathVariabl</code>是路径变量注解，<code>@RequestMapping</code>中用{}来定义url部分的变量名，同样可以支持变量名加正则表达式的方式，变量名:[正则表达式]。</li>
 </ul>
-<p><img src="/2019/10/13/springboot常用的注解/F:%5Cmyblog%5Chexo%5Csource_posts%5Cspringboot%E5%B8%B8%E7%94%A8%E7%9A%84%E6%B3%A8%E8%A7%A3%5C1570964090806.png" alt="1570964090806"></p>
-<p><img src="/2019/10/13/springboot常用的注解/F:%5Cmyblog%5Chexo%5Csource_posts%5Cspringboot%E5%B8%B8%E7%94%A8%E7%9A%84%E6%B3%A8%E8%A7%A3%5C1570963939336.png" alt="1570963939336"></p>
+<p><img src="//quarkljy.github.io/2019/10/13/springboot常用的注解/springboot%E5%B8%B8%E7%94%A8%E7%9A%84%E6%B3%A8%E8%A7%A3%5C1570964090806.png" alt="1570964090806"></p>
+<p><img src="//quarkljy.github.io/2019/10/13/springboot常用的注解/springboot%E5%B8%B8%E7%94%A8%E7%9A%84%E6%B3%A8%E8%A7%A3%5C1570963939336.png" alt="1570963939336"></p>
 <ul>
 <li><code>@RequestParam</code>匹配请求体中的参数，一般是POST请求提交的参数</li>
 </ul>
-<p><img src="/2019/10/13/springboot常用的注解/F:%5Cmyblog%5Chexo%5Csource_posts%5Cspringboot%E5%B8%B8%E7%94%A8%E7%9A%84%E6%B3%A8%E8%A7%A3%5C1570968137122.png" alt="1570968137122"></p>
+<p><img src="//quarkljy.github.io/2019/10/13/springboot常用的注解/springboot%E5%B8%B8%E7%94%A8%E7%9A%84%E6%B3%A8%E8%A7%A3%5C1570968137122.png" alt="1570968137122"></p>
 </li>
 <li><h6 id="CrossOrigin"><a href="#CrossOrigin" class="headerlink" title="@CrossOrigin"></a>@CrossOrigin</h6><p>这个注解用得少。@CrossOrigin(origins = “”, maxAge = 1000) 这个注解主要是为了解决跨域访问的问题。这个注解可以为整个controller配置启用跨域，也可以在方法级别启用。</p>
 </li>
@@ -445,9 +445,9 @@
 <li><h6 id="Service"><a href="#Service" class="headerlink" title="@Service"></a>@Service</h6><p>这个注解用来标记业务层的组件，我们会将业务逻辑处理的类都会加上这个注解交给spring容器。事务的切面也会配置在这一层。这个注解不是一定要用。有个泛指组件的注解，当我们不能确定具体作用的时候 可以用泛指组件的注解托付给spring容器。</p>
 </li>
 <li><h6 id="Transactional、-EnableTransactionManagement"><a href="#Transactional、-EnableTransactionManagement" class="headerlink" title="@Transactional、@EnableTransactionManagement"></a>@Transactional、@EnableTransactionManagement</h6><p>@Transactional通过这个注解方法可以声明事务，可以添加在和数据库操作相关的类上或者方法上。在spring boot中 不用再单独配置事务管理，一般情况是我们会在servcie层添加了事务注解，即可开启事务。要注意的是，事务的开启只能在public 方法上。并且主要事务切面的回滚条件。正常我们配置rollbackfor exception时 ，如果在方法里捕获了异常就会导致事务切面配置的失效。</p>
-<p><img src="/2019/10/13/springboot常用的注解/F:%5Cmyblog%5Chexo%5Csource_posts%5Cspringboot%E5%B8%B8%E7%94%A8%E7%9A%84%E6%B3%A8%E8%A7%A3%5C1570964713213.png" alt="1570964713213"></p>
+<p><img src="//quarkljy.github.io/2019/10/13/springboot常用的注解/springboot%E5%B8%B8%E7%94%A8%E7%9A%84%E6%B3%A8%E8%A7%A3%5C1570964713213.png" alt="1570964713213"></p>
 <p>@EnableTransactionManagement注解在类上，和configuration以及@mapperscan配合，表示这个mybatis配置开始事务。</p>
-<p><img src="/2019/10/13/springboot常用的注解/F:%5Cmyblog%5Chexo%5Csource_posts%5Cspringboot%E5%B8%B8%E7%94%A8%E7%9A%84%E6%B3%A8%E8%A7%A3%5C1570967984096.png" alt="1570967984096"></p>
+<p><img src="//quarkljy.github.io/2019/10/13/springboot常用的注解/springboot%E5%B8%B8%E7%94%A8%E7%9A%84%E6%B3%A8%E8%A7%A3%5C1570967984096.png" alt="1570967984096"></p>
 </li>
 </ol>
 <h3 id="持久层注解"><a href="#持久层注解" class="headerlink" title="持久层注解"></a>持久层注解</h3><ol>
@@ -456,14 +456,14 @@
 <li><h6 id="component"><a href="#component" class="headerlink" title="@component"></a>@component</h6><p>带此注解的类看为组件，当使用基于注解的配置和类路径扫描的时候，这些类就会被实例化。其他类级别的注解也可以被认定为是一种特殊类型的组件，比如@Repository @Aspect。所以，@Component可以注解其他类注解。把普通pojo实例化到spring容器中，相当于配置文件中的<code>&lt;bean id=&quot;&quot; class=&quot;&quot;/&gt;</code></p>
 </li>
 </ol>
-<p><img src="/2019/10/13/springboot常用的注解/F:%5Cmyblog%5Chexo%5Csource_posts%5Cspringboot%E5%B8%B8%E7%94%A8%E7%9A%84%E6%B3%A8%E8%A7%A3%5C1570966962558.png" alt="1570966962558"></p>
+<p><img src="//quarkljy.github.io/2019/10/13/springboot常用的注解/springboot%E5%B8%B8%E7%94%A8%E7%9A%84%E6%B3%A8%E8%A7%A3%5C1570966962558.png" alt="1570966962558"></p>
 <ol start="3">
 <li><p>@Table(name = “tb_sku”)、@Id、@GeneratedValue(strategy = GenerationType.IDENTITY)、@Transient</p>
 <p>@Table(name = “tb_sku”)，表示这个实体类和数据库的tb_sku表对应；</p>
 <p>@Id，表示这个属性是这个数据表的主键；</p>
 <p>@GeneratedValue(strategy = GenerationType.IDENTITY)，表示数据表的主键的生成方法不是由程序生成的，而是由数据库自己生成的。</p>
 <p>@Transient表示该属性并非一个到数据库表的字段的映射,ORM框架将忽略该属性；</p>
-<p><img src="/2019/10/13/springboot常用的注解/F:%5Cmyblog%5Chexo%5Csource_posts%5Cspringboot%E5%B8%B8%E7%94%A8%E7%9A%84%E6%B3%A8%E8%A7%A3%5C1570968626631.png" alt="1570968626631"></p>
+<p><img src="//quarkljy.github.io/2019/10/13/springboot常用的注解/springboot%E5%B8%B8%E7%94%A8%E7%9A%84%E6%B3%A8%E8%A7%A3%5C1570968626631.png" alt="1570968626631"></p>
 </li>
 </ol>
 <p>总得来看，@Component, @Service, @Controller, @Repository是spring注解，注解后可以被spring框架所扫描并注入到spring容器来进行管理@Component是通用注解，其他三个注解是这个注解的拓展，并且具有了特定的功能。通过这些注解的分层管理，就能将请求处理，义务逻辑处理，数据库操作处理分离出来，为代码解耦，也方便了以后项目的维护和开发。</p>
