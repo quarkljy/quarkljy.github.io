@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+
+
+
+
+
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.4.1">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.4.1" color="#222">
+
+<link rel="stylesheet" href="/css/main.css?v=7.4.1">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2">
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '7.4.1',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":"default"},
+    back2top: {"enable":true,"sidebar":true,"scrollpercent":true},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="在写项目demo的发现一个项目需要好多注解，不容易理清楚。趁着项目写完了，总结一下各个注解的分类和用法，加深印象。注解主要分为 项目配置注解、controller层注解、service层注解和其他的常用注解。引入其他的框架中间件也会需要额外注解，比如Swagger、Redis、Feigm、tk.mybatis等，这里留个坑，以后再补充。">
+<meta name="keywords" content="springboot">
+<meta property="og:type" content="article">
+<meta property="og:title" content="springboot常用的注解">
+<meta property="og:url" content="https://quarkljy.github.io/2019/10/13/springboot常用的注解/index.html">
+<meta property="og:site_name" content="夸克的博客">
+<meta property="og:description" content="在写项目demo的发现一个项目需要好多注解，不容易理清楚。趁着项目写完了，总结一下各个注解的分类和用法，加深印象。注解主要分为 项目配置注解、controller层注解、service层注解和其他的常用注解。引入其他的框架中间件也会需要额外注解，比如Swagger、Redis、Feigm、tk.mybatis等，这里留个坑，以后再补充。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="f:%5Cmyblog%5Chexo%5Csource_posts%5Cspringboot%E5%B8%B8%E7%94%A8%E7%9A%84%E6%B3%A8%E8%A7%A3.assets%5C1570962471550.png">
+<meta property="og:image" content="f:%5Cmyblog%5Chexo%5Csource_posts%5Cspringboot%E5%B8%B8%E7%94%A8%E7%9A%84%E6%B3%A8%E8%A7%A3.assets%5C1570962519383.png">
+<meta property="og:image" content="f:%5Cmyblog%5Chexo%5Csource_posts%5Cspringboot%E5%B8%B8%E7%94%A8%E7%9A%84%E6%B3%A8%E8%A7%A3.assets%5C1570962417468.png">
+<meta property="og:image" content="f:%5Cmyblog%5Chexo%5Csource_posts%5Cspringboot%E5%B8%B8%E7%94%A8%E7%9A%84%E6%B3%A8%E8%A7%A3.assets%5C1570964825888.png">
+<meta property="og:image" content="f:%5Cmyblog%5Chexo%5Csource_posts%5Cspringboot%E5%B8%B8%E7%94%A8%E7%9A%84%E6%B3%A8%E8%A7%A3.assets%5C1570964995269.png">
+<meta property="og:image" content="f:%5Cmyblog%5Chexo%5Csource_posts%5Cspringboot%E5%B8%B8%E7%94%A8%E7%9A%84%E6%B3%A8%E8%A7%A3.assets%5C1570965135235.png">
+<meta property="og:image" content="f:%5Cmyblog%5Chexo%5Csource_posts%5Cspringboot%E5%B8%B8%E7%94%A8%E7%9A%84%E6%B3%A8%E8%A7%A3.assets%5C1570965323087.png">
+<meta property="og:image" content="f:%5Cmyblog%5Chexo%5Csource_posts%5Cspringboot%E5%B8%B8%E7%94%A8%E7%9A%84%E6%B3%A8%E8%A7%A3.assets%5C1570965698919.png">
+<meta property="og:image" content="f:%5Cmyblog%5Chexo%5Csource_posts%5Cspringboot%E5%B8%B8%E7%94%A8%E7%9A%84%E6%B3%A8%E8%A7%A3.assets%5C1570966176453.png">
+<meta property="og:image" content="f:%5Cmyblog%5Chexo%5Csource_posts%5Cspringboot%E5%B8%B8%E7%94%A8%E7%9A%84%E6%B3%A8%E8%A7%A3.assets%5C1570966461360.png">
+<meta property="og:image" content="f:%5Cmyblog%5Chexo%5Csource_posts%5Cspringboot%E5%B8%B8%E7%94%A8%E7%9A%84%E6%B3%A8%E8%A7%A3.assets%5C1570967628744.png">
+<meta property="og:image" content="f:%5Cmyblog%5Chexo%5Csource_posts%5Cspringboot%E5%B8%B8%E7%94%A8%E7%9A%84%E6%B3%A8%E8%A7%A3.assets%5C1570967263260.png">
+<meta property="og:image" content="f:%5Cmyblog%5Chexo%5Csource_posts%5Cspringboot%E5%B8%B8%E7%94%A8%E7%9A%84%E6%B3%A8%E8%A7%A3.assets%5C1570963660733.png">
+<meta property="og:image" content="f:%5Cmyblog%5Chexo%5Csource_posts%5Cspringboot%E5%B8%B8%E7%94%A8%E7%9A%84%E6%B3%A8%E8%A7%A3.assets%5C1570963727265.png">
+<meta property="og:image" content="f:%5Cmyblog%5Chexo%5Csource_posts%5Cspringboot%E5%B8%B8%E7%94%A8%E7%9A%84%E6%B3%A8%E8%A7%A3.assets%5C1570963505796.png">
+<meta property="og:image" content="f:%5Cmyblog%5Chexo%5Csource_posts%5Cspringboot%E5%B8%B8%E7%94%A8%E7%9A%84%E6%B3%A8%E8%A7%A3.assets%5C1570964090806.png">
+<meta property="og:image" content="f:%5Cmyblog%5Chexo%5Csource_posts%5Cspringboot%E5%B8%B8%E7%94%A8%E7%9A%84%E6%B3%A8%E8%A7%A3.assets%5C1570963939336.png">
+<meta property="og:image" content="f:%5Cmyblog%5Chexo%5Csource_posts%5Cspringboot%E5%B8%B8%E7%94%A8%E7%9A%84%E6%B3%A8%E8%A7%A3.assets%5C1570968137122.png">
+<meta property="og:image" content="f:%5Cmyblog%5Chexo%5Csource_posts%5Cspringboot%E5%B8%B8%E7%94%A8%E7%9A%84%E6%B3%A8%E8%A7%A3.assets%5C1570964713213.png">
+<meta property="og:image" content="f:%5Cmyblog%5Chexo%5Csource_posts%5Cspringboot%E5%B8%B8%E7%94%A8%E7%9A%84%E6%B3%A8%E8%A7%A3.assets%5C1570967984096.png">
+<meta property="og:image" content="f:%5Cmyblog%5Chexo%5Csource_posts%5Cspringboot%E5%B8%B8%E7%94%A8%E7%9A%84%E6%B3%A8%E8%A7%A3.assets%5C1570966962558.png">
+<meta property="og:updated_time" content="2019-10-13T12:04:15.794Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="springboot常用的注解">
+<meta name="twitter:description" content="在写项目demo的发现一个项目需要好多注解，不容易理清楚。趁着项目写完了，总结一下各个注解的分类和用法，加深印象。注解主要分为 项目配置注解、controller层注解、service层注解和其他的常用注解。引入其他的框架中间件也会需要额外注解，比如Swagger、Redis、Feigm、tk.mybatis等，这里留个坑，以后再补充。">
+<meta name="twitter:image" content="f:%5Cmyblog%5Chexo%5Csource_posts%5Cspringboot%E5%B8%B8%E7%94%A8%E7%9A%84%E6%B3%A8%E8%A7%A3.assets%5C1570962471550.png">
+  <link rel="canonical" href="https://quarkljy.github.io/2019/10/13/springboot常用的注解/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>springboot常用的注解 | 夸克的博客</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">夸克的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">每周总结一篇博客</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+      
+      
+        
+        
+        <li class="menu-item menu-item-home">
+      
+    
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+      
+    
+      
+      
+        
+        
+        <li class="menu-item menu-item-archives">
+      
+    
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+      
+    
+      
+      
+        
+        
+        <li class="menu-item menu-item-categories">
+      
+    
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+      
+    
+      
+      
+        
+        
+        <li class="menu-item menu-item-about">
+      
+    
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+      
+    
+      
+      
+        
+        
+        <li class="menu-item menu-item-tags">
+      
+    
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+      
+    
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="reading-progress-bar"></div>
+
+  <a href="https://github.com/quarkljy" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+            
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://quarkljy.github.io/2019/10/13/springboot常用的注解/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Quark">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="夸克的博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            springboot常用的注解
+            
+
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2019-10-13 18:01:04 / 修改时间：20:04:15" itemprop="dateCreated datePublished" datetime="2019-10-13T18:01:04+08:00">2019-10-13</time>
+            </span>
+          
+            
+
+            
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/springboot/" itemprop="url" rel="index">
+                    <span itemprop="name">springboot</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+          
+            <div class="post-description">在写项目demo的发现一个项目需要好多注解，不容易理清楚。趁着项目写完了，总结一下各个注解的分类和用法，加深印象。注解主要分为 项目配置注解、controller层注解、service层注解和其他的常用注解。引入其他的框架中间件也会需要额外注解，比如Swagger、Redis、Feigm、tk.mybatis等，这里留个坑，以后再补充。</div>
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>spring boot中，摒弃了spring以往项目中大量繁琐的配置，遵循<strong>约定大于配置</strong>的原则，通过自身默认配置，极大的降低了项目搭建的复杂度。本文中将spring boot项目中常用的一些核心注解归类总结，并结合实际使用的角度来解释其作用。</p>
+<h3 id="项目配置注解"><a href="#项目配置注解" class="headerlink" title="项目配置注解"></a>项目配置注解</h3><ol>
+<li><h6 id="SpringBootApplication"><a href="#SpringBootApplication" class="headerlink" title="@SpringBootApplication"></a>@SpringBootApplication</h6><p>这是一个符合注解，包含包含了<code>@SpringBootConfiguration，@EnableAutoConfiguration，@ComponentScan</code>这三个注解。大多数情况下，这3个注解会被同时使用，基于最佳实践，这三个注解就被做了包装，成为了<code>@SpringBootApplication</code>注解</p>
+<p><img src="F:%5Cmyblog%5Chexo%5Csource_posts%5Cspringboot%E5%B8%B8%E7%94%A8%E7%9A%84%E6%B3%A8%E8%A7%A3.assets%5C1570962471550.png" alt="1570962471550"></p>
+<ul>
+<li><strong>@SpringBootConfiguration:</strong>标注当前类是配置类，这个注解继承自<code>@Configuration</code>。并会将当前类内声明的一个或多个以@Bean注解标记的方法的实例纳入到srping容器中，并且实例名就是方法名。</li>
+<li><strong>@EnableAutoConfiguration:</strong>是自动配置的注解，这个注解会根据我们添加的组件jar来完成一些默认配置，我们做微服时会添加spring-boot-starter-web这个组件jar的pom依赖，这样配置会默认配置springmvc 和tomcat。</li>
+<li><strong>@ComponentScan:</strong>扫描当前包及其子包下被<code>@Component，@Controller，@Service，@Repository</code>注解标记的类并纳入到spring容器中进行管理。等价于<code>&lt;context:component-scan&gt;</code>的xml配置文件中的配置项。</li>
+</ul>
+</li>
+<li><h6 id="ServletComponentScan"><a href="#ServletComponentScan" class="headerlink" title="@ServletComponentScan"></a>@ServletComponentScan</h6><p>这个注解用得少。<code>Servlet、Filter、Listener</code>可以直接通过<code>@WebServlet、@WebFilter、@WebListener</code> 注解自动注册，这样通过注解servlet ，拦截器，监听器的功能而无需其他配置，项目中哟啊实现filter用到了这个注解。</p>
+</li>
+<li><h6 id="MapperScan"><a href="#MapperScan" class="headerlink" title="@MapperScan"></a>@MapperScan</h6><p>spring-boot支持mybatis组件的一个注解，通过此注解指定mybatis接口类的路径，即可完成对mybatis接口的扫描。它和@mapper注解是一样的作用，不同的地方是扫描入口不一样。@mapper需要加在每一个mapper接口类上面。所以大多数情况下，都是在规划好工程目录之后，通过@MapperScan注解配置路径完成mapper接口的注入。添加mybatis相应组建依赖之后。就可以使用该注解。</p>
+<p><img src="F:%5Cmyblog%5Chexo%5Csource_posts%5Cspringboot%E5%B8%B8%E7%94%A8%E7%9A%84%E6%B3%A8%E8%A7%A3.assets%5C1570962519383.png" alt="1570962519383"></p>
+<p><img src="F:%5Cmyblog%5Chexo%5Csource_posts%5Cspringboot%E5%B8%B8%E7%94%A8%E7%9A%84%E6%B3%A8%E8%A7%A3.assets%5C1570962417468.png" alt="1570962417468"></p>
+</li>
+<li><h6 id="其他的资源注入注解"><a href="#其他的资源注入注解" class="headerlink" title="其他的资源注入注解"></a>其他的资源注入注解</h6><ul>
+<li><p>@ImportResource 、@Import 、@PropertySource</p>
+<p>这三个注解都是用来导入自定义的一些配置文件。<code>@ImportResource(locations={})</code>导入其他xml配置文件，需要标准在主配置类上。导入property的配置文件<code>@PropertySource</code>指定文件路径，这个相当于使用spring的<code>&lt;importresource/&gt;</code>标签来完成配置项的引入。<code>@import</code>注解是一个可以将普通类导入到spring容器中做管理。<img src="F:%5Cmyblog%5Chexo%5Csource_posts%5Cspringboot%E5%B8%B8%E7%94%A8%E7%9A%84%E6%B3%A8%E8%A7%A3.assets%5C1570964825888.png" alt="1570964825888"></p>
+</li>
+<li><p>@EnableDiscoveryClient</p>
+<p>服务注册发现的注解，当这个是微服务时候，需要配置这个注解，好让eureka发现这个服务。还需要再application.yml文件中配置euraka的信息。</p>
+<p><img src="F:%5Cmyblog%5Chexo%5Csource_posts%5Cspringboot%E5%B8%B8%E7%94%A8%E7%9A%84%E6%B3%A8%E8%A7%A3.assets%5C1570964995269.png" alt="1570964995269"></p>
+</li>
+<li><p>@EnableZuulProxy</p>
+<p>启用网关Zuul代理，表示这是Zuul网关微服务。还需要再application.yml文件中配置Zuul的代理的网址。通过代理可以把实际网址缩短去掉prefix前缀，变成微服务可以匹配的网址。</p>
+<p><img src="F:%5Cmyblog%5Chexo%5Csource_posts%5Cspringboot%E5%B8%B8%E7%94%A8%E7%9A%84%E6%B3%A8%E8%A7%A3.assets%5C1570965135235.png" alt="1570965135235"></p>
+<p><img src="F:%5Cmyblog%5Chexo%5Csource_posts%5Cspringboot%E5%B8%B8%E7%94%A8%E7%9A%84%E6%B3%A8%E8%A7%A3.assets%5C1570965323087.png" alt="1570965323087"></p>
+</li>
+<li><p>@Configuration、@Bean、@Value</p>
+<p>指示类声明一个或多个@Bean方法，并且可以由Spring容器处理，以在运行时为这些bean生成bean定义和服务请求。表示这是一个配置类。通过配置类，可以不用再书写XML文件。</p>
+<p><img src="F:%5Cmyblog%5Chexo%5Csource_posts%5Cspringboot%E5%B8%B8%E7%94%A8%E7%9A%84%E6%B3%A8%E8%A7%A3.assets%5C1570965698919.png" alt="1570965698919"></p>
+<p>@Value从yml文件获取配置信息。</p>
+<p><img src="F:%5Cmyblog%5Chexo%5Csource_posts%5Cspringboot%E5%B8%B8%E7%94%A8%E7%9A%84%E6%B3%A8%E8%A7%A3.assets%5C1570966176453.png" alt="1570966176453"></p>
+</li>
+<li><p>@EnableEurekaServer</p>
+<p>表示这是eureka的微服务端。eureka是微服务的注册和发现中心，通过配置心跳信息检测微服务状态，是否正常、堵塞、宕机等。</p>
+<p><img src="F:%5Cmyblog%5Chexo%5Csource_posts%5Cspringboot%E5%B8%B8%E7%94%A8%E7%9A%84%E6%B3%A8%E8%A7%A3.assets%5C1570966461360.png" alt="1570966461360"></p>
+</li>
+<li><p>@FeignClient</p>
+<p>@FeignClient(value = “服务名字”)，需要继承服务接口一般再interface的子工程下书写。是跟controller层对应的，需要那个查询方法就写那个查询方法。</p>
+<p><img src="F:%5Cmyblog%5Chexo%5Csource_posts%5Cspringboot%E5%B8%B8%E7%94%A8%E7%9A%84%E6%B3%A8%E8%A7%A3.assets%5C1570967628744.png" alt="1570967628744"></p>
+<p><img src="F:%5Cmyblog%5Chexo%5Csource_posts%5Cspringboot%E5%B8%B8%E7%94%A8%E7%9A%84%E6%B3%A8%E8%A7%A3.assets%5C1570967263260.png" alt="1570967263260"></p>
+</li>
+</ul>
+</li>
+</ol>
+<h3 id="Controller层注解"><a href="#Controller层注解" class="headerlink" title="Controller层注解"></a>Controller层注解</h3><ol>
+<li><h6 id="Controller-和-ResponseBody"><a href="#Controller-和-ResponseBody" class="headerlink" title="@Controller 和@ResponseBody"></a>@Controller 和@ResponseBody</h6><p>表明这个类是一个控制器类，和<code>@RequestMapping</code>来配合使用拦截请求，如果不在method中注明请求的方式，默认是拦截get和post请求。这样请求会完成后转向一个视图解析器。但是在大多微服务搭建的时候，前后端会做分离。所以请求后端只关注数据处理，后端返回json数据的话，需要配合<code>@ResponseBody</code>注解来完成。这样一个只需要返回数据的接口就需要3个注解来完成。</p>
+</li>
+<li><h6 id="RestController"><a href="#RestController" class="headerlink" title="@RestController"></a>@RestController</h6><p>大多情况我们都是需要返回数据。也是基于最佳实践，所以将这三个注解进一步整合<code>@RestController</code>是<code>@Controller</code> 和<code>@ResponseBody</code>的结合，一个类被加上<code>@RestController</code> 注解，数据接口中就不再需要添加<code>@ResponseBody</code>。更加简洁。同样的情况,<code>@RequestMapping(value=&quot;&quot;,method= RequestMethod.GET )</code>,我们都需要明确请求方式。这样的写法又会显得比较繁琐，于是乎就有了如下的几个注解，让代码的更加简洁。</p>
+</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th>普通风格</th>
+<th><strong>Rest风格</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>@RequestMapping(value=“”,method = RequestMethod.GET)</td>
+<td>@GetMapping(value =“”)</td>
+</tr>
+<tr>
+<td>@RequestMapping(value=“”,method = RequestMethod.POST)</td>
+<td>@PostMapping(value =“”)</td>
+</tr>
+<tr>
+<td>@RequestMapping(value=“”,method = RequestMethod.PUT)</td>
+<td>@PutMapping(value =“”)</td>
+</tr>
+<tr>
+<td>@RequestMapping(value=“”,method = RequestMethod.DELETE)</td>
+<td>@DeleteMapping(value =“”)</td>
+</tr>
+</tbody></table>
+<ol start="3">
+<li><h6 id="Autowired"><a href="#Autowired" class="headerlink" title="@Autowired"></a>@Autowired</h6><p>这是个最熟悉的注解，是spring的自动装配，这个个注解可以用到构造器，变量域，方法，注解类型上。当我们需要从bean 工厂中获取一个bean时，Spring会自动为我们装配该bean中标记为@Autowired的元素。service层也会用到，总之需要自动装配的时候都会用到。</p>
+<p><img src="F:%5Cmyblog%5Chexo%5Csource_posts%5Cspringboot%E5%B8%B8%E7%94%A8%E7%9A%84%E6%B3%A8%E8%A7%A3.assets%5C1570963660733.png" alt="1570963660733"></p>
+<p><img src="F:%5Cmyblog%5Chexo%5Csource_posts%5Cspringboot%E5%B8%B8%E7%94%A8%E7%9A%84%E6%B3%A8%E8%A7%A3.assets%5C1570963727265.png" alt="1570963727265"></p>
+</li>
+<li><h6 id="RequestMapping、-PathVariable和-RequestParam"><a href="#RequestMapping、-PathVariable和-RequestParam" class="headerlink" title="@RequestMapping、@PathVariable和@RequestParam"></a>@RequestMapping、@PathVariable和@RequestParam</h6><ul>
+<li><code>@RequestMapping</code>是表示匹配路径的，放置在类的前面，可以放参数，也可以不放参数。其中路径参数前面加不加斜杠<code>\</code>没有区别。</li>
+</ul>
+<p><img src="F:%5Cmyblog%5Chexo%5Csource_posts%5Cspringboot%E5%B8%B8%E7%94%A8%E7%9A%84%E6%B3%A8%E8%A7%A3.assets%5C1570963505796.png" alt="1570963505796"></p>
+<ul>
+<li><code>@PathVariabl</code>是路径变量注解，<code>@RequestMapping</code>中用{}来定义url部分的变量名，同样可以支持变量名加正则表达式的方式，变量名:[正则表达式]。</li>
+</ul>
+<p><img src="F:%5Cmyblog%5Chexo%5Csource_posts%5Cspringboot%E5%B8%B8%E7%94%A8%E7%9A%84%E6%B3%A8%E8%A7%A3.assets%5C1570964090806.png" alt="1570964090806"></p>
+<p><img src="F:%5Cmyblog%5Chexo%5Csource_posts%5Cspringboot%E5%B8%B8%E7%94%A8%E7%9A%84%E6%B3%A8%E8%A7%A3.assets%5C1570963939336.png" alt="1570963939336"></p>
+<ul>
+<li><code>@RequestParam</code>匹配请求体中的参数，一般是POST请求提交的参数</li>
+</ul>
+<p><img src="F:%5Cmyblog%5Chexo%5Csource_posts%5Cspringboot%E5%B8%B8%E7%94%A8%E7%9A%84%E6%B3%A8%E8%A7%A3.assets%5C1570968137122.png" alt="1570968137122"></p>
+</li>
+<li><h6 id="CrossOrigin"><a href="#CrossOrigin" class="headerlink" title="@CrossOrigin"></a>@CrossOrigin</h6><p>这个注解用得少。@CrossOrigin(origins = “”, maxAge = 1000) 这个注解主要是为了解决跨域访问的问题。这个注解可以为整个controller配置启用跨域，也可以在方法级别启用。</p>
+</li>
+<li><h6 id="EnablCaching"><a href="#EnablCaching" class="headerlink" title="@EnablCaching"></a>@EnablCaching</h6><p>这个注解用得少。这个注解是spring framework中的注解驱动的缓存管理功能。自spring版本3.1起加入了该注解。其作用相当于spring配置文件中的cache manager标签。</p>
+</li>
+</ol>
+<h3 id="Service层注解"><a href="#Service层注解" class="headerlink" title="Service层注解"></a>Service层注解</h3><ol>
+<li><h6 id="Service"><a href="#Service" class="headerlink" title="@Service"></a>@Service</h6><p>这个注解用来标记业务层的组件，我们会将业务逻辑处理的类都会加上这个注解交给spring容器。事务的切面也会配置在这一层。这个注解不是一定要用。有个泛指组件的注解，当我们不能确定具体作用的时候 可以用泛指组件的注解托付给spring容器。</p>
+</li>
+<li><h6 id="Transactional、-EnableTransactionManagement"><a href="#Transactional、-EnableTransactionManagement" class="headerlink" title="@Transactional、@EnableTransactionManagement"></a>@Transactional、@EnableTransactionManagement</h6><p>@Transactional通过这个注解方法可以声明事务，可以添加在和数据库操作相关的类上或者方法上。在spring boot中 不用再单独配置事务管理，一般情况是我们会在servcie层添加了事务注解，即可开启事务。要注意的是，事务的开启只能在public 方法上。并且主要事务切面的回滚条件。正常我们配置rollbackfor exception时 ，如果在方法里捕获了异常就会导致事务切面配置的失效。</p>
+<p><img src="F:%5Cmyblog%5Chexo%5Csource_posts%5Cspringboot%E5%B8%B8%E7%94%A8%E7%9A%84%E6%B3%A8%E8%A7%A3.assets%5C1570964713213.png" alt="1570964713213"></p>
+<p>@EnableTransactionManagement注解在类上，和configuration以及@mapperscan配合，表示这个mybatis配置开始事务。</p>
+<p><img src="F:%5Cmyblog%5Chexo%5Csource_posts%5Cspringboot%E5%B8%B8%E7%94%A8%E7%9A%84%E6%B3%A8%E8%A7%A3.assets%5C1570967984096.png" alt="1570967984096"></p>
+</li>
+</ol>
+<h3 id="持久层注解"><a href="#持久层注解" class="headerlink" title="持久层注解"></a>持久层注解</h3><ol>
+<li><h6 id="Repository"><a href="#Repository" class="headerlink" title="@Repository"></a>@Repository</h6><p>一般不需要写了。作为DAO对象，管理操作数据库的对象。</p>
+</li>
+<li><h6 id="component"><a href="#component" class="headerlink" title="@component"></a>@component</h6><p>带此注解的类看为组件，当使用基于注解的配置和类路径扫描的时候，这些类就会被实例化。其他类级别的注解也可以被认定为是一种特殊类型的组件，比如@Repository @Aspect。所以，@Component可以注解其他类注解。把普通pojo实例化到spring容器中，相当于配置文件中的<code>&lt;bean id=&quot;&quot; class=&quot;&quot;/&gt;</code></p>
+</li>
+</ol>
+<p><img src="F:%5Cmyblog%5Chexo%5Csource_posts%5Cspringboot%E5%B8%B8%E7%94%A8%E7%9A%84%E6%B3%A8%E8%A7%A3.assets%5C1570966962558.png" alt="1570966962558"></p>
+<p>总得来看，@Component, @Service, @Controller, @Repository是spring注解，注解后可以被spring框架所扫描并注入到spring容器来进行管理@Component是通用注解，其他三个注解是这个注解的拓展，并且具有了特定的功能。通过这些注解的分层管理，就能将请求处理，义务逻辑处理，数据库操作处理分离出来，为代码解耦，也方便了以后项目的维护和开发。</p>
+
+    </div>
+
+    
+    
+    
+        <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center;">
+  <img id="wechat_subscriber_qcode" src="/uploads/wechat-qcode.jpg" alt="Quark wechat" style="width: 200px; max-width: 100%;">
+  <div></div>
+</div>
+
+      
+        
+      
+
+      <footer class="post-footer">
+          
+            
+          
+          <div class="post-tags">
+            
+              <a href="/tags/springboot/" rel="tag"># springboot</a>
+            
+          </div>
+        
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/2019/10/12/超详细教程-hexo-github搭建个人技术博客/" rel="next" title="超详细教程--hexo+github搭建个人技术博客">
+                  <i class="fa fa-chevron-left"></i> 超详细教程--hexo+github搭建个人技术博客
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+            </div>
+          </div>
+        
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+        
+        
+        
+        
+      
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#项目配置注解"><span class="nav-number">1.</span> <span class="nav-text">项目配置注解</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#SpringBootApplication"><span class="nav-number">1.0.0.1.</span> <span class="nav-text">@SpringBootApplication</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#ServletComponentScan"><span class="nav-number">1.0.0.2.</span> <span class="nav-text">@ServletComponentScan</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#MapperScan"><span class="nav-number">1.0.0.3.</span> <span class="nav-text">@MapperScan</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#其他的资源注入注解"><span class="nav-number">1.0.0.4.</span> <span class="nav-text">其他的资源注入注解</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Controller层注解"><span class="nav-number">2.</span> <span class="nav-text">Controller层注解</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#Controller-和-ResponseBody"><span class="nav-number">2.0.0.1.</span> <span class="nav-text">@Controller 和@ResponseBody</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#RestController"><span class="nav-number">2.0.0.2.</span> <span class="nav-text">@RestController</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#Autowired"><span class="nav-number">2.0.0.3.</span> <span class="nav-text">@Autowired</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#RequestMapping、-PathVariable和-RequestParam"><span class="nav-number">2.0.0.4.</span> <span class="nav-text">@RequestMapping、@PathVariable和@RequestParam</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#CrossOrigin"><span class="nav-number">2.0.0.5.</span> <span class="nav-text">@CrossOrigin</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#EnablCaching"><span class="nav-number">2.0.0.6.</span> <span class="nav-text">@EnablCaching</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Service层注解"><span class="nav-number">3.</span> <span class="nav-text">Service层注解</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#Service"><span class="nav-number">3.0.0.1.</span> <span class="nav-text">@Service</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#Transactional、-EnableTransactionManagement"><span class="nav-number">3.0.0.2.</span> <span class="nav-text">@Transactional、@EnableTransactionManagement</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#持久层注解"><span class="nav-number">4.</span> <span class="nav-text">持久层注解</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#Repository"><span class="nav-number">4.0.0.1.</span> <span class="nav-text">@Repository</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#component"><span class="nav-number">4.0.0.2.</span> <span class="nav-text">@component</span></a></li></ol></li></ol></li></ol></li></ol></div>
+        
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/images/avatar.png"
+      alt="Quark">
+  <p class="site-author-name" itemprop="name">Quark</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">2</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-categories">
+        
+          
+            <a href="/categories/">
+          
+        
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">分类</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-tags">
+        
+          
+            <a href="/tags/">
+          
+        
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">标签</span>
+        </a>
+      </div>
+    
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="https://github.com/quarkljy" title="GitHub &rarr; https://github.com/quarkljy" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="/quarkljy@gmail.com" title="E-Mail &rarr; quarkljy@gmail.com"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+    
+  </div>
+
+
+
+      </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+      
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Quark</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">
+      
+    主题 – <a href="https://pisces.theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.4.1
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+  
+    <span class="post-meta-divider">|</span>
+  
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/js/utils.js?v=7.4.1"></script><script src="/js/motion.js?v=7.4.1"></script>
+<script src="/js/schemes/pisces.js?v=7.4.1"></script>
+<script src="/js/next-boot.js?v=7.4.1"></script>
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>
