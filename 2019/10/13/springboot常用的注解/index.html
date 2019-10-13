@@ -86,7 +86,8 @@
 <meta property="og:image" content="https://quarkljy.github.io/2019/10/13/springboot常用的注解/F:%5Cmyblog%5Chexo%5Csource_posts%5Cspringboot%E5%B8%B8%E7%94%A8%E7%9A%84%E6%B3%A8%E8%A7%A3.assets%5C1570964713213.png">
 <meta property="og:image" content="https://quarkljy.github.io/2019/10/13/springboot常用的注解/F:%5Cmyblog%5Chexo%5Csource_posts%5Cspringboot%E5%B8%B8%E7%94%A8%E7%9A%84%E6%B3%A8%E8%A7%A3.assets%5C1570967984096.png">
 <meta property="og:image" content="https://quarkljy.github.io/2019/10/13/springboot常用的注解/F:%5Cmyblog%5Chexo%5Csource_posts%5Cspringboot%E5%B8%B8%E7%94%A8%E7%9A%84%E6%B3%A8%E8%A7%A3.assets%5C1570966962558.png">
-<meta property="og:updated_time" content="2019-10-13T12:04:15.794Z">
+<meta property="og:image" content="https://quarkljy.github.io/2019/10/13/springboot常用的注解/F:%5Cmyblog%5Chexo%5Csource_posts%5Cspringboot%E5%B8%B8%E7%94%A8%E7%9A%84%E6%B3%A8%E8%A7%A3.assets%5C1570968626631.png">
+<meta property="og:updated_time" content="2019-10-13T12:32:15.560Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="springboot常用的注解">
 <meta name="twitter:description" content="在写项目demo的发现一个项目需要好多注解，不容易理清楚。趁着项目写完了，总结一下各个注解的分类和用法，加深印象。注解主要分为 项目配置注解、controller层注解、service层注解和其他的常用注解。引入其他的框架中间件也会需要额外注解，比如Swagger、Redis、Feigm、tk.mybatis等，这里留个坑，以后再补充。">
@@ -293,7 +294,7 @@
                 
               
 
-              <time title="创建时间：2019-10-13 18:01:04 / 修改时间：20:04:15" itemprop="dateCreated datePublished" datetime="2019-10-13T18:01:04+08:00">2019-10-13</time>
+              <time title="创建时间：2019-10-13 18:01:04 / 修改时间：20:32:15" itemprop="dateCreated datePublished" datetime="2019-10-13T18:01:04+08:00">2019-10-13</time>
             </span>
           
             
@@ -456,6 +457,15 @@
 </li>
 </ol>
 <p><img src="//quarkljy.github.io/2019/10/13/springboot常用的注解/F:%5Cmyblog%5Chexo%5Csource_posts%5Cspringboot%E5%B8%B8%E7%94%A8%E7%9A%84%E6%B3%A8%E8%A7%A3.assets%5C1570966962558.png" alt="1570966962558"></p>
+<ol start="3">
+<li><p>@Table(name = “tb_sku”)、@Id、@GeneratedValue(strategy = GenerationType.IDENTITY)、@Transient</p>
+<p>@Table(name = “tb_sku”)，表示这个实体类和数据库的tb_sku表对应；</p>
+<p>@Id，表示这个属性是这个数据表的主键；</p>
+<p>@GeneratedValue(strategy = GenerationType.IDENTITY)，表示数据表的主键的生成方法不是由程序生成的，而是由数据库自己生成的。</p>
+<p>@Transient表示该属性并非一个到数据库表的字段的映射,ORM框架将忽略该属性；</p>
+<p><img src="//quarkljy.github.io/2019/10/13/springboot常用的注解/F:%5Cmyblog%5Chexo%5Csource_posts%5Cspringboot%E5%B8%B8%E7%94%A8%E7%9A%84%E6%B3%A8%E8%A7%A3.assets%5C1570968626631.png" alt="1570968626631"></p>
+</li>
+</ol>
 <p>总得来看，@Component, @Service, @Controller, @Repository是spring注解，注解后可以被spring框架所扫描并注入到spring容器来进行管理@Component是通用注解，其他三个注解是这个注解的拓展，并且具有了特定的功能。通过这些注解的分层管理，就能将请求处理，义务逻辑处理，数据库操作处理分离出来，为代码解耦，也方便了以后项目的维护和开发。</p>
 
     </div>
