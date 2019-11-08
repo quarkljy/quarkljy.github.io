@@ -58,6 +58,7 @@
 </script>
 
   <meta name="description" content="在写项目demo的发现一个项目需要好多注解，不容易理清楚。趁着项目写完了，总结一下各个注解的分类和用法，加深印象。注解主要分为 项目配置注解、controller层注解、service层注解和其他的常用注解。引入其他的框架中间件也会需要额外注解，比如Swagger、Redis、Feigm、tk.mybatis等，这里留个坑，以后再补充。">
+<meta name="keywords" content="springboot">
 <meta property="og:type" content="article">
 <meta property="og:title" content="springboot常用的注解">
 <meta property="og:url" content="https://quarkljy.github.io/2019/10/13/springboot常用的注解/index.html">
@@ -68,6 +69,9 @@
 <meta property="og:image" content="https://quarkljy.github.io/2019/10/13/springboot常用的注解/1570962519383.png">
 <meta property="og:image" content="https://quarkljy.github.io/2019/10/13/springboot常用的注解/1570962417468.png">
 <meta property="og:image" content="https://quarkljy.github.io/2019/10/13/springboot常用的注解/1570964825888.png">
+<meta property="og:image" content="https://quarkljy.github.io/2019/10/13/springboot常用的注解/1571066072933.png">
+<meta property="og:image" content="https://quarkljy.github.io/2019/10/13/springboot常用的注解/1571066766274.png">
+<meta property="og:image" content="https://quarkljy.github.io/2019/10/13/springboot常用的注解/1571067076297.png">
 <meta property="og:image" content="https://quarkljy.github.io/2019/10/13/springboot常用的注解/1570964995269.png">
 <meta property="og:image" content="https://quarkljy.github.io/2019/10/13/springboot常用的注解/1570965135235.png">
 <meta property="og:image" content="https://quarkljy.github.io/2019/10/13/springboot常用的注解/1570965323087.png">
@@ -86,7 +90,7 @@
 <meta property="og:image" content="https://quarkljy.github.io/2019/10/13/springboot常用的注解/1570967984096.png">
 <meta property="og:image" content="https://quarkljy.github.io/2019/10/13/springboot常用的注解/1570966962558.png">
 <meta property="og:image" content="https://quarkljy.github.io/2019/10/13/springboot常用的注解/1570968626631.png">
-<meta property="og:updated_time" content="2019-10-14T12:01:33.612Z">
+<meta property="og:updated_time" content="2019-11-08T15:45:54.331Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="springboot常用的注解">
 <meta name="twitter:description" content="在写项目demo的发现一个项目需要好多注解，不容易理清楚。趁着项目写完了，总结一下各个注解的分类和用法，加深印象。注解主要分为 项目配置注解、controller层注解、service层注解和其他的常用注解。引入其他的框架中间件也会需要额外注解，比如Swagger、Redis、Feigm、tk.mybatis等，这里留个坑，以后再补充。">
@@ -304,9 +308,26 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-10-14 20:01:33" itemprop="dateModified" datetime="2019-10-14T20:01:33+08:00">2019-10-14</time>
+                <time title="修改时间：2019-11-08 23:45:54" itemprop="dateModified" datetime="2019-11-08T23:45:54+08:00">2019-11-08</time>
               </span>
             
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/springboot/" itemprop="url" rel="index">
+                    <span itemprop="name">springboot</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
           
 
           
@@ -331,8 +352,9 @@
 
       
         <p>spring boot中，摒弃了spring以往项目中大量繁琐的配置，遵循<strong>约定大于配置</strong>的原则，通过自身默认配置，极大的降低了项目搭建的复杂度。本文中将spring boot项目中常用的一些核心注解归类总结，并结合实际使用的角度来解释其作用</p>
-<h3 id="项目配置注解"><a href="#项目配置注解" class="headerlink" title="项目配置注解"></a>项目配置注解</h3><ol>
-<li><h6 id="SpringBootApplication"><a href="#SpringBootApplication" class="headerlink" title="@SpringBootApplication"></a>@SpringBootApplication</h6><p>这是一个符合注解，包含包含了<code>@SpringBootConfiguration，@EnableAutoConfiguration，@ComponentScan</code>这三个注解。大多数情况下，这3个注解会被同时使用，基于最佳实践，这三个注解就被做了包装，成为了<code>@SpringBootApplication</code>注解</p>
+<h5 id="项目配置注解"><a href="#项目配置注解" class="headerlink" title="项目配置注解"></a>项目配置注解</h5><ol>
+<li><p>@SpringBootApplication </p>
+<p>这是一个符合注解，包含包含了<code>@SpringBootConfiguration，@EnableAutoConfiguration，@ComponentScan</code>这三个注解。大多数情况下，这3个注解会被同时使用，基于最佳实践，这三个注解就被做了包装，成为了<code>@SpringBootApplication</code>注解</p>
 </li>
 </ol>
 <p>   <img src="/2019/10/13/springboot常用的注解/1570962471550.png" alt="1570962471550"></p>
@@ -342,15 +364,23 @@
 <li><strong>@ComponentScan:</strong>扫描当前包及其子包下被<code>@Component，@Controller，@Service，@Repository</code>注解标记的类并纳入到spring容器中进行管理。等价于<code>&lt;context:component-scan&gt;</code>的xml配置文件中的配置项。</li>
 </ul>
 <ol start="2">
-<li><h6 id="ServletComponentScan"><a href="#ServletComponentScan" class="headerlink" title="@ServletComponentScan"></a>@ServletComponentScan</h6><p>这个注解用得少。<code>Servlet、Filter、Listener</code>可以直接通过<code>@WebServlet、@WebFilter、@WebListener</code> 注解自动注册，这样通过注解servlet ，拦截器，监听器的功能而无需其他配置，项目中哟啊实现filter用到了这个注解。</p>
+<li><p>@ServletComponentScan</p>
+<p>这个注解用得少。<code>Servlet、Filter、Listener</code>可以直接通过<code>@WebServlet、@WebFilter、@WebListener</code> 注解自动注册，这样通过注解servlet ，拦截器，监听器的功能而无需其他配置，项目中哟啊实现filter用到了这个注解。</p>
 </li>
-<li><h6 id="MapperScan"><a href="#MapperScan" class="headerlink" title="@MapperScan"></a>@MapperScan</h6><p>spring-boot支持mybatis组件的一个注解，通过此注解指定mybatis接口类的路径，即可完成对mybatis接口的扫描。它和@mapper注解是一样的作用，不同的地方是扫描入口不一样。@mapper需要加在每一个mapper接口类上面。所以大多数情况下，都是在规划好工程目录之后，通过@MapperScan注解配置路径完成mapper接口的注入。添加mybatis相应组建依赖之后。就可以使用该注解。</p>
+<li><p>@MapperScan</p>
+<p>spring-boot支持mybatis组件的一个注解，通过此注解指定mybatis接口类的路径，即可完成对mybatis接口的扫描。它和@mapper注解是一样的作用，不同的地方是扫描入口不一样。@mapper需要加在每一个mapper接口类上面。所以大多数情况下，都是在规划好工程目录之后，通过@MapperScan注解配置路径完成mapper接口的注入。添加mybatis相应组建依赖之后。就可以使用该注解。</p>
 <p><img src="/2019/10/13/springboot常用的注解/1570962519383.png" alt="1570962519383"></p>
 <p><img src="/2019/10/13/springboot常用的注解/1570962417468.png" alt="1570962417468"></p>
 </li>
-<li><h6 id="其他的资源注入注解"><a href="#其他的资源注入注解" class="headerlink" title="其他的资源注入注解"></a>其他的资源注入注解</h6><ul>
+<li><p>其他的资源注入注解</p>
+<ul>
 <li><p>@ImportResource 、@Import 、@PropertySource</p>
-<p>这三个注解都是用来导入自定义的一些配置文件。<code>@ImportResource(locations={})</code>导入其他xml配置文件，需要标准在主配置类上。导入property的配置文件<code>@PropertySource</code>指定文件路径，这个相当于使用spring的<code>&lt;importresource/&gt;</code>标签来完成配置项的引入。<code>@import</code>注解是一个可以将普通类导入到spring容器中做管理。<img src="/2019/10/13/springboot常用的注解/1570964825888.png" alt="1570964825888"></p>
+<p>这三个注解都是用来导入自定义的一些配置文件。<code>@ImportResource(locations={})</code>导入其他xml配置文件，需要标准在主配置类上。导入property的配置文件<code>@PropertySource</code>指定文件路径，这个相当于使用spring的<code>&lt;importresource/&gt;</code>标签来完成配置项的引入。<code>@import</code>注解是一个可以将普通类导入到spring容器中做管理。</p>
+<p><img src="/2019/10/13/springboot常用的注解/1570964825888.png" alt="1570964825888"></p>
+<p><img src="/2019/10/13/springboot常用的注解/1571066072933.png" alt="1571066072933"></p>
+<p><img src="/2019/10/13/springboot常用的注解/1571066766274.png" alt="1571066766274"></p>
+<p><img src="/2019/10/13/springboot常用的注解/1571067076297.png" alt="1571067076297"></p>
+<p>画※的要记住，这是重点。</p>
 </li>
 <li><p>@EnableDiscoveryClient</p>
 <p>服务注册发现的注解，当这个是微服务时候，需要配置这个注解，好让eureka发现这个服务。还需要再application.yml文件中配置euraka的信息。</p>
@@ -379,10 +409,12 @@
 </ul>
 </li>
 </ol>
-<h3 id="Controller层注解"><a href="#Controller层注解" class="headerlink" title="Controller层注解"></a>Controller层注解</h3><ol>
-<li><h6 id="Controller-和-ResponseBody"><a href="#Controller-和-ResponseBody" class="headerlink" title="@Controller 和@ResponseBody"></a>@Controller 和@ResponseBody</h6><p>表明这个类是一个控制器类，和<code>@RequestMapping</code>来配合使用拦截请求，如果不在method中注明请求的方式，默认是拦截get和post请求。这样请求会完成后转向一个视图解析器。但是在大多微服务搭建的时候，前后端会做分离。所以请求后端只关注数据处理，后端返回json数据的话，需要配合<code>@ResponseBody</code>注解来完成。这样一个只需要返回数据的接口就需要3个注解来完成。</p>
+<h5 id="Controller层注解"><a href="#Controller层注解" class="headerlink" title="Controller层注解"></a>Controller层注解</h5><ol>
+<li><p>@Controller 和@ResponseBody</p>
+<p>表明这个类是一个控制器类，和<code>@RequestMapping</code>来配合使用拦截请求，如果不在method中注明请求的方式，默认是拦截get和post请求。这样请求会完成后转向一个视图解析器。但是在大多微服务搭建的时候，前后端会做分离。所以请求后端只关注数据处理，后端返回json数据的话，需要配合<code>@ResponseBody</code>注解来完成。这样一个只需要返回数据的接口就需要3个注解来完成。</p>
 </li>
-<li><h6 id="RestController"><a href="#RestController" class="headerlink" title="@RestController"></a>@RestController</h6><p>大多情况我们都是需要返回数据。也是基于最佳实践，所以将这三个注解进一步整合<code>@RestController</code>是<code>@Controller</code> 和<code>@ResponseBody</code>的结合，一个类被加上<code>@RestController</code> 注解，数据接口中就不再需要添加<code>@ResponseBody</code>。更加简洁。同样的情况,<code>@RequestMapping(value=&quot;&quot;,method= RequestMethod.GET )</code>,我们都需要明确请求方式。这样的写法又会显得比较繁琐，于是乎就有了如下的几个注解，让代码的更加简洁。</p>
+<li><p>@RestController </p>
+<p>大多情况我们都是需要返回数据。也是基于最佳实践，所以将这三个注解进一步整合<code>@RestController</code>是<code>@Controller</code> 和<code>@ResponseBody</code>的结合，一个类被加上<code>@RestController</code> 注解，数据接口中就不再需要添加<code>@ResponseBody</code>。更加简洁。同样的情况,<code>@RequestMapping(value=&quot;&quot;,method= RequestMethod.GET )</code>,我们都需要明确请求方式。这样的写法又会显得比较繁琐，于是乎就有了如下的几个注解，让代码的更加简洁。</p>
 </li>
 </ol>
 <table>
@@ -410,11 +442,13 @@
 </tr>
 </tbody></table>
 <ol start="3">
-<li><h6 id="Autowired"><a href="#Autowired" class="headerlink" title="@Autowired"></a>@Autowired</h6><p>这是个最熟悉的注解，是spring的自动装配，这个个注解可以用到构造器，变量域，方法，注解类型上。当我们需要从bean 工厂中获取一个bean时，Spring会自动为我们装配该bean中标记为@Autowired的元素。service层也会用到，总之需要自动装配的时候都会用到。</p>
+<li><p>@Autowired</p>
+<p>这是个最熟悉的注解，是spring的自动装配，这个个注解可以用到构造器，变量域，方法，注解类型上。当我们需要从bean 工厂中获取一个bean时，Spring会自动为我们装配该bean中标记为@Autowired的元素。service层也会用到，总之需要自动装配的时候都会用到。</p>
 <p><img src="/2019/10/13/springboot常用的注解/1570963660733.png" alt="1570963660733"></p>
 <p><img src="/2019/10/13/springboot常用的注解/1570963727265.png" alt="1570963727265"></p>
 </li>
-<li><h6 id="RequestMapping、-PathVariable和-RequestParam"><a href="#RequestMapping、-PathVariable和-RequestParam" class="headerlink" title="@RequestMapping、@PathVariable和@RequestParam"></a>@RequestMapping、@PathVariable和@RequestParam</h6><ul>
+<li><p>@RequestMapping、@PathVariable和@RequestParam</p>
+<ul>
 <li><code>@RequestMapping</code>是表示匹配路径的，放置在类的前面，可以放参数，也可以不放参数。其中路径参数前面加不加斜杠<code>\</code>没有区别。</li>
 </ul>
 <p><img src="/2019/10/13/springboot常用的注解/1570963505796.png" alt="1570963505796"></p>
@@ -428,24 +462,30 @@
 </ul>
 <p><img src="/2019/10/13/springboot常用的注解/1570968137122.png" alt="1570968137122"></p>
 </li>
-<li><h6 id="CrossOrigin"><a href="#CrossOrigin" class="headerlink" title="@CrossOrigin"></a>@CrossOrigin</h6><p>这个注解用得少。@CrossOrigin(origins = “”, maxAge = 1000) 这个注解主要是为了解决跨域访问的问题。这个注解可以为整个controller配置启用跨域，也可以在方法级别启用。</p>
+<li><p>@CrossOrigin</p>
+<p>这个注解用得少。@CrossOrigin(origins = “”, maxAge = 1000) 这个注解主要是为了解决跨域访问的问题。这个注解可以为整个controller配置启用跨域，也可以在方法级别启用。</p>
 </li>
-<li><h6 id="EnablCaching"><a href="#EnablCaching" class="headerlink" title="@EnablCaching"></a>@EnablCaching</h6><p>这个注解用得少。这个注解是spring framework中的注解驱动的缓存管理功能。自spring版本3.1起加入了该注解。其作用相当于spring配置文件中的cache manager标签。</p>
+<li><p>@EnablCaching</p>
+<p>这个注解用得少。这个注解是spring framework中的注解驱动的缓存管理功能。自spring版本3.1起加入了该注解。其作用相当于spring配置文件中的cache manager标签。</p>
 </li>
 </ol>
-<h3 id="Service层注解"><a href="#Service层注解" class="headerlink" title="Service层注解"></a>Service层注解</h3><ol>
-<li><h6 id="Service"><a href="#Service" class="headerlink" title="@Service"></a>@Service</h6><p>这个注解用来标记业务层的组件，我们会将业务逻辑处理的类都会加上这个注解交给spring容器。事务的切面也会配置在这一层。这个注解不是一定要用。有个泛指组件的注解，当我们不能确定具体作用的时候 可以用泛指组件的注解托付给spring容器。</p>
+<h5 id="Service层注解"><a href="#Service层注解" class="headerlink" title="Service层注解"></a>Service层注解</h5><ol>
+<li><p>@Service</p>
+<p>这个注解用来标记业务层的组件，我们会将业务逻辑处理的类都会加上这个注解交给spring容器。事务的切面也会配置在这一层。这个注解不是一定要用。有个泛指组件的注解，当我们不能确定具体作用的时候 可以用泛指组件的注解托付给spring容器。</p>
 </li>
-<li><h6 id="Transactional、-EnableTransactionManagement"><a href="#Transactional、-EnableTransactionManagement" class="headerlink" title="@Transactional、@EnableTransactionManagement"></a>@Transactional、@EnableTransactionManagement</h6><p>@Transactional通过这个注解方法可以声明事务，可以添加在和数据库操作相关的类上或者方法上。在spring boot中 不用再单独配置事务管理，一般情况是我们会在servcie层添加了事务注解，即可开启事务。要注意的是，事务的开启只能在public 方法上。并且主要事务切面的回滚条件。正常我们配置rollbackfor exception时 ，如果在方法里捕获了异常就会导致事务切面配置的失效。</p>
+<li><p>@Transactional、@EnableTransactionManagement</p>
+<p>@Transactional通过这个注解方法可以声明事务，可以添加在和数据库操作相关的类上或者方法上。在spring boot中 不用再单独配置事务管理，一般情况是我们会在servcie层添加了事务注解，即可开启事务。要注意的是，事务的开启只能在public 方法上。并且主要事务切面的回滚条件。正常我们配置rollbackfor exception时 ，如果在方法里捕获了异常就会导致事务切面配置的失效。</p>
 <p><img src="/2019/10/13/springboot常用的注解/1570964713213.png" alt="1570964713213"></p>
 <p>@EnableTransactionManagement注解在类上，和configuration以及@mapperscan配合，表示这个mybatis配置开始事务。</p>
 <p><img src="/2019/10/13/springboot常用的注解/1570967984096.png" alt="1570967984096"></p>
 </li>
 </ol>
-<h3 id="持久层注解"><a href="#持久层注解" class="headerlink" title="持久层注解"></a>持久层注解</h3><ol>
-<li><h6 id="Repository"><a href="#Repository" class="headerlink" title="@Repository"></a>@Repository</h6><p>一般不需要写了。作为DAO对象，管理操作数据库的对象。</p>
+<h5 id="持久层注解"><a href="#持久层注解" class="headerlink" title="持久层注解"></a>持久层注解</h5><ol>
+<li><p>@Repository</p>
+<p>一般不需要写了。作为DAO对象，管理操作数据库的对象。</p>
 </li>
-<li><h6 id="component"><a href="#component" class="headerlink" title="@component"></a>@component</h6><p>带此注解的类看为组件，当使用基于注解的配置和类路径扫描的时候，这些类就会被实例化。其他类级别的注解也可以被认定为是一种特殊类型的组件，比如@Repository @Aspect。所以，@Component可以注解其他类注解。把普通pojo实例化到spring容器中，相当于配置文件中的<code>&lt;bean id=&quot;&quot; class=&quot;&quot;/&gt;</code></p>
+<li><p>@component</p>
+<p>带此注解的类看为组件，当使用基于注解的配置和类路径扫描的时候，这些类就会被实例化。其他类级别的注解也可以被认定为是一种特殊类型的组件，比如@Repository @Aspect。所以，@Component可以注解其他类注解。把普通pojo实例化到spring容器中，相当于配置文件中的<code>&lt;bean id=&quot;&quot; class=&quot;&quot;/&gt;</code></p>
 </li>
 </ol>
 <p><img src="/2019/10/13/springboot常用的注解/1570966962558.png" alt="1570966962558"></p>
@@ -475,25 +515,18 @@
       
 
       <footer class="post-footer">
-
-        
-
-          <div class="post-nav">
-            <div class="post-nav-next post-nav-item">
-              
-            </div>
-
-            <span class="post-nav-divider"></span>
-
-            <div class="post-nav-prev post-nav-item">
-              
-                <a href="/2019/10/14/mysql索引解析/" rel="prev" title="mysql索引解析">
-                  mysql索引解析 <i class="fa fa-chevron-right"></i>
-                </a>
-              
-            </div>
+          
+            
+          
+          <div class="post-tags">
+            
+              <a href="/tags/springboot/" rel="tag"># springboot</a>
+            
           </div>
         
+
+        
+
       </footer>
     
   </article>
@@ -535,7 +568,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#项目配置注解"><span class="nav-number">1.</span> <span class="nav-text">项目配置注解</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#SpringBootApplication"><span class="nav-number">1.0.0.1.</span> <span class="nav-text">@SpringBootApplication</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#ServletComponentScan"><span class="nav-number">1.0.0.2.</span> <span class="nav-text">@ServletComponentScan</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#MapperScan"><span class="nav-number">1.0.0.3.</span> <span class="nav-text">@MapperScan</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#其他的资源注入注解"><span class="nav-number">1.0.0.4.</span> <span class="nav-text">其他的资源注入注解</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Controller层注解"><span class="nav-number">2.</span> <span class="nav-text">Controller层注解</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#Controller-和-ResponseBody"><span class="nav-number">2.0.0.1.</span> <span class="nav-text">@Controller 和@ResponseBody</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#RestController"><span class="nav-number">2.0.0.2.</span> <span class="nav-text">@RestController</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#Autowired"><span class="nav-number">2.0.0.3.</span> <span class="nav-text">@Autowired</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#RequestMapping、-PathVariable和-RequestParam"><span class="nav-number">2.0.0.4.</span> <span class="nav-text">@RequestMapping、@PathVariable和@RequestParam</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#CrossOrigin"><span class="nav-number">2.0.0.5.</span> <span class="nav-text">@CrossOrigin</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#EnablCaching"><span class="nav-number">2.0.0.6.</span> <span class="nav-text">@EnablCaching</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Service层注解"><span class="nav-number">3.</span> <span class="nav-text">Service层注解</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#Service"><span class="nav-number">3.0.0.1.</span> <span class="nav-text">@Service</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#Transactional、-EnableTransactionManagement"><span class="nav-number">3.0.0.2.</span> <span class="nav-text">@Transactional、@EnableTransactionManagement</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#持久层注解"><span class="nav-number">4.</span> <span class="nav-text">持久层注解</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#Repository"><span class="nav-number">4.0.0.1.</span> <span class="nav-text">@Repository</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#component"><span class="nav-number">4.0.0.2.</span> <span class="nav-text">@component</span></a></li></ol></li></ol></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#项目配置注解"><span class="nav-number">1.</span> <span class="nav-text">项目配置注解</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Controller层注解"><span class="nav-number">2.</span> <span class="nav-text">Controller层注解</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Service层注解"><span class="nav-number">3.</span> <span class="nav-text">Service层注解</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#持久层注解"><span class="nav-number">4.</span> <span class="nav-text">持久层注解</span></a></li></ol></div>
         
       </div>
       <!--/noindex-->
@@ -554,7 +587,7 @@
         
           <a href="/archives/">
         
-          <span class="site-state-item-count">2</span>
+          <span class="site-state-item-count">1</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -567,7 +600,7 @@
             <a href="/categories/">
           
         
-        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-count">1</span>
         <span class="site-state-item-name">分类</span>
         </a>
       </div>
@@ -580,7 +613,7 @@
             <a href="/tags/">
           
         
-        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-count">1</span>
         <span class="site-state-item-name">标签</span>
         </a>
       </div>
