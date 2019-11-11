@@ -73,7 +73,7 @@
 <meta property="og:image" content="https://quarkljy.github.io/2019/11/11/mysql的事务和隔离级别以及锁/1573473193701.png">
 <meta property="og:image" content="https://quarkljy.github.io/2019/11/11/mysql的事务和隔离级别以及锁/1573473288025.png">
 <meta property="og:image" content="https://quarkljy.github.io/2019/11/11/mysql的事务和隔离级别以及锁/1573474166874.png">
-<meta property="og:updated_time" content="2019-11-11T14:40:19.948Z">
+<meta property="og:updated_time" content="2019-11-11T14:58:15.215Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="mysql的事务和隔离级别以及锁">
 <meta name="twitter:description" content="总结mysql的事务特性ACID，并发问题导致的问题，以及不同隔离级别的作用，总结一下mysql的锁。">
@@ -280,7 +280,7 @@
                 
               
 
-              <time title="Created: 2019-11-11 12:25:36 / Modified: 22:40:19" itemprop="dateCreated datePublished" datetime="2019-11-11T12:25:36+08:00">2019-11-11</time>
+              <time title="Created: 2019-11-11 12:25:36 / Modified: 22:58:15" itemprop="dateCreated datePublished" datetime="2019-11-11T12:25:36+08:00">2019-11-11</time>
             </span>
           
             
@@ -352,7 +352,7 @@
 <ol>
 <li><p>A线程开启事务，<code>select * from user</code>只读取到100行数据，B线程开启事务并新增第101行数据并成功提交（此时第101行数据还是隐藏行），A线程此时可以对101行数据进行更新，这个时候在<code>select * from user</code>，会发现有101行数据！！！同样的查询，得到不同的结果。 违背不一致性。</p>
 </li>
-<li><p>A线程开启事务，<code>select * from user</code>只读取到100行数据，B线程开启事务并删除100行数据提交了（此时第101行数据还是隐藏行），A线程此时可以对第100行数据进行更新，发现没有匹配的行，也即是这一行数据不存在了！但是再次查询，发现该数据依然可以查询得到，前后的结果一样！违背不一致性。</p>
+<li><p>A线程开启事务，<code>select * from user</code>只读取到100行数据，B线程开启事务并删除第100行数据提交了（此时第100行数据还是隐藏行），A线程此时可以对第100行数据进行更新，发现没有匹配的行，也即是这一行数据不存在了！但是再次查询，发现该数据依然可以查询得到，前后的结果一样！违背不一致性。</p>
 <p>A线程事务</p>
 <p><img src="/2019/11/11/mysql的事务和隔离级别以及锁/1573458103169.png" alt="1573458103169"></p>
 <p>B线程事务</p>
@@ -366,45 +366,52 @@
 <table>
 <thead>
 <tr>
-<th align="left">隔离级别</th>
+<th>隔离级别</th>
 <th>脏读</th>
 <th>不可重复读</th>
 <th>幻读</th>
 </tr>
 </thead>
 <tbody><tr>
-<td align="left">读未提交</td>
+<td>读未提交</td>
 <td></td>
 <td></td>
 <td></td>
 </tr>
 <tr>
-<td align="left">读提交（ oracle数据库默认）</td>
+<td>读提交（ oracle数据库默认）</td>
 <td>√</td>
 <td></td>
 <td></td>
 </tr>
 <tr>
-<td align="left">可重复读 （mysql数据库默认）</td>
+<td>可重复读 （mysql数据库默认）</td>
 <td>√</td>
 <td>√</td>
 <td></td>
 </tr>
 <tr>
-<td align="left">串行化</td>
+<td>串行化</td>
 <td>√</td>
 <td>√</td>
 <td>√</td>
 </tr>
 </tbody></table>
 <ul>
-<li>读未提交：A线程事务能够读取B线程事务中更新但是未提交的数据。</li>
-<li>读提交：会导致不可重复读、幻读现象。新增、删除、修改时候有可能数据不一致。</li>
-<li>可重复读：会出现幻读现象。侧重新增、删除时候数据 有可能不一致。<font color="red"><strong>注意</strong>：</font>此时如果A线程在线程B前先进行了新增删除更新操作（不通过索引），就会给整个表加锁，A线程事务未提交前，B线程事务是不能新增更新删除的，要等待A线程事务提交了才可以，但是B线程是可以对数据查询的。</li>
-<li>串行化：A线程的事务中新增、修改、删除、读取，都会对整个表进行加锁，A线程的事务提交前，B线程事务无法读取新增删除修改。</li>
+<li><p>读未提交：A线程事务能够读取B线程事务中更新但是未提交的数据。</p>
+</li>
+<li><p>读提交：会导致不可重复读、幻读现象。新增、删除、修改时候有可能数据不一致。</p>
+</li>
+<li><p>可重复读：会出现幻读现象。侧重新增、删除时候数据 有可能不一致。</p>
+<p><font color="red"><strong>注意</strong>：</font>此时如果A线程在线程B前先进行了新增删除更新操作（不通过索引），就会给整个表加锁，A线程事务未提交前，B线程事务是不能新增更新删除的，要等待A线程事务提交了才可以，但是B线程是可以对数据查询的。</p>
+</li>
+<li><p>串行化：A线程的事务中新增、修改、删除、读取，都会对整个表进行加锁，A线程的事务提交前，B线程事务无法读取新增删除修改。</p>
+</li>
 </ul>
-<h5 id="mysql的innodb锁"><a href="#mysql的innodb锁" class="headerlink" title="mysql的innodb锁"></a>mysql的innodb锁</h5><p>阻塞：在运行中但是不能继续向前运行的状态。得到锁就可以向前运行。</p>
+<h5 id="mysql的innodb锁"><a href="#mysql的innodb锁" class="headerlink" title="mysql的innodb锁"></a>mysql的innodb锁</h5><p>阻塞：在运行中但是不能继续向前运行的状态，能够给目标资源加上锁就可以向前运行。</p>
+<p>事务B新增一条数据</p>
 <p><img src="/2019/11/11/mysql的事务和隔离级别以及锁/1573460476712.png" alt="1573460476712"></p>
+<p>事务A对事务B新增的数据进行修改，发现无法修改。事务B事务提交之后，才可以修改。这里是幻读。因为id=16这个数据并没有出现在 <code>select * from user</code></p>
 <p><img src="/2019/11/11/mysql的事务和隔离级别以及锁/1573460530299.png" alt="1573460530299"></p>
 <p>InnoDB与MyISAM的最大不同有两点：一是支持事务（TRANSACTION）；二是采用了行级锁。行级锁与表级锁本来就有许多不同之处，innodb正常的<code>select ID from table where id=1</code>；不会上任何锁.</p>
 <p>行锁比表锁有更小锁粒度，可以更大的支持并发。但是加锁动作也是需要额外开销的，比如获得锁、检查锁、释放锁等操作都是需要耗费系统资源。如果系统在锁操作上浪费了太多时间，系统的性能就会受到比较大的影响。</p>
@@ -459,6 +466,7 @@
 </tr>
 </tbody></table>
 <p><font color="red"><strong>注意</strong>：</font>是 表示两个锁可以共存。如果一个事务请求的锁模式与当前的锁兼容，InnoDB就将请求的锁授予该事务；反之，如果两者不兼容，该事务就要等待锁释放。”获得锁”的意思其实就是在该资源做个特殊标记，可以说是给某某加锁。我认为加锁这种说法更好理解。</p>
+<p><strong>注意区分表锁和行锁</strong></p>
 <blockquote>
 <p>事务Ａ在更新一条记录之前，先加意向锁，再加Ｘ锁，事务B先检查该表上是否存在意向锁，存在的意向锁是否与自己准备加的锁冲突，如果有冲突，则等待直到事务Ａ释放，而无须逐条记录去检测。事务Ｂ更新表时，其实无须知道到底哪一行被锁了，它只要知道反正有一行被锁了就行了。一个表可以包含非常多的意向锁，属于某几行的共享锁和排他锁。</p>
 </blockquote>
@@ -522,6 +530,13 @@
 <p>实现方式：在数据库多添加一个版本号字段用来比较。</p>
 </li>
 </ul>
+<h6 id="死锁"><a href="#死锁" class="headerlink" title="死锁"></a>死锁</h6><p>死锁一般发生在行锁之间。发生的过程为：</p>
+<p>事务A成功通过索引更新第100行的数据，接着事务B成功通过索引更新第101行的数据，然后事务A欲通过索引更新第101行数据（此时第101行数据已经被事务B加上排他锁X），事务A无法给第101行数据加锁，进入阻塞状态，此时事务B也要通过索引更新第100行数据，结果无法给第100行数据加锁，也进入阻塞状态。事务A和事务相互竞争但是又不放弃手里的锁，于是变成了死锁。</p>
+<h5 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h5><ol>
+<li><a href="https://blog.csdn.net/weixin_38312719/article/details/93687340" target="_blank" rel="noopener">深入理解 一致性锁定读 与 一致性非锁定读</a></li>
+<li><a href="https://juejin.im/post/5d3e8b63f265da1bce3e1988" target="_blank" rel="noopener">MySQL锁机制——你想知道的都在这</a></li>
+<li><a href="https://juejin.im/post/5d3e8b63f265da1bce3e1988" target="_blank" rel="noopener">MySQL的innoDB锁机制以及死锁处理 - bw_0927 - 博客园</a></li>
+</ol>
 
     </div>
 
@@ -601,7 +616,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#mysql的事务特性ACID"><span class="nav-number">1.</span> <span class="nav-text">mysql的事务特性ACID</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#事务控制语句"><span class="nav-number">2.</span> <span class="nav-text">事务控制语句</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#并发导致的问题"><span class="nav-number">3.</span> <span class="nav-text">并发导致的问题</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#事务的隔离级别"><span class="nav-number">4.</span> <span class="nav-text">事务的隔离级别</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#mysql的innodb锁"><span class="nav-number">5.</span> <span class="nav-text">mysql的innodb锁</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#行锁分类"><span class="nav-number">5.1.</span> <span class="nav-text">行锁分类</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#加锁方式"><span class="nav-number">5.2.</span> <span class="nav-text">加锁方式</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#行锁的方式"><span class="nav-number">5.3.</span> <span class="nav-text">行锁的方式</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#加锁后读的方式"><span class="nav-number">5.4.</span> <span class="nav-text">加锁后读的方式</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#悲观锁和乐观锁"><span class="nav-number">5.5.</span> <span class="nav-text">悲观锁和乐观锁</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#mysql的事务特性ACID"><span class="nav-number">1.</span> <span class="nav-text">mysql的事务特性ACID</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#事务控制语句"><span class="nav-number">2.</span> <span class="nav-text">事务控制语句</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#并发导致的问题"><span class="nav-number">3.</span> <span class="nav-text">并发导致的问题</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#事务的隔离级别"><span class="nav-number">4.</span> <span class="nav-text">事务的隔离级别</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#mysql的innodb锁"><span class="nav-number">5.</span> <span class="nav-text">mysql的innodb锁</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#行锁分类"><span class="nav-number">5.1.</span> <span class="nav-text">行锁分类</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#加锁方式"><span class="nav-number">5.2.</span> <span class="nav-text">加锁方式</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#行锁的方式"><span class="nav-number">5.3.</span> <span class="nav-text">行锁的方式</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#加锁后读的方式"><span class="nav-number">5.4.</span> <span class="nav-text">加锁后读的方式</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#悲观锁和乐观锁"><span class="nav-number">5.5.</span> <span class="nav-text">悲观锁和乐观锁</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#死锁"><span class="nav-number">5.6.</span> <span class="nav-text">死锁</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#引用"><span class="nav-number">6.</span> <span class="nav-text">引用</span></a></li></ol></div>
         
       </div>
       <!--/noindex-->
