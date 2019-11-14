@@ -60,25 +60,25 @@
   <meta name="description" content="总结mysql的事务特性ACID，并发问题导致的问题，以及不同隔离级别的作用，总结一下mysql的锁。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="mysql的事务和隔离级别以及锁">
-<meta property="og:url" content="https://quarkljy.github.io/2018/01/16/mysql的事务和隔离级别以及锁/index.html">
+<meta property="og:url" content="https://quarkljy.github.io/2018/01/01/mysql的事务和隔离级别以及锁/index.html">
 <meta property="og:site_name" content="Quark&#39;s Blogs">
 <meta property="og:description" content="总结mysql的事务特性ACID，并发问题导致的问题，以及不同隔离级别的作用，总结一下mysql的锁。">
 <meta property="og:locale" content="en">
-<meta property="og:image" content="https://quarkljy.github.io/2018/01/16/mysql的事务和隔离级别以及锁/1573458103169.png">
-<meta property="og:image" content="https://quarkljy.github.io/2018/01/16/mysql的事务和隔离级别以及锁/1573458219397.png">
-<meta property="og:image" content="https://quarkljy.github.io/2018/01/16/mysql的事务和隔离级别以及锁/1573460476712.png">
-<meta property="og:image" content="https://quarkljy.github.io/2018/01/16/mysql的事务和隔离级别以及锁/1573460530299.png">
-<meta property="og:image" content="https://quarkljy.github.io/2018/01/16/mysql的事务和隔离级别以及锁/1573472948666.png">
-<meta property="og:image" content="https://quarkljy.github.io/2018/01/16/mysql的事务和隔离级别以及锁/1573473007765.png">
-<meta property="og:image" content="https://quarkljy.github.io/2018/01/16/mysql的事务和隔离级别以及锁/1573473193701.png">
-<meta property="og:image" content="https://quarkljy.github.io/2018/01/16/mysql的事务和隔离级别以及锁/1573473288025.png">
-<meta property="og:image" content="https://quarkljy.github.io/2018/01/16/mysql的事务和隔离级别以及锁/1573474166874.png">
-<meta property="og:updated_time" content="2019-11-14T02:13:03.903Z">
+<meta property="og:image" content="https://quarkljy.github.io/2018/01/01/mysql的事务和隔离级别以及锁/1573458103169.png">
+<meta property="og:image" content="https://quarkljy.github.io/2018/01/01/mysql的事务和隔离级别以及锁/1573458219397.png">
+<meta property="og:image" content="https://quarkljy.github.io/2018/01/01/mysql的事务和隔离级别以及锁/1573460476712.png">
+<meta property="og:image" content="https://quarkljy.github.io/2018/01/01/mysql的事务和隔离级别以及锁/1573460530299.png">
+<meta property="og:image" content="https://quarkljy.github.io/2018/01/01/mysql的事务和隔离级别以及锁/1573472948666.png">
+<meta property="og:image" content="https://quarkljy.github.io/2018/01/01/mysql的事务和隔离级别以及锁/1573473007765.png">
+<meta property="og:image" content="https://quarkljy.github.io/2018/01/01/mysql的事务和隔离级别以及锁/1573473193701.png">
+<meta property="og:image" content="https://quarkljy.github.io/2018/01/01/mysql的事务和隔离级别以及锁/1573473288025.png">
+<meta property="og:image" content="https://quarkljy.github.io/2018/01/01/mysql的事务和隔离级别以及锁/1573474166874.png">
+<meta property="og:updated_time" content="2019-11-14T06:09:19.018Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="mysql的事务和隔离级别以及锁">
 <meta name="twitter:description" content="总结mysql的事务特性ACID，并发问题导致的问题，以及不同隔离级别的作用，总结一下mysql的锁。">
-<meta name="twitter:image" content="https://quarkljy.github.io/2018/01/16/mysql的事务和隔离级别以及锁/1573458103169.png">
-  <link rel="canonical" href="https://quarkljy.github.io/2018/01/16/mysql的事务和隔离级别以及锁/">
+<meta name="twitter:image" content="https://quarkljy.github.io/2018/01/01/mysql的事务和隔离级别以及锁/1573458103169.png">
+  <link rel="canonical" href="https://quarkljy.github.io/2018/01/01/mysql的事务和隔离级别以及锁/">
 
 
 <script id="page-configurations">
@@ -249,7 +249,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="en">
-    <link itemprop="mainEntityOfPage" href="https://quarkljy.github.io/2018/01/16/mysql的事务和隔离级别以及锁/">
+    <link itemprop="mainEntityOfPage" href="https://quarkljy.github.io/2018/01/01/mysql的事务和隔离级别以及锁/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Quark">
@@ -280,7 +280,7 @@
                 
               
 
-              <time title="Created: 2018-01-16 12:25:36" itemprop="dateCreated datePublished" datetime="2018-01-16T12:25:36+08:00">2018-01-16</time>
+              <time title="Created: 2018-01-01 12:25:36" itemprop="dateCreated datePublished" datetime="2018-01-01T12:25:36+08:00">2018-01-01</time>
             </span>
           
             <span class="post-meta-item">
@@ -350,9 +350,9 @@
 </li>
 <li><p>A线程开启事务，<code>select * from user</code>只读取到100行数据，B线程开启事务并删除第100行数据提交了（此时第100行数据还是隐藏行），A线程此时可以对第100行数据进行更新，发现没有匹配的行，也即是这一行数据不存在了！但是再次查询，发现该数据依然可以查询得到，前后的结果一样！违背不一致性。</p>
 <p>A线程事务</p>
-<p><img src="/2018/01/16/mysql的事务和隔离级别以及锁/1573458103169.png" alt="1573458103169"></p>
+<p><img src="/2018/01/01/mysql的事务和隔离级别以及锁/1573458103169.png" alt="1573458103169"></p>
 <p>B线程事务</p>
-<p><img src="/2018/01/16/mysql的事务和隔离级别以及锁/1573458219397.png" alt="1573458219397"></p>
+<p><img src="/2018/01/01/mysql的事务和隔离级别以及锁/1573458219397.png" alt="1573458219397"></p>
 </li>
 </ol>
 </li>
@@ -406,9 +406,9 @@
 </ul>
 <h5 id="mysql的innodb锁"><a href="#mysql的innodb锁" class="headerlink" title="mysql的innodb锁"></a>mysql的innodb锁</h5><p>阻塞：在运行中但是不能继续向前运行的状态，能够给目标资源加上锁就可以向前运行。</p>
 <p>事务B新增一条数据</p>
-<p><img src="/2018/01/16/mysql的事务和隔离级别以及锁/1573460476712.png" alt="1573460476712"></p>
+<p><img src="/2018/01/01/mysql的事务和隔离级别以及锁/1573460476712.png" alt="1573460476712"></p>
 <p>事务A对事务B新增的数据进行修改，发现无法修改。事务B事务提交之后，才可以修改。这里是幻读。因为id=16这个数据并没有出现在 <code>select * from user</code></p>
-<p><img src="/2018/01/16/mysql的事务和隔离级别以及锁/1573460530299.png" alt="1573460530299"></p>
+<p><img src="/2018/01/01/mysql的事务和隔离级别以及锁/1573460530299.png" alt="1573460530299"></p>
 <p>InnoDB与MyISAM的最大不同有两点：一是支持事务（TRANSACTION）；二是采用了行级锁。行级锁与表级锁本来就有许多不同之处，innodb正常的<code>select ID from table where id=1</code>；不会上任何锁.</p>
 <p>行锁比表锁有更小锁粒度，可以更大的支持并发。但是加锁动作也是需要额外开销的，比如获得锁、检查锁、释放锁等操作都是需要耗费系统资源。如果系统在锁操作上浪费了太多时间，系统的性能就会受到比较大的影响。</p>
 <h6 id="行锁分类"><a href="#行锁分类" class="headerlink" title="行锁分类"></a>行锁分类</h6><ul>
@@ -473,12 +473,12 @@
 <ul>
 <li>通过索引来更新：可以只锁住某一行。用索引更新的某个锁，就可能产生死锁。</li>
 </ul>
-<p><img src="/2018/01/16/mysql的事务和隔离级别以及锁/1573472948666.png" alt="1573472948666"></p>
-<p><img src="/2018/01/16/mysql的事务和隔离级别以及锁/1573473007765.png" alt="1573473007765"></p>
+<p><img src="/2018/01/01/mysql的事务和隔离级别以及锁/1573472948666.png" alt="1573472948666"></p>
+<p><img src="/2018/01/01/mysql的事务和隔离级别以及锁/1573473007765.png" alt="1573473007765"></p>
 <ul>
 <li><p>通过非索引更新：非索引，X锁会锁住整张表。</p>
-<p><img src="/2018/01/16/mysql的事务和隔离级别以及锁/1573473193701.png" alt="1573473193701"></p>
-<p><img src="/2018/01/16/mysql的事务和隔离级别以及锁/1573473288025.png" alt="1573473288025"></p>
+<p><img src="/2018/01/01/mysql的事务和隔离级别以及锁/1573473193701.png" alt="1573473193701"></p>
+<p><img src="/2018/01/01/mysql的事务和隔离级别以及锁/1573473288025.png" alt="1573473288025"></p>
 </li>
 </ul>
 <h6 id="加锁方式"><a href="#加锁方式" class="headerlink" title="加锁方式"></a>加锁方式</h6><ul>
@@ -509,7 +509,7 @@
 <li>RC模式下，读取最新的快照</li>
 <li>RR模式下，读取事务开始时的快照</li>
 </ul>
-<p><img src="/2018/01/16/mysql的事务和隔离级别以及锁/1573474166874.png" alt="1573474166874"></p>
+<p><img src="/2018/01/01/mysql的事务和隔离级别以及锁/1573474166874.png" alt="1573474166874"></p>
 </li>
 </ul>
 <p>一致性锁定读 （当前读）：读的都是当前最新的内容。 </p>
@@ -549,8 +549,8 @@
           <div class="post-nav">
             <div class="post-nav-next post-nav-item">
               
-                <a href="/2018/01/11/mysql索引和sql优化/" rel="next" title="mysql索引和sql优化">
-                  <i class="fa fa-chevron-left"></i> mysql索引和sql优化
+                <a href="/2017/12/11/Shell脚本编程/" rel="next" title="Shell脚本编程">
+                  <i class="fa fa-chevron-left"></i> Shell脚本编程
                 </a>
               
             </div>
@@ -558,6 +558,10 @@
             <span class="post-nav-divider"></span>
 
             <div class="post-nav-prev post-nav-item">
+              
+                <a href="/2018/01/11/mysql索引和sql优化/" rel="prev" title="mysql索引和sql优化">
+                  mysql索引和sql优化 <i class="fa fa-chevron-right"></i>
+                </a>
               
             </div>
           </div>
@@ -789,7 +793,7 @@
       repo: 'quarkljy.github.io',
       owner: 'quarkljy',
       admin: ['quarkljy'],
-      id: '1a34d22ce6cc3679ec1e7c386547a7c3',
+      id: 'f743a2f306491c219943e4382acd62b0',
         language: 'en',
       
       distractionFreeMode: 'true'
