@@ -291,18 +291,6 @@
               <time title="Created: 2018-01-11 23:56:48" itemprop="dateCreated datePublished" datetime="2018-01-11T23:56:48+08:00">2018-01-11</time>
             </span>
           
-            
-
-            
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2019-11-14 10:12:43" itemprop="dateModified" datetime="2019-11-14T10:12:43+08:00">2019-11-14</time>
-              </span>
-            
-          
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
@@ -342,7 +330,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h5 id="索引的一般理解"><a href="#索引的一般理解" class="headerlink" title="索引的一般理解"></a>索引的一般理解</h5><p>索引说白了就是一种存放数据的数据结构。“创建索引”的意思就是把mysql表的某个字段的值组成该数据结构，“使用索引”、”走索引“也就是通过这个数据结构去查找该列值的数据行。普通索引、唯一索引、组合索引的数据结构一般是B+树，全文索引则不能指明数据结构（全文索引的使用方法和其他索引有所区别，全文索引不常用，所以不细讲）。Innodb引擎的主键索引也是聚簇索引，叶子末端存放主键和数据行，子节点不放数据，是为了能够多存放一些索引值，一次能够检索更多的索引，压低树的高度，减少磁盘IO，叶子末端存放主键和数据行。主键索引以外的索引可以叫辅助索引或者二级索引。索引需要占用额外的内存空间。</p>
+        <h5 id="索引的一般理解"><a href="#索引的一般理解" class="headerlink" title="索引的一般理解"></a>索引的一般理解</h5><p>索引说白了就是一种存放数据的数据结构。“创建索引”的意思就是把mysql表的某个字段的值组成该数据结构，“使用索引”、”走索引“也就是通过这个数据结构去查找该列值的数据行。普通索引、唯一索引、组合索引的数据结构一般是B+树，全文索引则不能指明数据结构（全文索引的使用方法和其他索引有所区别，全文索引不常用，所以不细讲）。Innodb引擎的主键索引也是聚簇索引，叶子末端存放主键和数据行，子节点不放数据，是为了能够多存放一些索引值，一次能够检索更多的索引，压低树的高度，减少磁盘IO，叶子末端存放主键和数据行。主键索引以外的索引可以叫辅助索引或者二级索引。索引需要占用额外的内存空间。</p><a id="more"></a>
 <h5 id="索引分类"><a href="#索引分类" class="headerlink" title="索引分类"></a>索引分类</h5><h6 id="第一种分法，从叶子是否存放行数据的角度看"><a href="#第一种分法，从叶子是否存放行数据的角度看" class="headerlink" title="第一种分法，从叶子是否存放行数据的角度看"></a>第一种分法，从叶子是否存放行数据的角度看</h6><ul>
 <li><p>InnoDB的聚簇索引：聚簇索引叶子节点存储数据行的物理位置，找到索引也就找到了数据行。一个表仅有一个聚簇索引。主键索引默认是聚簇索引。辅助索引是建立在聚簇索引上的。非聚簇索引都是辅助索引，像复合索引、前缀索引、唯一索引，辅助索引叶子节点存储的不再是数据行的物理位置，而是主键值。</p>
 <p><img src="/2018/01/11/mysql索引和sql优化/1573556701970.png" alt="1573556701970"></p>
@@ -533,12 +521,6 @@
     
     
     
-        <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center;">
-  <img id="wechat_subscriber_qcode" src="/uploads/wechat-qcode.jpg" alt="Quark wechat" style="width: 200px; max-width: 100%;">
-  <div></div>
-</div>
-
-      
         
       
 
@@ -703,10 +685,6 @@
   </span>
   <span class="author" itemprop="copyrightHolder">Quark</span>
 </div>
-  <div class="theme-info">
-      
-    Theme – <a href="https://pisces.theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.4.1
-  </div>
 
         
 <div class="busuanzi-count">
