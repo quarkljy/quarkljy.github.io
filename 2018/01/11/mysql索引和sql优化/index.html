@@ -83,7 +83,9 @@
 <meta property="og:image" content="https://quarkljy.github.io/2018/01/11/mysql索引和sql优化/1573719951103.png">
 <meta property="og:image" content="https://quarkljy.github.io/2018/01/11/mysql索引和sql优化/1573576102451.png">
 <meta property="og:image" content="https://quarkljy.github.io/2018/01/11/mysql索引和sql优化/1573576305792.png">
-<meta property="og:updated_time" content="2019-11-14T09:23:25.300Z">
+<meta property="og:image" content="https://quarkljy.github.io/2018/01/11/mysql索引和sql优化/1574422913985.png">
+<meta property="og:image" content="https://quarkljy.github.io/2018/01/11/mysql索引和sql优化/1574422877600.png">
+<meta property="og:updated_time" content="2019-11-22T12:47:10.434Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="mysql索引和sql优化">
 <meta name="twitter:description" content="索引是一种数据结构，索引的命中需要满足一定条件。优化思路是拆开sql语句，各个部分逐步进行优化。">
@@ -333,9 +335,9 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h5 id="1-索引的一般理解"><a href="#1-索引的一般理解" class="headerlink" title="1. 索引的一般理解"></a>1. 索引的一般理解</h5><p>索引说白了就是一种存放数据的数据结构。“创建索引”的意思是把mysql表的某个字段的值组成该数据结构，“使用索引”、”走索引“也就是通过这个数据结构去查找该列值的数据行。普通索引、唯一索引、组合索引的数据结构一般是B+树，全文索引则不能指明数据结构（全文索引的使用方法和其他索引有所区别，全文索引不常用，所以不细讲）。Innodb引擎的主键索引也是聚簇索引，叶子末端存放主键和数据行，子节点不放数据，是为了能够多存放一些索引值，一次能够检索更多的索引，压低树的高度，减少磁盘IO，叶子末端存放主键和数据行。主键索引以外的索引可以叫辅助索引或者二级索引。索引需要占用额外的内存空间。</p><a id="more"></a>
+        <h5 id="1-索引的一般理解"><a href="#1-索引的一般理解" class="headerlink" title="1. 索引的一般理解"></a>1. 索引的一般理解</h5><p>索引本质是排序，说白了就是一种存放有序数据的数据结构。“创建索引”的意思是把mysql表的某个字段的值组成该数据结构，“使用索引”、”走索引“也就是通过这个数据结构去查找该列值的数据行。普通索引、唯一索引、组合索引的数据结构一般是B+树，全文索引则不能指明数据结构（全文索引的使用方法和其他索引有所区别，全文索引不常用，所以不细讲）。Innodb引擎的主键索引也是聚簇索引，叶子末端存放主键和数据行，子节点不放数据，是为了能够多存放一些索引值，一次能够检索更多的索引，压低树的高度，减少磁盘IO，叶子末端存放主键和数据行。主键索引以外的索引可以叫辅助索引或者二级索引。索引需要占用额外的内存空间。</p><a id="more"></a>
 <h5 id="2-索引分类"><a href="#2-索引分类" class="headerlink" title="2. 索引分类"></a>2. 索引分类</h5><h6 id="2-1-第一种分法，从叶子是否存放行数据的角度看"><a href="#2-1-第一种分法，从叶子是否存放行数据的角度看" class="headerlink" title="2.1 第一种分法，从叶子是否存放行数据的角度看"></a>2.1 第一种分法，从叶子是否存放行数据的角度看</h6><ul>
-<li><p>InnoDB的聚簇索引：聚簇索引叶子节点存储数据行的物理位置，找到索引也就找到了数据行。一个表仅有一个聚簇索引。主键索引默认是聚簇索引。辅助索引是建立在聚簇索引上的。非聚簇索引都是辅助索引，像复合索引、前缀索引、唯一索引，辅助索引叶子节点存储的不再是数据行的物理位置，而是主键值。</p>
+<li><p>InnoDB的聚簇索引：<strong>聚集索引就是数据和索引在一起的索引</strong>，所以一个表最多只有一个聚簇索引（有多个聚簇索引不久导致数据库数据重复了嘛）。聚簇索引叶子节点存储数据行的物理位置，找到索引也就找到了数据行。一个表仅有一个聚簇索引。主键索引默认是聚簇索引。辅助索引是建立在聚簇索引上的。非聚簇索引都是辅助索引，像复合索引、前缀索引、唯一索引，辅助索引叶子节点存储的不再是数据行的物理位置，而是主键值。</p>
 <p><img src="/2018/01/11/mysql索引和sql优化/1573556701970.png" alt="1573556701970"></p>
 <p><strong>查找过程</strong> ：</p>
 <ol>
@@ -379,6 +381,8 @@
 <p><img src="/2018/01/11/mysql索引和sql优化/1573544476317.png" alt="1573544476317"></p>
 </li>
 <li><p>组合索引：将几个列作为一条索引进行检索，使用最左匹配原则。key index(a,b,c). 可以支持 a|a,b|a,b,c 3种组合进行查找，但不支持 b,c 进行查找。</p>
+</li>
+<li><p>覆盖索引: 如果一个索引包含(或覆盖)所有需要查询的字段的值，称为‘覆盖索引’。即只需扫描索引而无须回表。</p>
 </li>
 <li><p>全文索引，MySQL 5.6 及以后的版本，MyISAM 和 InnoDB 存储引擎均支持全文索引;只有字段的数据类型为 char、varchar、text 及其系列才可以建全文索引。</p>
 <p>全文索引也不能指定索引方法</p>
@@ -528,6 +532,12 @@
 <p>这是为了使EXPLAIN中type列达到const类型</p>
 </li>
 </ul>
+<p><strong>补充</strong></p>
+<p>关于金额的计算，一般用有两种方式</p>
+<p>数据库设置金额字段为decimal  java类设置字段类型为BigDecimal</p>
+<p><img src="/2018/01/11/mysql索引和sql优化/1574422913985.png" alt="1574422913985"></p>
+<p>字段设置为int，100，取出的后，前端除以100（写一个专门的函数），存入的时候，前端字段乘以100（写一个专门的函数），传到后端存入数据库。</p>
+<p><img src="/2018/01/11/mysql索引和sql优化/1574422877600.png" alt="1574422877600"></p>
 <h5 id="6-参考"><a href="#6-参考" class="headerlink" title="6. 参考"></a>6. 参考</h5><ol>
 <li><a href="https://www.jianshu.com/p/d370f44a305e" target="_blank" rel="noopener">MySql优化</a></li>
 <li><a href="https://juejin.im/entry/5a1bbb386fb9a044fc4475aa" target="_blank" rel="noopener">项目中常用的19条MySQL优化</a></li>
@@ -628,7 +638,7 @@
         
           <a href="/archives/">
         
-          <span class="site-state-item-count">6</span>
+          <span class="site-state-item-count">13</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -641,7 +651,7 @@
             <a href="/categories/">
           
         
-        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-count">6</span>
         <span class="site-state-item-name">categories</span>
         </a>
       </div>

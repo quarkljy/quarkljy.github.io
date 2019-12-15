@@ -1,0 +1,848 @@
+<!DOCTYPE html>
+
+
+
+
+
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.4.1">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.4.1" color="#222">
+
+<link rel="stylesheet" href="/css/main.css?v=7.4.1">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2">
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '7.4.1',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":"default"},
+    back2top: {"enable":true,"sidebar":true,"scrollpercent":true},
+    bookmark: {"enable":true,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: 'Copy',
+      copy_success: 'Copied',
+      copy_failure: 'Copy failed'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="Spring是一个轻量级的IoC和AOP容器框架。使用spring框架时，不用再使用new来实例化对象了，直接可以通过spring容器来注入即可。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Spring">
+<meta property="og:url" content="https://quarkljy.github.io/2018/01/19/Spring/index.html">
+<meta property="og:site_name" content="Quark&#39;s Blogs">
+<meta property="og:description" content="Spring是一个轻量级的IoC和AOP容器框架。使用spring框架时，不用再使用new来实例化对象了，直接可以通过spring容器来注入即可。">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="https://quarkljy.github.io/2018/01/19/Spring/1574162604196.png">
+<meta property="og:image" content="https://quarkljy.github.io/2018/01/19/Spring/1574153343267.png">
+<meta property="og:image" content="https://quarkljy.github.io/2018/01/19/Spring/1574155122713.png">
+<meta property="og:image" content="https://quarkljy.github.io/2018/01/19/Spring/1574162444627.png">
+<meta property="og:image" content="https://quarkljy.github.io/2018/01/19/Spring/891580-20181208160048903-595130745.png">
+<meta property="og:image" content="https://quarkljy.github.io/2018/01/19/Spring/1574237696724.png">
+<meta property="og:image" content="https://quarkljy.github.io/2018/01/19/Spring/1574157581675.png">
+<meta property="og:image" content="https://quarkljy.github.io/2018/01/19/Spring/1574157614948.png">
+<meta property="og:image" content="https://quarkljy.github.io/2018/01/19/Spring/1574157644975.png">
+<meta property="og:image" content="https://quarkljy.github.io/2018/01/19/Spring/1574157704382.png">
+<meta property="og:image" content="https://quarkljy.github.io/2018/01/19/Spring/1574157922031.png">
+<meta property="og:image" content="https://quarkljy.github.io/2018/01/19/Spring/1574159968032.png">
+<meta property="og:image" content="https://quarkljy.github.io/2018/01/19/Spring/1574093975963.png">
+<meta property="og:image" content="https://quarkljy.github.io/2018/01/19/Spring/1574161397740.png">
+<meta property="og:image" content="https://quarkljy.github.io/2018/01/19/Spring/1574161428242.png">
+<meta property="og:image" content="https://quarkljy.github.io/2018/01/19/Spring/1574173176376.png">
+<meta property="og:image" content="https://quarkljy.github.io/2018/01/19/Spring/1574173546642.png">
+<meta property="og:image" content="https://quarkljy.github.io/2018/01/19/Spring/1574173599751.png">
+<meta property="og:image" content="https://quarkljy.github.io/2018/01/19/Spring/1574093053907.png">
+<meta property="og:image" content="https://quarkljy.github.io/2018/01/19/Spring/1574093975963.png">
+<meta property="og:image" content="https://quarkljy.github.io/2018/01/19/Spring/1574095259168.png">
+<meta property="og:image" content="https://quarkljy.github.io/2018/01/19/Spring/1574095839484.png">
+<meta property="og:image" content="https://quarkljy.github.io/2018/01/19/Spring/1574096054809.png">
+<meta property="og:image" content="https://quarkljy.github.io/2018/01/19/Spring/1574096103986.png">
+<meta property="og:image" content="https://quarkljy.github.io/2018/01/19/Spring/1574096664299.png">
+<meta property="og:image" content="https://quarkljy.github.io/2018/01/19/Spring/1574096756034.png">
+<meta property="og:image" content="https://quarkljy.github.io/2018/01/19/Spring/1574097451543.png">
+<meta property="og:image" content="https://quarkljy.github.io/2018/01/19/Spring/1574098009764.png">
+<meta property="og:image" content="https://quarkljy.github.io/2018/01/19/Spring/1574098263480.png">
+<meta property="og:updated_time" content="2019-11-20T11:50:01.410Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Spring">
+<meta name="twitter:description" content="Spring是一个轻量级的IoC和AOP容器框架。使用spring框架时，不用再使用new来实例化对象了，直接可以通过spring容器来注入即可。">
+<meta name="twitter:image" content="https://quarkljy.github.io/2018/01/19/Spring/1574162604196.png">
+  <link rel="canonical" href="https://quarkljy.github.io/2018/01/19/Spring/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>Spring | Quark's Blogs</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Quark's Blogs</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">One Week, One Blog</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+      
+      
+        
+        
+        <li class="menu-item menu-item-home">
+      
+    
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+      
+    
+      
+      
+        
+        
+        <li class="menu-item menu-item-archives">
+      
+    
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+      
+    
+      
+      
+        
+        
+        <li class="menu-item menu-item-categories">
+      
+    
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>Categories</a>
+
+  </li>
+      
+    
+      
+      
+        
+        
+        <li class="menu-item menu-item-about">
+      
+    
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>About</a>
+
+  </li>
+      
+    
+      
+      
+        
+        
+        <li class="menu-item menu-item-tags">
+      
+    
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>Tags</a>
+
+  </li>
+      
+    
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+  <a href="https://github.com/quarkljy" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+            
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="en">
+    <link itemprop="mainEntityOfPage" href="https://quarkljy.github.io/2018/01/19/Spring/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Quark">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Quark's Blogs">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            Spring
+            
+
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              
+                
+              
+
+              <time title="Created: 2018-01-19 00:38:06" itemprop="dateCreated datePublished" datetime="2018-01-19T00:38:06+08:00">2018-01-19</time>
+            </span>
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/SpringBoot/" itemprop="url" rel="index">
+                    <span itemprop="name">SpringBoot</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">Views: </span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+          
+            <div class="post-description">Spring是一个轻量级的IoC和AOP容器框架。使用spring框架时，不用再使用new来实例化对象了，直接可以通过spring容器来注入即可。</div>
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h5 id="1-Spring"><a href="#1-Spring" class="headerlink" title="1. Spring"></a>1. Spring</h5><p> Spring是一个轻量级的<strong>IoC</strong>和<strong>AOP</strong>容器框架。使用spring框架时，不用再使用new来实例化对象了，直接可以通过spring容器来注入即可。常见的配置方式有三种：<strong>基于XML的配置</strong>、<strong>基于注解的配置</strong>、<strong>基于Java的配置。</strong>注意，但是spring配置是相对框架而言，包含bean的配置，是指把多个bean配置好后注入springbean的容器中，bean配置则是相对某个bean对象而言，通过Xml文件、setter方法、构造函数、<strong>注解</strong>把属性注入到bean类上。</p><a id="more"></a>
+<p>下图是@Value注解从yml文件拿到值并注入JedisProperties类中</p>
+<p><img src="/2018/01/19/Spring/1574162604196.png" alt="1574162604196"></p>
+<h5 id="2-Spring的配置方式"><a href="#2-Spring的配置方式" class="headerlink" title="2. Spring的配置方式"></a>2. Spring的配置方式</h5><ol>
+<li><p>XML配置</p>
+<p>常见于数据源dataSource的，Springboot之后，就不需要写这种了</p>
+<p>BeanFactory.java</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.stonegeek.service;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">BeanFactory</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Beantest</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>BeanFactoryImpl.java</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.stonegeek.service.impl;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.stonegeek.service.BeanFactory;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BeanFactroyImpl</span> <span class="keyword">implements</span> <span class="title">BeanFactory</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Beantest</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"----------------This is a 传统的XML配置的bean!-------------------"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>applicationContext.xml（这个文件可以由其他的xml组成，就不必要重复写xml了,使用import+classpath：路径）</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">beans</span></span></span><br><span class="line"><span class="tag">        <span class="attr">xmlns</span>=<span class="string">"http://www.springframework.org/schema/beans"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">xmlns:xsi</span>=<span class="string">"http://www.w3.org/2001/XMLSchema-instance"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">xmlns:context</span>=<span class="string">"http://www.springframework.org/schema/context"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">xsi:schemaLocation</span>=<span class="string">"http://www.springframework.org/schema/beans</span></span></span><br><span class="line"><span class="tag"><span class="string">    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd</span></span></span><br><span class="line"><span class="tag"><span class="string">    http://www.springframework.org/schema/context</span></span></span><br><span class="line"><span class="tag"><span class="string">    http://www.springframework.org/schema/context/spring-context-3.0.xsd</span></span></span><br><span class="line"><span class="tag"><span class="string">    "</span>&gt;</span></span><br><span class="line">    </span><br><span class="line">    <span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">"beanFactroy"</span> <span class="attr">class</span>=<span class="string">"com.stonegeek.service.impl.BeanFactroyImpl"</span> /&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">beans</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>测试</p>
+<p>TestBean1.java</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.stonegeek;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.stonegeek.service.BeanFactory;</span><br><span class="line"><span class="keyword">import</span> org.junit.Test;</span><br><span class="line"><span class="keyword">import</span> org.springframework.context.ApplicationContext;</span><br><span class="line"><span class="keyword">import</span> org.springframework.context.support.ClassPathXmlApplicationContext;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestBean1</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">test</span><span class="params">()</span></span>&#123;</span><br><span class="line">        ApplicationContext ctx= <span class="keyword">new</span> ClassPathXmlApplicationContext(<span class="string">"applicationContext.xml"</span>);</span><br><span class="line">        BeanFactory beanFactory=(BeanFactory) ctx.getBean(<span class="string">"beanFactroy"</span>);</span><br><span class="line">        beanFactory.Beantest(); <span class="comment">//----------------This is a 传统的XML配置的bean!-------------------</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>注解配置</p>
+<p>@Component是Spring容器中的基本注解，表示容器中的一个组件（bean）,可作用在任何层次</p>
+<p>@Repository注解便属于最先引入的一批，用于将数据访问层（DAO层）的类标识为Spring Bean</p>
+<p>@Controller：用于对Controller实现类进行标注，目前该功能与Component相同</p>
+<p>@Repository：用于对DAO实现类进行标注</p>
+<p>@Service：用于对Service实现类进行标注，目前该功能与Component相同</p>
+<p>还有其他的基于这些注解的注解</p>
+<p>如图，@RestController注解后，UserController就会作为一个Bean注入到SPringle框架了。</p>
+<p><img src="/2018/01/19/Spring/1574153343267.png" alt="1574153343267"></p>
+</li>
+<li><p>java类的配置</p>
+<p>随便建立一个类</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">User</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> id;</span><br><span class="line">    <span class="keyword">private</span>  String name;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> age;</span><br><span class="line"></span><br><span class="line">   <span class="comment">//省略getter setter</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>书写配置类，在类上注解@Configuration，并在配置类的方法上添加@Bean</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UserConfig</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> User <span class="title">getUser</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        User user = <span class="keyword">new</span> User();</span><br><span class="line">        user.setId(<span class="number">5</span>);</span><br><span class="line">        user.setName(<span class="string">"lee"</span>);</span><br><span class="line">        user.setAge(<span class="number">18</span>);</span><br><span class="line">        <span class="keyword">return</span> user;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> List&lt;User&gt; <span class="title">getUserList</span><span class="params">()</span></span>&#123;</span><br><span class="line">        User user = getUser();</span><br><span class="line">      List&lt;User&gt; list = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">      list.add(user);</span><br><span class="line">      list.add(user);</span><br><span class="line">      <span class="keyword">return</span> list;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>其他类引用这个Bean，只需要在做这个对象上添加@AutoWired注解</p>
+<p><img src="/2018/01/19/Spring/1574155122713.png" alt="1574155122713"></p>
+</li>
+</ol>
+<h5 id="3-Spring的自动装配"><a href="#3-Spring的自动装配" class="headerlink" title="3. Spring的自动装配"></a>3. Spring的自动装配</h5><p>在spring中，对象无需自己查找或创建与其关联的其他对象，由容器负责把需要相互协作的对象引用赋予各个对象，使用autowire来配置自动装载模式。</p>
+<ol>
+<li><p>XML方式：略。</p>
+</li>
+<li><p>注解方式：</p>
+<p>@Autowired可用于：构造函数、成员变量、Setter方法。使用@Autowired注解来自动装配指定的bean。在使用@Autowired注解之前需要在Spring配置文件进行配置，&lt;context:annotation-config /&gt;。在启动spring IoC时，容器自动装载了一个AutowiredAnnotationBeanPostProcessor后置处理器，当容器扫描到@Autowied、@Resource或@Inject时，就会在IoC容器自动查找需要的bean，并装配给该对象的属性。在使用@Autowired时，首先在容器中查询对应类型的bean：</p>
+<ul>
+<li>如果查询结果刚好为一个，就将该bean装配给@Autowired指定的数据；</li>
+</ul>
+</li>
+</ol>
+<ul>
+<li>如果查询的结果不止一个，那么@Autowired会根据名称来查找；</li>
+</ul>
+<ul>
+<li><p>如果上述查找的结果为空，那么会抛出异常。解决方法时，使用required=false。</p>
+<p><img src="/2018/01/19/Spring/1574162444627.png" alt="1574162444627"></p>
+<blockquote>
+<p>注：@Autowired和@Resource之间的区别</p>
+<p>(1) @Autowired默认是按照类型装配注入的，默认情况下它要求依赖对象必须存在（可以设置它required属性为false）。</p>
+<p>(2) @Resource默认是按照名称来装配注入的，只有当找不到与名称匹配的bean才会按照类型来装配注入。</p>
+</blockquote>
+</li>
+</ul>
+<h5 id="4-SpringIOC"><a href="#4-SpringIOC" class="headerlink" title="4. SpringIOC"></a>4. SpringIOC</h5><ol>
+<li><p>IOC就是控制反转，是指创建对象的控制权的转移（控制权就是new对象，设置对象属性等），以前创建对象的主动权和时机是由自己把控的，而现在这种权力转移到Spring容器中，并由容器根据配置文件去创建实例和管理各个实例之间的依赖关系，对象与对象之间松散耦合，也利于功能的复用。<strong>DI依赖注入，和控制反转是同一个概念的不同角度的描述，</strong>即 应用程序在运行时依赖IoC容器来动态注入对象需要的外部资源。</p>
+</li>
+<li><p>最直观的表达就是，IOC让对象的创建不用去new了（控制），可以由spring自动生产（反转，程序员把控制交给框架），使用java的反射机制，根据配置文件在运行时动态的去创建对象以及管理对象，并调用对象的方法的。</p>
+</li>
+<li><p>Spring的IOC有三种注入方式 （也即是bean配置方式）：xml文件（构造器注入、setter方法注入）、根据注解注入。</p>
+<p><strong>@Component 和 @Bean 的区别：</strong></p>
+<ol>
+<li>作用对象不同: @Component 注解作用于类，而@Bean注解作用于方法。</li>
+<li>@Component通常是通过类路径扫描来自动侦测以及自动装配到Spring容器中（我们可以使用 @ComponentScan 注解定义要扫描的路径从中找出标识了需要装配的类自动装配到 Spring 的 bean 容器中）。</li>
+<li>@Bean 注解通常是我们在标有该注解的方法中定义产生这个 bean,@Bean告诉了Spring这是某个类的示例，当我需要用它的时候还给我。@Bean 注解比 Component 注解的自定义性更强，而且很多地方我们只能通过 @Bean 注解来注册bean。比如当我们引用第三方库中的类需要装配到 Spring容器时，则只能通过 @Bean来实现。</li>
+</ol>
+</li>
+</ol>
+<h5 id="5-SpringAOP"><a href="#5-SpringAOP" class="headerlink" title="5. SpringAOP"></a>5. SpringAOP</h5><p>AOP，一般称为面向切面，作为面向对象的一种补充，用于将那些与业务无关，但却对多个对象产生影响的公共行为和逻辑，<strong>抽取并封装为一个可重用的模块，这个模块被命名为“切面”（Aspect）</strong>，减少系统中的重复代码，降低了模块间的耦合度，同时提高了系统的可维护性。可用于权限认证、日志、事务处理。</p>
+<p>SpringAOP的重要概念：</p>
+<p><img src="/2018/01/19/Spring/891580-20181208160048903-595130745.png" alt="img"></p>
+<ul>
+<li><p>切面（Aspect）：被抽取的公共模块，可能会横切多个对象。 在Spring AOP中，切面可以使用通用类（基于模式的风格） 或者在普通类中以 @AspectJ 注解来实现。</p>
+</li>
+<li><p>连接点（Join point）：指方法，在Spring AOP中，一个连接点 总是 代表一个方法的执行。 </p>
+</li>
+<li><p>通知（Advice）：在切面的某个特定的连接点（Join point）上执行的动作。通知有各种类型，其中包括“around”、“before”和“after”等通知。许多AOP框架，包括Spring，都是以拦截器做通知模型， 并维护一个以连接点为中心的拦截器链。</p>
+</li>
+<li><p>切入点（Pointcut）：切入点是指 我们要对哪些Join point进行拦截的定义。通过切入点表达式，指定拦截的方法，比如指定拦截add<em>、search</em>。</p>
+</li>
+<li><p>引入（Introduction）：（也被称为内部类型声明（inter-type declaration））。声明额外的方法或者某个类型的字段。Spring允许引入新的接口（以及一个对应的实现）到任何被代理的对象。例如，你可以使用一个引入来使bean实现 IsModified 接口，以便简化缓存机制。</p>
+</li>
+<li><p>目标对象（Target Object）： 被一个或者多个切面（aspect）所通知（advise）的对象。也有人把它叫做 被通知（adviced） 对象。 既然Spring AOP是通过运行时代理实现的，这个对象永远是一个 被代理（proxied） 对象。</p>
+</li>
+<li><p>织入（Weaving）：指把增强应用到目标对象来创建新的代理对象的过程。Spring是在运行时完成织入。</p>
+<p><img src="/2018/01/19/Spring/1574237696724.png" alt="1574237696724"></p>
+<blockquote>
+<p><a href="https://www.cnblogs.com/zhenghengbin/p/9326917.html" target="_blank" rel="noopener">探秘SpringAop(一)_介绍以及使用详解 - Kevin_zheng - 博客园</a></p>
+</blockquote>
+</li>
+</ul>
+<p><strong>Spring AOP 属于运行时增强，而 AspectJ 是编译时增强（编译完成就固定）。</strong>Spring AOP 基于代理(Proxying)，而 AspectJ 基于字节码操作(Bytecode Manipulation)。Spring AOP 已经集成了 AspectJ ，AspectJ 应该算的上是 Java 生态系统中最完整的 AOP 框架了。AOP实现的关键在于 代理模式(代理模式是用反射)，静态代理的代表为AspectJ；动态代理则以Spring AOP为代表:</p>
+<ol>
+<li>AspectJ是静态代理的增强，所谓静态代理，就是AOP框架会在编译阶段生成AOP代理类，因此也称为编译时增强，他会在编译阶段将AspectJ(切面)织入到Java字节码中，<strong>运行的时候就是增强之后的AOP对象。</strong>相当于编译后运行的是固定的对象。</li>
+<li>Spring AOP使用的动态代理，所谓的动态代理就是说AOP框架不会去修改字节码，而是每次运行时在内存中<strong>临时为方法生成一个AOP对象</strong>，这个AOP对象包含了目标对象的全部方法，并且在特定的切点做了增强处理，并回调原对象的方法。代理对象不固定，会根据运行实际情况变化。</li>
+</ol>
+<p>Spring AOP中的动态代理主要有两种方式，JDK动态代理和CGLIB动态代理： <strong>InvocationHandler 的 invoke(Object  proxy,Method  method,Object[] args)：proxy是最终生成的代理实例;  method 是被代理目标实例的某个具体方法;  args 是被代理目标实例某个方法的具体入参, 在方法反射调用时使用。</strong></p>
+<ol>
+<li>​    JDK动态代理只提供接口的代理，不支持类的代理。核心InvocationHandler接口和Proxy类，InvocationHandler 通过invoke()方法反射来调用目标类中的代码，动态地将横切逻辑和业务编织在一起；接着，Proxy利用 InvocationHandler动态创建一个符合某一接口的的实例,  生成目标类的代理对象。</li>
+<li>如果代理类没有实现 InvocationHandler 接口，那么Spring AOP会选择使用CGLIB来动态代理目标类。CGLIB（Code Generation Library），是一个代码生成的类库，可以在运行时动态的生成指定类的一个子类对象，并覆盖其中特定方法并添加增强代码，从而实现AOP。CGLIB是通过继承的方式做的动态代理，因此如果某个类被标记为final，那么它是无法使用CGLIB做动态代理的。</li>
+<li>静态代理与动态代理区别在于生成AOP代理对象的时机不同，相对来说AspectJ的静态代理方式具有更好的性能，但是AspectJ需要特定的编译器进行处理，而Spring AOP则无需特定的编译器处理。</li>
+</ol>
+<blockquote>
+<p><strong>反射：</strong>JAVA反射机制是在运行状态中，对于任意一个类，都能够知道这个类的所有属性和方法；对于任意一个对象，都能够调用它的任意方法和属性；这种动态获取信息以及动态调用对象方法的功能称为java语言的反射机制。</p>
+<p><img src="/2018/01/19/Spring/1574157581675.png" alt="1574157581675"></p>
+<p><img src="/2018/01/19/Spring/1574157614948.png" alt="1574157614948"></p>
+<p><img src="/2018/01/19/Spring/1574157644975.png" alt="1574157644975"></p>
+<p><img src="/2018/01/19/Spring/1574157704382.png" alt="1574157704382"></p>
+<p><img src="/2018/01/19/Spring/1574157922031.png" alt="1574157922031"></p>
+</blockquote>
+<hr>
+<p><strong>IOC和AOP作用：</strong>IoC让相互协作的组件保持松散的耦合，而AOP编程允许你把遍布于应用各层的功能分离出来形成可重用的功能组件。</p>
+<h5 id="6-Spring5种bean的作用域"><a href="#6-Spring5种bean的作用域" class="headerlink" title="6. Spring5种bean的作用域"></a>6. Spring5种bean的作用域</h5><ol>
+<li>singleton：默认，每个容器中只有一个bean的实例，单例的模式由BeanFactory自身来维护。特点是如果有会变化的属性，每次得到属性是累计的值。Controller层是单例的，所以不能放会变化的属性。</li>
+<li>prototype：为每一个bean请求提供一个实例。特点是是如果有会变化的属性，每次得到属性都是初始化的值。</li>
+<li>request：为每一个网络请求创建一个实例，在请求完成以后，bean会失效并被垃圾回收器回收。一次请求就会有一个线程处理这个请求，对应的请求方法会被线程压入进入该线程私有的虚拟机栈，然后在该虚拟机栈运行该方法。处理完毕就把该虚拟机栈的方法弹出。controller方法都是独立的，不会相互影响。所以。无论来多少次请求，controller单例对象（成员变量只读，不写，没有变化）不会出现线程安全问题。<img src="/2018/01/19/Spring/1574159968032.png" alt="1574159968032"></li>
+<li>session：与request范围类似，确保每个session中有一个bean的实例，在session过期后，bean会随之失效。</li>
+<li>global-session：全局作用域，global-session和Portlet应用相关。当你的应用部署在Portlet容器中工作时，它包含很多portlet。如果你想要声明让所有的portlet共用全局的存储变量的话，那么这全局变量需要存储在global-session中。全局作用域与Servlet中的session作用域效果相同。</li>
+</ol>
+<h5 id="7-Spring的线程安全问题"><a href="#7-Spring的线程安全问题" class="headerlink" title="7. Spring的线程安全问题"></a>7. Spring的线程安全问题</h5><p>Spring框架并没有对单例bean进行任何多线程的封装处理。关于单例bean的线程安全和并发问题需要开发者自行去搞定。单例 bean 存在线程问题，主要是因为当多个线程操作同一个对象的时候，对这个对象的<strong>非静态成员变量</strong>的写操作会存在线程安全问题。但实际上，<strong>大部分的Spring bean并没有可变的属性</strong>(比如Serview类和DAO类)，所以在某种程度上说Spring的单例bean是线程安全的。</p>
+<p><img src="/2018/01/19/Spring/1574093975963.png" alt="1574093975963"></p>
+<p>解决办法：</p>
+<ol>
+<li><p>在Bean对象中尽量避免定义可变的成员变量（不太现实）。</p>
+</li>
+<li><p>在类中定义一个ThreadLocal成员变量，将需要的可变成员变量保存在 ThreadLocal 中（推荐的一种方式）。</p>
+<p><img src="/2018/01/19/Spring/1574161397740.png" alt="1574161397740"></p>
+<p><img src="/2018/01/19/Spring/1574161428242.png" alt="1574161428242"></p>
+</li>
+</ol>
+<h5 id="8-Spring的事务"><a href="#8-Spring的事务" class="headerlink" title="8. Spring的事务"></a>8. Spring的事务</h5><p>Spring事务的本质其实就是数据库对事务的支持，没有数据库的事务支持，spring是无法提供事务功能的。真正的数据库层的事务提交和回滚是通过binlog或者redo log实现的。</p>
+<p>不要在接口或者接口方法上使用该注解，因为这只有在使用基于接口的代理时它才会生效。另外， <strong>@Transactional 注解应该只被应用到 public 方法上，这是由 Spring AOP 的本质决定的，</strong>Spring使用AOP代理实现事务特性；代理有2种，分别是基于接口和基于类（代理机制有兴趣可百度一下）；而这2种代理机制均不能实现或继承private方法。如果你在 protected、private 或者默认可见性的方法上使用 @Transactional 注解，这将被忽略，也不会抛出任何异常。</p>
+<ul>
+<li><p><strong>种类</strong></p>
+<ol>
+<li><p>编程式事务：编程式事务管理使用TransactionTemplate。</p>
+<p><img src="/2018/01/19/Spring/1574173176376.png" alt="1574173176376"></p>
+</li>
+<li><p><strong>声明式事务</strong>：<strong>@Transactional注解的方式</strong>，便可以将事务规则应用到业务逻辑中。声明式事务管理要优于编程式事务管理，这正是spring倡导的非侵入式的开发方式，使业务代码不受污染，只要加上注解就可以获得完全的事务支持。唯一不足地方是，最细粒度只能作用到方法级别，无法做到像编程式事务那样可以作用到代码块级别。</p>
+</li>
+</ol>
+</li>
+<li><p><strong>Spring中5中事务隔离级别</strong></p>
+<p>事务的隔离级别式基于数据来实现的</p>
+<ol>
+<li>ISOLATION_DEFAULT：这是个 PlatfromTransactionManager 默认的隔离级别，使用数据库默认的事务隔离级别。</li>
+<li>ISOLATION_READ_UNCOMMITTED：读未提交，允许另外一个事务可以看到这个事务未提交的数据。</li>
+<li>ISOLATION_READ_COMMITTED：读已提交，保证一个事务修改的数据提交后才能被另一事务读取，而且能看到该事务对已有记录的更新。</li>
+<li>ISOLATION_REPEATABLE_READ：可重复读，保证一个事务修改的数据提交后才能被另一事务读取，但是不能看到该事务对已有记录的更新。</li>
+<li>ISOLATION_SERIALIZABLE：一个事务在执行的过程中完全看不到其他事务对数据库所做的更新。</li>
+</ol>
+</li>
+<li><p><strong>spring的事务传播行为：</strong></p>
+<p>一个方法运行在另外一个开启了事务的方法中，当前的方法式使用原来的事务还是开启一个新的事务。</p>
+<p>重点的传播行为有两个：</p>
+<ul>
+<li><p><strong>PROPAGATION_REQUIRED：</strong>如果当前没有事务，就创建一个新事务，如果当前存在事务，就加入该事务，该设置是最常用的设置。</p>
+<p><img src="/2018/01/19/Spring/1574173546642.png" alt="1574173546642"></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">begin</span><br><span class="line">更新表<span class="number">1</span> (事务<span class="number">1</span>的数据库操作)</span><br><span class="line">更新表<span class="number">2</span> (事务<span class="number">2</span>的数据库操作)</span><br><span class="line">commmit</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>PROPAGATION_REQUIRES_NEW：</strong>原来事务存在，就挂起原来的事务，创建新事务；原来的事务不存在，直接创建新事务。</p>
+<p><img src="/2018/01/19/Spring/1574173599751.png" alt="1574173599751"></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">begin</span><br><span class="line">更新表<span class="number">1</span>(事务<span class="number">1</span>的数据库操作)</span><br><span class="line">commmit</span><br><span class="line"><span class="comment">//先执行完这个事务，再去执行另一个事务。</span></span><br><span class="line">begin</span><br><span class="line">更新表<span class="number">2</span>(事务<span class="number">2</span>的数据库操作)</span><br><span class="line">commmit</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>PROPAGATION_SUPPORTS：支持当前事务，如果当前存在事务，就加入该事务，如果当前不存在事务，就以非事务执行。</p>
+</li>
+<li><p>PROPAGATION_MANDATORY：支持当前事务，如果当前存在事务，就加入该事务，如果当前不存在事务，就抛出异常。</p>
+</li>
+<li><p>PROPAGATION_NOT_SUPPORTED：以非事务方式执行操作，如果当前存在事务，就把当前事务挂起。</p>
+</li>
+<li><p>PROPAGATION_NEVER：以非事务方式执行，如果当前存在事务，则抛出异常</p>
+</li>
+<li><p>PROPAGATION_NESTED：如果当前存在事务，则在嵌套事务内执行。如果当前没有事务，则按REQUIRED属性执行</p>
+</li>
+</ul>
+</li>
+</ul>
+<h5 id="9-Spring的通知"><a href="#9-Spring的通知" class="headerlink" title="9. Spring的通知"></a>9. Spring的通知</h5><ol>
+<li>前置通知（Before advice）：在某连接点（join point）之前执行的通知，但这个通知不能阻止连接点前的执行（除非它抛出一个异常）。</li>
+<li>返回后通知（After returning advice）：在某连接点（join point）正常完成后执行的通知：例如，一个方法没有抛出任何异常，正常返回。 </li>
+<li>抛出异常后通知（After throwing advice）：在方法抛出异常退出时执行的通知。 </li>
+<li>后通知（After (finally) advice）：当某连接点退出的时候执行的通知（不论是正常返回还是异常退出）。 </li>
+<li>环绕通知（Around Advice）：包围一个连接点（join point）的通知，如方法调用。这是最强大的一种通知类型。 环绕通知可以在方法调用前后完成自定义的行为。它也会选择是否继续执行连接点或直接返回它们自己的返回值或抛出异常来结束执行。</li>
+</ol>
+<ul>
+<li><p>执行顺序</p>
+<ul>
+<li><p>没有异常</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">around before advice</span><br><span class="line">before advice</span><br><span class="line">target method 执行</span><br><span class="line">around after advice</span><br><span class="line">after advice</span><br><span class="line">afterReturning</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>有异常</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">around before advice</span><br><span class="line">before advice</span><br><span class="line">target method 执行</span><br><span class="line">around after advice</span><br><span class="line">after advice</span><br><span class="line">afterThrowing:异常发生</span><br><span class="line">java.lang.RuntimeException: 异常发生</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+
+
+
+
+</li>
+</ul>
+</li>
+</ul>
+<p>抽取代码出来，重复利用，减少代码冗余。</p>
+<p>不需要在每个类里面重复new 重复初始化</p>
+<p><img src="/2018/01/19/Spring/1574093053907.png" alt="1574093053907"></p>
+<p><img src="/2018/01/19/Spring/1574093975963.png" alt="1574093975963"></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">HttpServletResponse response 可以用addCookie添加cookie，令牌存到cookie中</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2018/01/19/Spring/1574095259168.png" alt="1574095259168"></p>
+<p><img src="/2018/01/19/Spring/1574095839484.png" alt="1574095839484"></p>
+<p><img src="/2018/01/19/Spring/1574096054809.png" alt="1574096054809"></p>
+<p><img src="/2018/01/19/Spring/1574096103986.png" alt="1574096103986"></p>
+<p><img src="/2018/01/19/Spring/1574096664299.png" alt="1574096664299"></p>
+<p><img src="/2018/01/19/Spring/1574096756034.png" alt="1574096756034"></p>
+<p><img src="/2018/01/19/Spring/1574097451543.png" alt="1574097451543"></p>
+<p><img src="/2018/01/19/Spring/1574098009764.png" alt="1574098009764"></p>
+<p><img src="/2018/01/19/Spring/1574098263480.png" alt="1574098263480"></p>
+
+    </div>
+
+    
+    
+    
+        
+      
+
+      <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/2018/01/17/HashMap原理/" rel="next" title="HashMap原理">
+                  <i class="fa fa-chevron-left"></i> HashMap原理
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+                <a href="/2018/01/23/Spring-MVC-和Springboot/" rel="prev" title="Spring MVC 和Springboot">
+                  Spring MVC 和Springboot <i class="fa fa-chevron-right"></i>
+                </a>
+              
+            </div>
+          </div>
+        
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    
+    <div class="comments" id="gitalk-container"></div>
+  
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+        
+        
+        
+        
+      
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-Spring"><span class="nav-text">1. Spring</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-Spring的配置方式"><span class="nav-text">2. Spring的配置方式</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-Spring的自动装配"><span class="nav-text">3. Spring的自动装配</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4-SpringIOC"><span class="nav-text">4. SpringIOC</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#5-SpringAOP"><span class="nav-text">5. SpringAOP</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#6-Spring5种bean的作用域"><span class="nav-text">6. Spring5种bean的作用域</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#7-Spring的线程安全问题"><span class="nav-text">7. Spring的线程安全问题</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#8-Spring的事务"><span class="nav-text">8. Spring的事务</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#9-Spring的通知"><span class="nav-text">9. Spring的通知</span></a></li></ol></div>
+        
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/images/avatar.png"
+      alt="Quark">
+  <p class="site-author-name" itemprop="name">Quark</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">13</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-categories">
+        
+          
+            <a href="/categories/">
+          
+        
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">categories</span>
+        </a>
+      </div>
+    
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="https://github.com/quarkljy" title="GitHub &rarr; https://github.com/quarkljy" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="/quarkljy@gmail.com" title="E-Mail &rarr; quarkljy@gmail.com"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+    
+  </div>
+
+
+
+      </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+      
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Quark</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+  
+    <span class="post-meta-divider">|</span>
+  
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/js/utils.js?v=7.4.1"></script><script src="/js/motion.js?v=7.4.1"></script>
+<script src="/js/schemes/pisces.js?v=7.4.1"></script>
+<script src="/js/next-boot.js?v=7.4.1"></script><script src="/js/bookmark.js?v=7.4.1"></script>
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID: 'ac9ad8a38774c86401c5',
+      clientSecret: '32151ac2d31b78b8755e5ae11b37dc1f8f590b20',
+      repo: 'quarkljy.github.io',
+      owner: 'quarkljy',
+      admin: ['quarkljy'],
+      id: '159a03290d8510849653e64163f06697',
+        language: 'en',
+      
+      distractionFreeMode: 'true'
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+</script>
+
+</body>
+</html>

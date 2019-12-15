@@ -65,7 +65,8 @@
 <meta property="og:description" content="Shell编程知识总结。">
 <meta property="og:locale" content="en">
 <meta property="og:image" content="https://quarkljy.github.io/2017/12/11/Shell脚本编程/1573488861707.png">
-<meta property="og:updated_time" content="2019-11-14T08:11:11.973Z">
+<meta property="og:image" content="https://quarkljy.github.io/2017/12/11/Shell脚本编程/1575029783812.png">
+<meta property="og:updated_time" content="2019-11-29T12:41:28.199Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Shell脚本编程">
 <meta name="twitter:description" content="Shell编程知识总结。">
@@ -338,8 +339,14 @@
 <li>(1)find命令是根据文件的属性进行查找，如文件名，文件大小，所有者，所属组，是否为空，访问时间，修改时间等。 </li>
 <li>(2)grep是根据文件的内容进行查找，会对文件的每一行按照给定的模式(patter)进行匹配查找</li>
 </ul>
+<p>echo</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">echo &quot;docker:x:$&#123;dockerGid&#125;:jenkins&quot; &gt;&gt; /mydata/log</span><br></pre></td></tr></table></figure>
+
+
 </li>
-</ol>
+</ol><a id="more"></a>
+<p>   表示把<code>docker:x:${dockerGid}:jenkins</code>写入到 /mydata 下的log文件中</p>
+<p><img src="/2017/12/11/Shell脚本编程/1575029783812.png" alt="1575029783812"></p>
 
     </div>
 
@@ -436,7 +443,7 @@
         
           <a href="/archives/">
         
-          <span class="site-state-item-count">6</span>
+          <span class="site-state-item-count">13</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -449,7 +456,7 @@
             <a href="/categories/">
           
         
-        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-count">6</span>
         <span class="site-state-item-name">categories</span>
         </a>
       </div>
