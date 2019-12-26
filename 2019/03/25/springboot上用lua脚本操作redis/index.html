@@ -57,21 +57,21 @@
   };
 </script>
 
-  <meta name="description" content="前言为什么用lua： 减少网络开销：本来5次网络请求的操作，可以用一个请求完成，原先5次请求的逻辑放在redis服务器上完成。使用脚本，减少了网络往返时延。 原子操作：Redis会将整个脚本作为一个整体执行，中间不会被其他进程或者进程的命令插入。（最重要） 复用：客户端发送的脚本会永久存储在Redis中，意味着其他客户端可以复用这一脚本而不需要使用代码完成同样的逻辑。">
+  <meta name="description" content="在Redis中，执行Lua语言是原子性，也就是说Redis执行Lua的时候是不会被中断的，具备原子性，这个特性有助于Redis对并发数据一致性的支持。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="springboot上用lua脚本操作redis">
-<meta property="og:url" content="https://quarkljy.github.io/2019/02/25/springboot上用lua脚本操作redis/index.html">
+<meta property="og:url" content="https://quarkljy.github.io/2019/03/25/springboot上用lua脚本操作redis/index.html">
 <meta property="og:site_name" content="Quark&#39;s Blogs">
-<meta property="og:description" content="前言为什么用lua： 减少网络开销：本来5次网络请求的操作，可以用一个请求完成，原先5次请求的逻辑放在redis服务器上完成。使用脚本，减少了网络往返时延。 原子操作：Redis会将整个脚本作为一个整体执行，中间不会被其他进程或者进程的命令插入。（最重要） 复用：客户端发送的脚本会永久存储在Redis中，意味着其他客户端可以复用这一脚本而不需要使用代码完成同样的逻辑。">
+<meta property="og:description" content="在Redis中，执行Lua语言是原子性，也就是说Redis执行Lua的时候是不会被中断的，具备原子性，这个特性有助于Redis对并发数据一致性的支持。">
 <meta property="og:locale" content="en">
-<meta property="og:image" content="https://quarkljy.github.io/2019/02/25/springboot上用lua脚本操作redis/1574684554712.png">
-<meta property="og:image" content="https://quarkljy.github.io/2019/02/25/springboot上用lua脚本操作redis/1574684640243.png">
-<meta property="og:updated_time" content="2019-12-26T09:19:56.523Z">
+<meta property="og:image" content="https://quarkljy.github.io/2019/03/25/springboot上用lua脚本操作redis/1574684554712.png">
+<meta property="og:image" content="https://quarkljy.github.io/2019/03/25/springboot上用lua脚本操作redis/1574684640243.png">
+<meta property="og:updated_time" content="2019-12-26T09:32:16.666Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="springboot上用lua脚本操作redis">
-<meta name="twitter:description" content="前言为什么用lua： 减少网络开销：本来5次网络请求的操作，可以用一个请求完成，原先5次请求的逻辑放在redis服务器上完成。使用脚本，减少了网络往返时延。 原子操作：Redis会将整个脚本作为一个整体执行，中间不会被其他进程或者进程的命令插入。（最重要） 复用：客户端发送的脚本会永久存储在Redis中，意味着其他客户端可以复用这一脚本而不需要使用代码完成同样的逻辑。">
-<meta name="twitter:image" content="https://quarkljy.github.io/2019/02/25/springboot上用lua脚本操作redis/1574684554712.png">
-  <link rel="canonical" href="https://quarkljy.github.io/2019/02/25/springboot上用lua脚本操作redis/">
+<meta name="twitter:description" content="在Redis中，执行Lua语言是原子性，也就是说Redis执行Lua的时候是不会被中断的，具备原子性，这个特性有助于Redis对并发数据一致性的支持。">
+<meta name="twitter:image" content="https://quarkljy.github.io/2019/03/25/springboot上用lua脚本操作redis/1574684554712.png">
+  <link rel="canonical" href="https://quarkljy.github.io/2019/03/25/springboot上用lua脚本操作redis/">
 
 
 <script id="page-configurations">
@@ -243,7 +243,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="en">
-    <link itemprop="mainEntityOfPage" href="https://quarkljy.github.io/2019/02/25/springboot上用lua脚本操作redis/">
+    <link itemprop="mainEntityOfPage" href="https://quarkljy.github.io/2019/03/25/springboot上用lua脚本操作redis/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Quark">
@@ -274,7 +274,7 @@
                 
               
 
-              <time title="Created: 2019-02-25 19:51:50" itemprop="dateCreated datePublished" datetime="2019-02-25T19:51:50+08:00">2019-02-25</time>
+              <time title="Created: 2019-03-25 19:51:50" itemprop="dateCreated datePublished" datetime="2019-03-25T19:51:50+08:00">2019-03-25</time>
             </span>
           
 
@@ -286,6 +286,8 @@
               <span class="post-meta-item-text">Views: </span>
               <span id="busuanzi_value_page_pv"></span>
             </span>
+          
+            <div class="post-description">在Redis中，执行Lua语言是原子性，也就是说Redis执行Lua的时候是不会被中断的，具备原子性，这个特性有助于Redis对并发数据一致性的支持。</div>
           
 
         </div>
@@ -313,9 +315,9 @@
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RedisLockController</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//@Autowired</span></span><br><span class="line">    <span class="comment">//private StringRedisTemplate stringRedisTemplate;  //不用这个</span></span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> RedisTemplate redisTemplate;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> DefaultRedisScript&lt;List&gt; getRedisScript;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@PostConstruct</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">init</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        getRedisScript = <span class="keyword">new</span> DefaultRedisScript&lt;List&gt;();</span><br><span class="line">        getRedisScript.setResultType(List.class);</span><br><span class="line">        getRedisScript.setScriptSource(<span class="keyword">new</span> ResourceScriptSource(<span class="keyword">new</span> ClassPathResource(<span class="string">"lua.lua"</span>)));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@GetMapping</span>(<span class="string">"/lua"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> List <span class="title">lua</span><span class="params">()</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        List&lt;String&gt; list = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">        list.add(<span class="string">"key_01"</span>);<span class="comment">//对应脚本的KEYS[1]</span></span><br><span class="line">        list.add(<span class="string">"key_02"</span>);<span class="comment">//对应脚本的KEYS[2]</span></span><br><span class="line">        list.add(<span class="string">"key_03"</span>);<span class="comment">//对应脚本的KEYS[3]</span></span><br><span class="line">        </span><br><span class="line">        String arg_1 = <span class="string">"1000"</span>;<span class="comment">//对应脚本的ARGV[1]</span></span><br><span class="line">        <span class="keyword">int</span> arg_2 = <span class="number">150</span>;<span class="comment">//对应脚本的ARGV[2]</span></span><br><span class="line">        String arg_3 = <span class="string">"lee"</span>;<span class="comment">//对应脚本的ARGV[3]</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">/**</span></span><br><span class="line"><span class="comment">         * 传入的第一个是脚本，第二个KEYS数组，之后的是参数ARGV</span></span><br><span class="line"><span class="comment">         * 这里没有序列化，所以存到redis的数据是乱码，也不能操作incr等</span></span><br><span class="line"><span class="comment">         */</span></span><br><span class="line">        List execute = (List) redisTemplate.execute(getRedisScript, list,arg_1,arg_2,arg_3);</span><br><span class="line">        <span class="keyword">return</span> execute;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <h5 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h5><p>启动，测试方法，能够正确返回数组</p>
-<p><img src="/2019/02/25/springboot上用lua脚本操作redis/1574684554712.png" alt="1574684554712"></p>
+<p><img src="/2019/03/25/springboot上用lua脚本操作redis/1574684554712.png" alt="1574684554712"></p>
 <p>查看redis数据库，发现有结果，说明脚本执行成功。这里是因为没有给入参指定序列化方式，所以会乱码。者也是为什么并不能进行incr操作的原因。编码后序列化，就可以正常操作incr</p>
-<p><img src="/2019/02/25/springboot上用lua脚本操作redis/1574684640243.png" alt="1574684640243"></p>
+<p><img src="/2019/03/25/springboot上用lua脚本操作redis/1574684640243.png" alt="1574684640243"></p>
 
     </div>
 
@@ -332,8 +334,8 @@
           <div class="post-nav">
             <div class="post-nav-next post-nav-item">
               
-                <a href="/2019/01/17/HashMap原理/" rel="next" title="HashMap原理">
-                  <i class="fa fa-chevron-left"></i> HashMap原理
+                <a href="/2019/03/23/Spring-MVC-和Springboot/" rel="next" title="Spring MVC 和Springboot">
+                  <i class="fa fa-chevron-left"></i> Spring MVC 和Springboot
                 </a>
               
             </div>
@@ -342,8 +344,8 @@
 
             <div class="post-nav-prev post-nav-item">
               
-                <a href="/2019/03/23/Spring-MVC-和Springboot/" rel="prev" title="Spring MVC 和Springboot">
-                  Spring MVC 和Springboot <i class="fa fa-chevron-right"></i>
+                <a href="/2019/04/01/使用Dockerfile创建docker镜像/" rel="prev" title="使用Dockerfile创建docker镜像">
+                  使用Dockerfile创建docker镜像 <i class="fa fa-chevron-right"></i>
                 </a>
               
             </div>
@@ -412,7 +414,7 @@
         
           <a href="/archives/">
         
-          <span class="site-state-item-count">14</span>
+          <span class="site-state-item-count">13</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -576,7 +578,7 @@
       repo: 'quarkljy.github.io',
       owner: 'quarkljy',
       admin: ['quarkljy'],
-      id: '1b85e3f14cd6381181f3b9cbe9cb4215',
+      id: 'd9a15d3e05c10a026c8d98d7d4dfa882',
         language: 'en',
       
       distractionFreeMode: 'true'
