@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+
+
+
+
+
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.4.1">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.4.1" color="#222">
+
+<link rel="stylesheet" href="/css/main.css?v=7.4.1">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2">
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '7.4.1',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":"default"},
+    back2top: {"enable":true,"sidebar":true,"scrollpercent":true},
+    bookmark: {"enable":true,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: 'Copy',
+      copy_success: 'Copied',
+      copy_failure: 'Copy failed'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="索引是一种数据结构，索引的命中需要满足一定条件。优化思路是拆开sql语句，各个部分逐步进行优化。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="mysql索引和sql优化">
+<meta property="og:url" content="https://quarkljy.github.io/2019/01/11/mysql索引和sql优化/index.html">
+<meta property="og:site_name" content="Quark&#39;s Blogs">
+<meta property="og:description" content="索引是一种数据结构，索引的命中需要满足一定条件。优化思路是拆开sql语句，各个部分逐步进行优化。">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="https://quarkljy.github.io/2019/01/11/mysql索引和sql优化/1573556701970.png">
+<meta property="og:image" content="https://quarkljy.github.io/2019/01/11/mysql索引和sql优化/1573557558134.png">
+<meta property="og:image" content="https://quarkljy.github.io/2019/01/11/mysql索引和sql优化/1573557304770.png">
+<meta property="og:image" content="https://quarkljy.github.io/2019/01/11/mysql索引和sql优化/1573558443699.png">
+<meta property="og:image" content="https://quarkljy.github.io/2019/01/11/mysql索引和sql优化/1573544476317.png">
+<meta property="og:image" content="https://quarkljy.github.io/2019/01/11/mysql索引和sql优化/1573546733342.png">
+<meta property="og:image" content="https://quarkljy.github.io/2019/01/11/mysql索引和sql优化/1573559464944.png">
+<meta property="og:image" content="https://quarkljy.github.io/2019/01/11/mysql索引和sql优化/1573545049898.png">
+<meta property="og:image" content="https://quarkljy.github.io/2019/01/11/mysql索引和sql优化/1573545000523.png">
+<meta property="og:image" content="https://quarkljy.github.io/2019/01/11/mysql索引和sql优化/1573545137711.png">
+<meta property="og:image" content="https://quarkljy.github.io/2019/01/11/mysql索引和sql优化/1573560273246.png">
+<meta property="og:image" content="https://quarkljy.github.io/2019/01/11/mysql索引和sql优化/1573560103801.png">
+<meta property="og:image" content="https://quarkljy.github.io/2019/01/11/mysql索引和sql优化/1573560180062.png">
+<meta property="og:image" content="https://quarkljy.github.io/2019/01/11/mysql索引和sql优化/1573560230791.png">
+<meta property="og:image" content="https://quarkljy.github.io/2019/01/11/mysql索引和sql优化/1573560645025.png">
+<meta property="og:image" content="https://quarkljy.github.io/2019/01/11/mysql索引和sql优化/1573719871541.png">
+<meta property="og:image" content="https://quarkljy.github.io/2019/01/11/mysql索引和sql优化/1573719951103.png">
+<meta property="og:image" content="https://quarkljy.github.io/2019/01/11/mysql索引和sql优化/1573576102451.png">
+<meta property="og:image" content="https://quarkljy.github.io/2019/01/11/mysql索引和sql优化/1573576305792.png">
+<meta property="og:image" content="https://quarkljy.github.io/2019/01/11/mysql索引和sql优化/1574422913985.png">
+<meta property="og:image" content="https://quarkljy.github.io/2019/01/11/mysql索引和sql优化/1574422877600.png">
+<meta property="og:updated_time" content="2019-12-26T09:18:38.808Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="mysql索引和sql优化">
+<meta name="twitter:description" content="索引是一种数据结构，索引的命中需要满足一定条件。优化思路是拆开sql语句，各个部分逐步进行优化。">
+<meta name="twitter:image" content="https://quarkljy.github.io/2019/01/11/mysql索引和sql优化/1573556701970.png">
+  <link rel="canonical" href="https://quarkljy.github.io/2019/01/11/mysql索引和sql优化/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>mysql索引和sql优化 | Quark's Blogs</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Quark's Blogs</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">One Week, One Blog</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+      
+      
+        
+        
+        <li class="menu-item menu-item-home">
+      
+    
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+      
+    
+      
+      
+        
+        
+        <li class="menu-item menu-item-archives">
+      
+    
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+      
+    
+      
+      
+        
+        
+        <li class="menu-item menu-item-categories">
+      
+    
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>Categories</a>
+
+  </li>
+      
+    
+      
+      
+        
+        
+        <li class="menu-item menu-item-about">
+      
+    
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>About</a>
+
+  </li>
+      
+    
+      
+      
+        
+        
+        <li class="menu-item menu-item-tags">
+      
+    
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>Tags</a>
+
+  </li>
+      
+    
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+  <a href="https://github.com/quarkljy" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+            
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="en">
+    <link itemprop="mainEntityOfPage" href="https://quarkljy.github.io/2019/01/11/mysql索引和sql优化/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Quark">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Quark's Blogs">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            mysql索引和sql优化
+            
+
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              
+                
+              
+
+              <time title="Created: 2019-01-11 23:56:48" itemprop="dateCreated datePublished" datetime="2019-01-11T23:56:48+08:00">2019-01-11</time>
+            </span>
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/mysql/" itemprop="url" rel="index">
+                    <span itemprop="name">mysql</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">Views: </span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+          
+            <div class="post-description">索引是一种数据结构，索引的命中需要满足一定条件。优化思路是拆开sql语句，各个部分逐步进行优化。</div>
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h5 id="1-索引的一般理解"><a href="#1-索引的一般理解" class="headerlink" title="1. 索引的一般理解"></a>1. 索引的一般理解</h5><p>索引本质是排序，说白了就是一种存放有序数据的数据结构。“创建索引”的意思是把mysql表的某个字段的值组成该数据结构，“使用索引”、”走索引“也就是通过这个数据结构去查找该列值的数据行。普通索引、唯一索引、组合索引的数据结构一般是B+树，全文索引则不能指明数据结构（全文索引的使用方法和其他索引有所区别，全文索引不常用，所以不细讲）。Innodb引擎的主键索引也是聚簇索引，叶子末端存放主键和数据行，子节点不放数据，是为了能够多存放一些索引值，一次能够检索更多的索引，压低树的高度，减少磁盘IO，叶子末端存放主键和数据行。主键索引以外的索引可以叫辅助索引或者二级索引。索引需要占用额外的内存空间。</p><a id="more"></a>
+<h5 id="2-索引分类"><a href="#2-索引分类" class="headerlink" title="2. 索引分类"></a>2. 索引分类</h5><h6 id="2-1-第一种分法，从叶子是否存放行数据的角度看"><a href="#2-1-第一种分法，从叶子是否存放行数据的角度看" class="headerlink" title="2.1 第一种分法，从叶子是否存放行数据的角度看"></a>2.1 第一种分法，从叶子是否存放行数据的角度看</h6><ul>
+<li><p>InnoDB的聚簇索引：<strong>聚集索引就是数据和索引在一起的索引</strong>，所以一个表最多只有一个聚簇索引（有多个聚簇索引不久导致数据库数据重复了嘛）。聚簇索引叶子节点存储数据行的物理位置，找到索引也就找到了数据行。一个表仅有一个聚簇索引。主键索引默认是聚簇索引。辅助索引是建立在聚簇索引上的。非聚簇索引都是辅助索引，像复合索引、前缀索引、唯一索引，辅助索引叶子节点存储的不再是数据行的物理位置，而是主键值。</p>
+<p><img src="/2019/01/11/mysql索引和sql优化/1573556701970.png" alt="1573556701970"></p>
+<p><strong>查找过程</strong> ：</p>
+<ol>
+<li>where后面的条件是主键时，可能直接通过主键索引查到数据行。见第一张图</li>
+</ol>
+<p><img src="/2019/01/11/mysql索引和sql优化/1573557558134.png" alt="1573557558134"></p>
+<ol start="2">
+<li><p>where后面的条件是辅助索引时，分为两种情况：</p>
+<ul>
+<li><p>查找的数据全都是索引列上的数据，不回表查询。如图，age是普通索引，查询的数据全是age的列值，不会回到主键查询数据行。</p>
+<p><img src="/2019/01/11/mysql索引和sql优化/1573557304770.png" alt="1573557304770"></p>
+</li>
+<li><p>查找的数据有其他列的数据，会先从辅助索引列找到主键，再从主键查询到数据行。</p>
+<p><code>SELECT * from tb_user WHERE  age&gt;6</code>，会先查age列索引，得到主键值，在用主键值走主键索引，查到数据行。<strong>每次使用辅助索引检索都要经过两次B+树查找</strong>，见第一张图</p>
+</li>
+</ul>
+</li>
+</ol>
+</li>
+<li><p>MyISAM的非聚簇索引：</p>
+<p>辅助索引和主键索引都是B+树，叶子节点存放是数据行的地址</p>
+<p><img src="/2019/01/11/mysql索引和sql优化/1573558443699.png" alt="1573558443699"></p>
+<p>查找过程：<strong>索引树是独立的，通过辅助检索无需访问主键的索引树</strong>。</p>
+</li>
+</ul>
+<h6 id="2-2-第二种分法，按照索引的逻辑要求分："><a href="#2-2-第二种分法，按照索引的逻辑要求分：" class="headerlink" title="2.2 第二种分法，按照索引的逻辑要求分："></a>2.2 第二种分法，按照索引的逻辑要求分：</h6><p>测试表的sql语句</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">SET FOREIGN_KEY_CHECKS=0;</span><br><span class="line"></span><br><span class="line">-- ----------------------------</span><br><span class="line">-- Table structure for tb_user</span><br><span class="line">-- ----------------------------</span><br><span class="line">DROP TABLE IF EXISTS `tb_user`;</span><br><span class="line">CREATE TABLE `tb_user` (</span><br><span class="line">  `id` int(11) NOT NULL AUTO_INCREMENT,</span><br><span class="line">  `name` varchar(255) DEFAULT NULL,</span><br><span class="line">  `age` int(11) DEFAULT NULL,</span><br><span class="line">  `account` int(11) DEFAULT NULL,</span><br><span class="line">  `age_2` int(11) DEFAULT NULL,</span><br><span class="line">  `age_3` int(11) DEFAULT NULL,</span><br><span class="line">  `account_2` int(11) DEFAULT NULL,</span><br><span class="line">  PRIMARY KEY (`id`),</span><br><span class="line">  UNIQUE KEY `account_index` (`account_2`) USING BTREE,</span><br><span class="line">  KEY `age_index` (`age`,`age_2`,`age_3`) USING BTREE,</span><br><span class="line">  FULLTEXT KEY `name_full_index` (`name`)</span><br><span class="line">) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;</span><br><span class="line"></span><br><span class="line">-- ----------------------------</span><br><span class="line">-- Records of tb_user</span><br><span class="line">-- ----------------------------</span><br><span class="line">INSERT INTO `tb_user` VALUES (&apos;1&apos;, &apos;lee&apos;, null, null, null, null, null);</span><br><span class="line">INSERT INTO `tb_user` VALUES (&apos;2&apos;, &apos;jia&apos;, null, null, null, null, null);</span><br><span class="line">INSERT INTO `tb_user` VALUES (&apos;3&apos;, &apos;yan&apos;, &apos;1&apos;, &apos;2&apos;, &apos;2&apos;, &apos;53&apos;, &apos;435&apos;);</span><br><span class="line">INSERT INTO `tb_user` VALUES (&apos;4&apos;, &apos;xu&apos;, &apos;3&apos;, &apos;5&apos;, &apos;6&apos;, &apos;3&apos;, &apos;5&apos;);</span><br><span class="line">INSERT INTO `tb_user` VALUES (&apos;5&apos;, &apos;ming&apos;, &apos;4&apos;, &apos;9&apos;, &apos;156&apos;, &apos;34&apos;, &apos;6&apos;);</span><br><span class="line">INSERT INTO `tb_user` VALUES (&apos;6&apos;, &apos;rong&apos;, &apos;7&apos;, &apos;6&apos;, &apos;546&apos;, &apos;53&apos;, null);</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li><p>普通索引：最基本的索引，没有任何限制，可以列值可以重复，可以为Null,是我们经常使用到的索引。当索引是很长的字符序列时，这个索引将会很占内存，而且会很慢，这时候就会用到前缀索引了。</p>
+<ul>
+<li>所谓的前缀索引就是取普通索引的前面几个字母作为索引，其缺点是不能用于ORDER BY和GROUP BY操作，也不能用于覆盖索引 Covering index（即当索引本身包含查询所需全部数据时，不再访问数据文件本身）。</li>
+</ul>
+</li>
+</ol>
+<ol start="2">
+<li><p>唯一索引：与普通索引类似，不同的是，唯一索引的列值必须唯一，但允许为空值。空值可以有多个，其他的列值只能有一个！</p>
+<ul>
+<li>主键索引是特殊的唯一索引，列值唯一且不允许有空值。</li>
+</ul>
+<p><img src="/2019/01/11/mysql索引和sql优化/1573544476317.png" alt="1573544476317"></p>
+</li>
+<li><p>组合索引：将几个列作为一条索引进行检索，使用最左匹配原则。key index(a,b,c). 可以支持 a|a,b|a,b,c 3种组合进行查找，但不支持 b,c 进行查找。</p>
+</li>
+<li><p>覆盖索引: 如果一个索引包含(或覆盖)所有需要查询的字段的值，称为‘覆盖索引’。即只需扫描索引而无须回表。</p>
+</li>
+<li><p>全文索引，MySQL 5.6 及以后的版本，MyISAM 和 InnoDB 存储引擎均支持全文索引;只有字段的数据类型为 char、varchar、text 及其系列才可以建全文索引。</p>
+<p>全文索引也不能指定索引方法</p>
+<p><img src="/2019/01/11/mysql索引和sql优化/1573546733342.png" alt="1573546733342"></p>
+<p>和常用的模糊匹配使用 like + % 不同，全文索引有自己的语法格式，使用 match 和 against 关键字，比如</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select * from fulltext_test where match(content,tag) against(&apos;xxx xxx&apos;);</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<h5 id="3-建立索引的原则"><a href="#3-建立索引的原则" class="headerlink" title="3. 建立索引的原则"></a>3. 建立索引的原则</h5><ol>
+<li><p>where，order by ,group by 等过滤时，后面的字段最好加上索引。</p>
+</li>
+<li><p>区分度高的字段建立索引，谁的区分度更高（同值的最少），谁建索引，区分度的公式是count(distinct（字段）)/count(*)。</p>
+</li>
+<li><p>为经常查询的字段建立索引</p>
+<p><img src="/2019/01/11/mysql索引和sql优化/1573559464944.png" alt="1573559464944"></p>
+</li>
+<li><p>限制索引的数目，不能建立过多索引。索引是树，平衡树需要消耗性能。</p>
+</li>
+<li><p>单表数据太少，不适合建索引</p>
+</li>
+</ol>
+<h5 id="4-索引命中"><a href="#4-索引命中" class="headerlink" title="4. 索引命中"></a>4. 索引命中</h5><ol>
+<li><p>使用like时，<code>&quot;xxxx%&quot;</code>可以名字索引，<code>&quot;&quot;%xxxx%&quot;&quot;</code>不会命中索引；</p>
+</li>
+<li><p>某个字段有单个索引，又和其他字段组成联合索引，一般可以删除这个单个索引。</p>
+</li>
+<li><p>mysql会一直向右匹配直到遇到范围查询(&gt;、&lt;、between、like)就停止匹配，比如<code>a=1 and b=2 and c=&gt;3 and d=4</code> 如果建立(a,b,c,d)顺序的索引，d是用不到索引的，如果建立(a,b,d,c)的索引则都可以用到，a,b,d的顺序可以任意调整。条件and 在一起时，可以索引字段顺序可以变换，index（a,b,c,d)时，<code>a=1 and b=2 and d=3 and c=4</code>可以用上索引。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">建立索引</span><br><span class="line">KEY `age_index` (`age`,`age_2`,`age_3`) USING BTREE,</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>组合索引满足最左匹配原则，因此可以使用这个索引（and 使得age &gt;6  这个条件可以放到最前面）</li>
+</ul>
+</li>
+</ol>
+<p>   <img src="/2019/01/11/mysql索引和sql优化/1573545049898.png" alt="1573545049898"></p>
+<ul>
+<li>组合索引不满足最左匹配原则，使用其他索引</li>
+</ul>
+<p>   <img src="/2019/01/11/mysql索引和sql优化/1573545000523.png" alt="1573545000523"></p>
+<ul>
+<li>组合索引不满足最左匹配原则，不使用索引</li>
+</ul>
+<p>   <img src="/2019/01/11/mysql索引和sql优化/1573545137711.png" alt="1573545137711"></p>
+<ol start="4">
+<li><p>前缀索引: 有时候需要索引很长的字符列，这会让索引变得大且慢。通常可以索引开始的部分字符，这样可以大大节约索引空间，从而提高索引效率。其缺点是不能用于ORDER BY和GROUP BY操作，也不能用于覆盖索引 Covering index（即当索引本身包含查询所需全部数据时，不再访问数据文件本身）。</p>
+</li>
+<li><p>&lt;&gt;，not in，!=  ，is not null，or 这些条件一般不会用上索引 ，也有特殊时候用上索引，取决于InnoDB的某个算法估计出用索引和不用索引的成本。<strong>但是这些条件在普通情况下一般不会走索引，索引最好避免使用。</strong></p>
+<p><img src="/2019/01/11/mysql索引和sql优化/1573560273246.png" alt="1573560273246"></p>
+<p><img src="/2019/01/11/mysql索引和sql优化/1573560103801.png" alt="1573560103801"></p>
+<p><img src="/2019/01/11/mysql索引和sql优化/1573560180062.png" alt="1573560180062"></p>
+<p><img src="/2019/01/11/mysql索引和sql优化/1573560230791.png" alt="1573560230791"></p>
+<p><img src="/2019/01/11/mysql索引和sql优化/1573560645025.png" alt="1573560645025"></p>
+</li>
+<li><p>&lt;，&lt;=，=，&gt;，&gt;=，between，in 些字段可以用到索引。 </p>
+</li>
+<li><p>一次查询最多只会用到一次辅助索引，子查询也算一次查询，一个查询可能有多个子查询。为什么只用一次索引呢？因为辅助索引（其他字段的索引）会回表到主键索引再查整个行数据。</p>
+<p>查询的时候，对字段数据量进行判断，应该把数据量少的字段放左边，这样就优先使用这个字段的索引去检索数据了。例如，假设一次查询，同时查询a字段和b字段符合a字段条件的有100个，符合 b字段条件的有10000个：</p>
+<ul>
+<li><p>先查a字段，然后在查b字段。那么会先筛选出100个满足a字段条件的数据，再从100个字段中找出满足b字段的数据。也就是最多查找100行。</p>
+</li>
+<li><p>先查b字段，然后在查a字段。那么会先筛选出10000个满足b字段条件的数据，再从10000个字段中找出满足a字段条件的数据。也就是最多查找10000行。</p>
+</li>
+</ul>
+</li>
+</ol>
+<h5 id="5-sql语句优化"><a href="#5-sql语句优化" class="headerlink" title="5. sql语句优化"></a>5. sql语句优化</h5><ul>
+<li><p><strong>开启慢查询</strong></p>
+<ul>
+<li>方式一 ：修改配置文件  在 my.ini 增加几行:  主要是慢查询的定义时间（超过2秒就是慢查询），以及慢查询log日志记录（ slow_query_log）</li>
+</ul>
+<p><img src="/2019/01/11/mysql索引和sql优化/1573719871541.png" alt="1573719871541"></p>
+<ul>
+<li>方式二：在MySQL数据库开启慢查询</li>
+</ul>
+<p><img src="/2019/01/11/mysql索引和sql优化/1573719951103.png" alt="1573719951103"></p>
+</li>
+<li><p><strong>通过explain分析执行sql的执行计划</strong></p>
+<ul>
+<li><p>select_type：表示SELECT的类型，常见的取值有simple（简单表，即不用表连接或者子查询），primary（主查询，即外部查询），union（union中的第二个或者后面的查询语句），subquery（子查询中的第一个select）等</p>
+</li>
+<li><p>table:输出结果集</p>
+</li>
+<li><p>type：表示Mysql在表中找到所需行的方式，或者叫访问类型，常见类型如：<code>all,index,range,ref,eq_ref,const,system,null</code>,从做到右，性能由差到好</p>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">type=all，全表扫描，mysql遍历全表来找到匹配的行</span><br><span class="line">explain select * from film where rating&gt;9</span><br><span class="line">type=index,索引全扫描，MySQL遍历整个索引来查询匹配的行</span><br><span class="line">explain select title from film</span><br><span class="line">type=range,索引范围扫描，常见&lt;,&lt;=,&gt;,&gt;=,between</span><br><span class="line"> explain select * from payment where customer_id&gt;=300 and customer_id&lt;=350</span><br><span class="line">type=ref，使用费索引扫描或唯一索引的前缀扫描</span><br><span class="line">explain select * from payment where customer_id=350</span><br><span class="line">type=eq_ref,类似ref，区别在于使用的索引是唯一索引，对于每个索引键值，表中有一条记录匹配；简单来说就是多表连接使用primary key或者unique index作为关联条件</span><br><span class="line">explain select * from film a,film_text b where a.film_id=b.film_id</span><br><span class="line">type=const/system,单表中最多有一个匹配行，查询起来非常迅速，索引这个匹配行中的其他列的值可以被优化器在当前查询中当做常量来处理,例如根据主键primary key或者唯一一个索引来查询</span><br><span class="line">type null,mysql不用访问数据库直接得到结果</span><br><span class="line">explain select 1 from dual where 1</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>select 语句优化</strong></p>
+<p>一般只选择需要的字段，用不到字段不要放到 <code>select</code> 里，避免查找其他数据累查询，不然有可能然排序不走索引排序，需要额外的计算来做<code>filesort</code></p>
+</li>
+<li><p><strong>优化insert语句</strong></p>
+<p>如果同时从一个客户端插入很多行，应尽量使用多个值表的insert语句，这种方式将大大缩减客户端与数据库之间的连接、关闭等消耗，使得效率比分开执行的单个insert语句快（大部分情况下，使用多个值表的insert语句那比单个insert语句快上好几倍）</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">insert into <span class="built_in">test</span> values(1,2),(1,3)..</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>优化ORDER BY语句</strong></p>
+<p>MySQL有两种排序方式</p>
+<p>第一种通过有序排序索引顺序扫描，这种方式在使用explain分析查询的时候显示为Using Index，不需要额外的排序，操作效率较高，建立索引的过程就是排序过程</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">EXPLAIN SELECT	age FROM tb_user ORDER BY	age；</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2019/01/11/mysql索引和sql优化/1573576102451.png" alt="1573576102451"></p>
+<p>第二张通过返回数据进行排序，也就是通常说的Filesort排序，所有不是通过索引直接返回排序结果的排序豆角Filesort排序。Filesort并不代表通过磁盘文件进行排序，而只是说明进行了一个排序操作，至于排序操作是否进行了磁盘文件或临时表等，则取决于MySql服务器对排序参数的设置和需要排序数据的大小.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">EXPLAIN SELECT	* FROM	tb_user ORDER BY	age</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2019/01/11/mysql索引和sql优化/1573576305792.png" alt="1573576305792"></p>
+<p>优化目标:尽量减少额外的排序，<strong>通过索引直接返回有序数据</strong>.where和ordery by 使用相同的索引，并且order by的顺序和索引顺序相同，并且order by的字段都是升序或者都是降序。否则肯定需要额外的排序操作，这样就会出现filesort</p>
+</li>
+<li><p><strong>优化嵌套查询 用join代替子查询</strong></p>
+<p>子查询可以被更有效率的链接替代，连接之所用更有效率是因为mysql不需要在内存中创建临时表来完成这个逻辑上需要两个步骤的查询工作。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">explain select * from customer where customer_id not in(select customer_id from payment)</span><br><span class="line">  </span><br><span class="line">  explain select * from customer a left join payment b on a.customer_id=b.customer_id where b.customer id is null</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>分页查询优化</strong></p>
+<p>MySQL的limit工作原理就是先读取前面n条记录，然后抛弃前n条，读后面m条想要的，所以n越大，偏移量越大，性能就越差。所以要尽量过滤一部分，不让它查询太多。</p>
+<ol>
+<li>尽量给出查询的大致范围，这里限制id的范围</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT c1,c2,cn... FROM table WHERE id&gt;=20000 LIMIT 10;</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>子查询法。子查询法是在不知道id范围的时候做法。第20000行数据的id不一定是20000.</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">SELECT c1,c2,cn... FROM table WHERE id&gt;=</span><br><span class="line">(</span><br><span class="line">SELECT id FROM table LIMIT 20000,1</span><br><span class="line">)</span><br><span class="line">LIMIT 10;</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>只读索引方法</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">优化前SQL:</span><br><span class="line"></span><br><span class="line">SELECT c1,c2,cn... FROM member ORDER BY last_active LIMIT 50,5</span><br><span class="line"></span><br><span class="line">优化后SQL:</span><br><span class="line"></span><br><span class="line">SELECT c1, c2, cn .. .</span><br><span class="line">FROM member m1</span><br><span class="line">INNER JOIN (SELECT member_id FROM member m2 ORDER BY last_active LIMIT 50, 5)</span><br><span class="line">USING (member_id)</span><br></pre></td></tr></table></figure>
+
+<p>分别在于，优化前的SQL需要更多I/O浪费，因为先读索引，再读数据，然后抛弃无需的行。而优化后的SQL(子查询那条)只读索引(Cover index)就可以了，然后通过member_id读取需要的列。<code>USING (member_id)</code>相当于 <code>m1.member_id=m2.member_id</code></p>
+</li>
+<li><p><strong>如果限制条件中其他字段没有索引，尽量少用or</strong></p>
+<p>or两边的字段中，如果有一个不是索引字段，而其他条件也不是索引字段，会造成该查询不走索引的情况。很多时候使用 union all 或者是union(必要的时候)的方式来代替“or”会得到更好的效果。</p>
+</li>
+<li><p><strong>区分in和exists， not in和not exists</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select * from 表A where id in (select id from 表B)</span><br></pre></td></tr></table></figure>
+
+<p>上面sql语句相当于</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select * from 表A where exists(select * from 表B where 表B.id=表A.id)</span><br></pre></td></tr></table></figure>
+
+<p>所以IN适合于外表大而内表小的情况；EXISTS适合于外表小而内表大的情况。关于not in和not exists，推荐使用not exists，不仅仅是效率问题，not in可能存在逻辑问题。如何高效的写出一个替代not exists的sql语句？</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select colname …  from A表 where a.id not in (select b.id from B表)</span><br></pre></td></tr></table></figure>
+
+<p>高效的sql语句</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select colname …  from A表 Left join B表 on where a.id = b.id where b.id is null</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>当只需要一条数据的时候，使用limit 1</strong></p>
+<p>这是为了使EXPLAIN中type列达到const类型</p>
+</li>
+</ul>
+<p><strong>补充</strong></p>
+<p>关于金额的计算，一般用有两种方式</p>
+<p>数据库设置金额字段为decimal  java类设置字段类型为BigDecimal</p>
+<p><img src="/2019/01/11/mysql索引和sql优化/1574422913985.png" alt="1574422913985"></p>
+<p>字段设置为int，100，取出的后，前端除以100（写一个专门的函数），存入的时候，前端字段乘以100（写一个专门的函数），传到后端存入数据库。</p>
+<p><img src="/2019/01/11/mysql索引和sql优化/1574422877600.png" alt="1574422877600"></p>
+<h5 id="6-参考"><a href="#6-参考" class="headerlink" title="6. 参考"></a>6. 参考</h5><ol>
+<li><a href="https://www.jianshu.com/p/d370f44a305e" target="_blank" rel="noopener">MySql优化</a></li>
+<li><a href="https://juejin.im/entry/5a1bbb386fb9a044fc4475aa" target="_blank" rel="noopener">项目中常用的19条MySQL优化</a></li>
+</ol>
+
+    </div>
+
+    
+    
+    
+        
+      
+
+      <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/2019/01/02/Shell脚本编程/" rel="next" title="Shell脚本编程">
+                  <i class="fa fa-chevron-left"></i> Shell脚本编程
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+                <a href="/2019/01/17/HashMap原理/" rel="prev" title="HashMap原理">
+                  HashMap原理 <i class="fa fa-chevron-right"></i>
+                </a>
+              
+            </div>
+          </div>
+        
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    
+    <div class="comments" id="gitalk-container"></div>
+  
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+        
+        
+        
+        
+      
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-索引的一般理解"><span class="nav-text">1. 索引的一般理解</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-索引分类"><span class="nav-text">2. 索引分类</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#2-1-第一种分法，从叶子是否存放行数据的角度看"><span class="nav-text">2.1 第一种分法，从叶子是否存放行数据的角度看</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#2-2-第二种分法，按照索引的逻辑要求分："><span class="nav-text">2.2 第二种分法，按照索引的逻辑要求分：</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-建立索引的原则"><span class="nav-text">3. 建立索引的原则</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4-索引命中"><span class="nav-text">4. 索引命中</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#5-sql语句优化"><span class="nav-text">5. sql语句优化</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#6-参考"><span class="nav-text">6. 参考</span></a></li></ol></div>
+        
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/images/avatar.png"
+      alt="Quark">
+  <p class="site-author-name" itemprop="name">Quark</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">14</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-categories">
+        
+          
+            <a href="/categories/">
+          
+        
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">categories</span>
+        </a>
+      </div>
+    
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="https://github.com/quarkljy" title="GitHub &rarr; https://github.com/quarkljy" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="/quarkljy@gmail.com" title="E-Mail &rarr; quarkljy@gmail.com"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+    
+  </div>
+
+
+
+      </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+      
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Quark</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+  
+    <span class="post-meta-divider">|</span>
+  
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/js/utils.js?v=7.4.1"></script><script src="/js/motion.js?v=7.4.1"></script>
+<script src="/js/schemes/pisces.js?v=7.4.1"></script>
+<script src="/js/next-boot.js?v=7.4.1"></script><script src="/js/bookmark.js?v=7.4.1"></script>
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID: 'ac9ad8a38774c86401c5',
+      clientSecret: '32151ac2d31b78b8755e5ae11b37dc1f8f590b20',
+      repo: 'quarkljy.github.io',
+      owner: 'quarkljy',
+      admin: ['quarkljy'],
+      id: 'b52ddae80192c3715425f2eb08eca3d3',
+        language: 'en',
+      
+      distractionFreeMode: 'true'
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+</script>
+
+</body>
+</html>
