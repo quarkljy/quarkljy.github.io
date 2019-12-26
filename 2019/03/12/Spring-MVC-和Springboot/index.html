@@ -60,24 +60,24 @@
   <meta name="description" content="spring 是一个“引擎”，springmvc 是基于spring的一个mvc框架，springboot是基于spring4的条件注册的一套快速开发整合工具集.">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Spring MVC 和Springboot">
-<meta property="og:url" content="https://quarkljy.github.io/2019/03/15/Spring-MVC-和Springboot/index.html">
+<meta property="og:url" content="https://quarkljy.github.io/2019/03/12/Spring-MVC-和Springboot/index.html">
 <meta property="og:site_name" content="Quark&#39;s Blogs">
 <meta property="og:description" content="spring 是一个“引擎”，springmvc 是基于spring的一个mvc框架，springboot是基于spring4的条件注册的一套快速开发整合工具集.">
 <meta property="og:locale" content="en">
-<meta property="og:image" content="https://quarkljy.github.io/2019/03/15/Spring-MVC-和Springboot/1574250378172.png">
-<meta property="og:image" content="https://quarkljy.github.io/2019/03/15/Spring-MVC-和Springboot/1574251036806.png">
-<meta property="og:image" content="https://quarkljy.github.io/2019/03/15/Spring-MVC-和Springboot/1574251562927.png">
-<meta property="og:image" content="https://quarkljy.github.io/2019/03/15/Spring-MVC-和Springboot/1574251712502.png">
-<meta property="og:image" content="https://quarkljy.github.io/2019/03/15/Spring-MVC-和Springboot/1574257258083.png">
-<meta property="og:image" content="https://quarkljy.github.io/2019/03/15/Spring-MVC-和Springboot/1574257333454.png">
-<meta property="og:image" content="https://quarkljy.github.io/2019/03/15/Spring-MVC-和Springboot/1574256398605.png">
-<meta property="og:image" content="https://quarkljy.github.io/2019/03/15/Spring-MVC-和Springboot/1574257755675.png">
-<meta property="og:updated_time" content="2019-12-26T10:12:06.173Z">
+<meta property="og:image" content="https://quarkljy.github.io/2019/03/12/Spring-MVC-和Springboot/1574250378172.png">
+<meta property="og:image" content="https://quarkljy.github.io/2019/03/12/Spring-MVC-和Springboot/1574251036806.png">
+<meta property="og:image" content="https://quarkljy.github.io/2019/03/12/Spring-MVC-和Springboot/1574251562927.png">
+<meta property="og:image" content="https://quarkljy.github.io/2019/03/12/Spring-MVC-和Springboot/1574251712502.png">
+<meta property="og:image" content="https://quarkljy.github.io/2019/03/12/Spring-MVC-和Springboot/1574257258083.png">
+<meta property="og:image" content="https://quarkljy.github.io/2019/03/12/Spring-MVC-和Springboot/1574257333454.png">
+<meta property="og:image" content="https://quarkljy.github.io/2019/03/12/Spring-MVC-和Springboot/1574256398605.png">
+<meta property="og:image" content="https://quarkljy.github.io/2019/03/12/Spring-MVC-和Springboot/1574257755675.png">
+<meta property="og:updated_time" content="2019-12-26T10:14:16.147Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Spring MVC 和Springboot">
 <meta name="twitter:description" content="spring 是一个“引擎”，springmvc 是基于spring的一个mvc框架，springboot是基于spring4的条件注册的一套快速开发整合工具集.">
-<meta name="twitter:image" content="https://quarkljy.github.io/2019/03/15/Spring-MVC-和Springboot/1574250378172.png">
-  <link rel="canonical" href="https://quarkljy.github.io/2019/03/15/Spring-MVC-和Springboot/">
+<meta name="twitter:image" content="https://quarkljy.github.io/2019/03/12/Spring-MVC-和Springboot/1574250378172.png">
+  <link rel="canonical" href="https://quarkljy.github.io/2019/03/12/Spring-MVC-和Springboot/">
 
 
 <script id="page-configurations">
@@ -249,7 +249,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="en">
-    <link itemprop="mainEntityOfPage" href="https://quarkljy.github.io/2019/03/15/Spring-MVC-和Springboot/">
+    <link itemprop="mainEntityOfPage" href="https://quarkljy.github.io/2019/03/12/Spring-MVC-和Springboot/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Quark">
@@ -280,7 +280,7 @@
                 
               
 
-              <time title="Created: 2019-03-15 00:59:25" itemprop="dateCreated datePublished" datetime="2019-03-15T00:59:25+08:00">2019-03-15</time>
+              <time title="Created: 2019-03-12 00:59:25" itemprop="dateCreated datePublished" datetime="2019-03-12T00:59:25+08:00">2019-03-12</time>
             </span>
           
             <span class="post-meta-item">
@@ -290,8 +290,8 @@
               <span class="post-meta-item-text">In</span>
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/springboot/" itemprop="url" rel="index">
-                    <span itemprop="name">springboot</span>
+                  <a href="/categories/SpringBoot/" itemprop="url" rel="index">
+                    <span itemprop="name">SpringBoot</span>
                   </a>
                 </span>
 
@@ -328,7 +328,7 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">(1)http://localhost:9999 服务器域名</span><br><span class="line"></span><br><span class="line">(2)SpringMVC部署在服务器(http://localhost:9999)上的web站点</span><br><span class="line"></span><br><span class="line">(3)input-product表示控制器</span><br></pre></td></tr></table></figure>
 
 <p>通过分析，如上url表示为：请求位于服务器localhost:9999上的SpringMVC站点的input-product控制器<strong>(controller层的某个方法)</strong></p>
-<p><img src="/2019/03/15/Spring-MVC-和Springboot/1574250378172.png" alt="1574250378172"></p>
+<p><img src="/2019/03/12/Spring-MVC-和Springboot/1574250378172.png" alt="1574250378172"></p>
 <ol>
 <li><p>DispatcherServlet表示前置控制器，是整个SpringMVC的控制中心。用户发出请求，DispatcherServlet接收请求并拦截请求</p>
 </li>
@@ -344,7 +344,7 @@
 </li>
 <li><p>Controller将具体的执行信息返回给HandlerAdapter,如ModelAndView</p>
 <p>两种modelandview</p>
-<p><img src="/2019/03/15/Spring-MVC-和Springboot/1574251036806.png" alt="1574251036806"></p>
+<p><img src="/2019/03/12/Spring-MVC-和Springboot/1574251036806.png" alt="1574251036806"></p>
 </li>
 <li><p>HandlerAdapter将视图逻辑名或模型传递给DispatcherServlet</p>
 </li>
@@ -363,10 +363,10 @@
 </li>
 <li><p><font color="bolue">执行Controller的方法，返回数据</font>:  <strong>Handler</strong>执行（service和dao层的方法调用），得到数据，把数据放到ModelAndView里。</p>
 <p><strong>存数据</strong>：</p>
-<p>数据包装到Model，看作是往Map添加Key-Value<img src="/2019/03/15/Spring-MVC-和Springboot/1574251562927.png" alt="1574251562927"></p>
+<p>数据包装到Model，看作是往Map添加Key-Value<img src="/2019/03/12/Spring-MVC-和Springboot/1574251562927.png" alt="1574251562927"></p>
 <p><strong>取数据</strong>：</p>
 <p>找到Model的key，然后再取出key对应的value</p>
-<p><img src="/2019/03/15/Spring-MVC-和Springboot/1574251712502.png" alt="1574251712502"></p>
+<p><img src="/2019/03/12/Spring-MVC-和Springboot/1574251712502.png" alt="1574251712502"></p>
 </li>
 <li><p><font color="bolue">生成具体的页面,展示给用户</font>: <strong>Handler</strong>返回的数据<strong>Model</strong>和物理视图<strong>View</strong>给<strong>DispatcherServlet</strong>，然后<strong>DispatcherServlet</strong>把<strong>ModelAndView</strong>传给<strong>ViewReslover</strong>（视图解析器），<strong>ViewReslover</strong>解析后返回具体<strong>View</strong>（视图），<strong>DispatcherServlet</strong>根据View进行渲染视图（即将模型数据填充至视图中），DispatcherServlet响应用户。</p>
 </li>
@@ -383,8 +383,8 @@
 
 <h5 id="3-SpringBoot"><a href="#3-SpringBoot" class="headerlink" title="3. SpringBoot"></a>3. SpringBoot</h5><p>Spring Boot 是在强大的 Spring 帝国生态基础上面发展而来，发明 Spring Boot 不是为了取代 Spring ,是为了让人们更容易的使用 Spring，将目前各家公司开发的比较成熟、经得起实际考验的服务框架组合起来，通过 Spring Boot 风格进行再封装屏蔽掉了复杂的配置和实现原理，最终给开发者留出了一套简单易懂、易部署和易维护的分布式系统开发工具包。</p>
 <h6 id="3-1-自动装配原理"><a href="#3-1-自动装配原理" class="headerlink" title="3.1 自动装配原理"></a>3.1 自动装配原理</h6><p>springboot 以@SpringBootApplication 注解的类的主方法启动，然后按照指定，或者默认的路径进行扫描。取到路径下类上的注解 然后按照注解规定好的规则 进行处理，使用使用默认的配置，application.yml中的配置会覆盖掉默认配置。</p>
-<p><img src="/2019/03/15/Spring-MVC-和Springboot/1574257258083.png" alt="1574257258083"></p>
-<p><img src="/2019/03/15/Spring-MVC-和Springboot/1574257333454.png" alt="1574257333454"></p>
+<p><img src="/2019/03/12/Spring-MVC-和Springboot/1574257258083.png" alt="1574257258083"></p>
+<p><img src="/2019/03/12/Spring-MVC-和Springboot/1574257333454.png" alt="1574257333454"></p>
 <ul>
 <li><p>对自定义类装配的例子</p>
 <p>方式一</p>
@@ -394,14 +394,14 @@
 <li>自定义类（实现setter方法）添加注解@ConfigurationProperties(prefix = “demo”)并确定配置信息前缀，类的属性名要跟application.yml文件的属性名一致</li>
 <li>其他类引用，只需要在该对象上添加@Autowired</li>
 </ol>
-<p><img src="/2019/03/15/Spring-MVC-和Springboot/1574256398605.png" alt="1574256398605"></p>
+<p><img src="/2019/03/12/Spring-MVC-和Springboot/1574256398605.png" alt="1574256398605"></p>
 <p>方式二</p>
 <ol>
 <li>application.yml文件书写相关配置信息</li>
 <li>自定义类上添加注解@Configuration</li>
 <li>属性使用@Value(“${spring.redis.jedis.pool.maxTotal}”)注入</li>
 </ol>
-<p><img src="/2019/03/15/Spring-MVC-和Springboot/1574257755675.png" alt="1574257755675"></p>
+<p><img src="/2019/03/12/Spring-MVC-和Springboot/1574257755675.png" alt="1574257755675"></p>
 </li>
 </ul>
 
@@ -420,8 +420,8 @@
           <div class="post-nav">
             <div class="post-nav-next post-nav-item">
               
-                <a href="/2019/01/11/mysql索引和sql优化/" rel="next" title="mysql索引和sql优化">
-                  <i class="fa fa-chevron-left"></i> mysql索引和sql优化
+                <a href="/2019/03/09/Spring/" rel="next" title="Spring">
+                  <i class="fa fa-chevron-left"></i> Spring
                 </a>
               
             </div>
@@ -430,8 +430,8 @@
 
             <div class="post-nav-prev post-nav-item">
               
-                <a href="/2019/03/19/Spring/" rel="prev" title="Spring">
-                  Spring <i class="fa fa-chevron-right"></i>
+                <a href="/2019/03/25/springboot上用lua脚本操作redis/" rel="prev" title="springboot上用lua脚本操作redis">
+                  springboot上用lua脚本操作redis <i class="fa fa-chevron-right"></i>
                 </a>
               
             </div>
@@ -664,7 +664,7 @@
       repo: 'quarkljy.github.io',
       owner: 'quarkljy',
       admin: ['quarkljy'],
-      id: 'cff8df7d027c543f7c21967d32c77f81',
+      id: 'cb63338cad1ee19744cd99b89a28d156',
         language: 'en',
       
       distractionFreeMode: 'true'
