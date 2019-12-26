@@ -60,20 +60,20 @@
   <meta name="description" content="多线程知识">
 <meta property="og:type" content="article">
 <meta property="og:title" content="多线程">
-<meta property="og:url" content="https://quarkljy.github.io/2018/01/13/多线程/index.html">
+<meta property="og:url" content="https://quarkljy.github.io/2018/12/29/多线程/index.html">
 <meta property="og:site_name" content="Quark&#39;s Blogs">
 <meta property="og:description" content="多线程知识">
 <meta property="og:locale" content="en">
-<meta property="og:image" content="https://quarkljy.github.io/2018/01/13/多线程/1573750504030.png">
-<meta property="og:image" content="https://quarkljy.github.io/2018/01/13/多线程/1573920378159.png">
-<meta property="og:image" content="https://quarkljy.github.io/2018/01/13/多线程/1573824766625.png">
-<meta property="og:image" content="https://quarkljy.github.io/2018/01/13/多线程/1573919319475.png">
-<meta property="og:updated_time" content="2019-11-16T16:25:54.313Z">
+<meta property="og:image" content="https://quarkljy.github.io/2018/12/29/多线程/1573750504030.png">
+<meta property="og:image" content="https://quarkljy.github.io/2018/12/29/多线程/1573920378159.png">
+<meta property="og:image" content="https://quarkljy.github.io/2018/12/29/多线程/1573824766625.png">
+<meta property="og:image" content="https://quarkljy.github.io/2018/12/29/多线程/1573919319475.png">
+<meta property="og:updated_time" content="2019-12-26T09:39:11.759Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="多线程">
 <meta name="twitter:description" content="多线程知识">
-<meta name="twitter:image" content="https://quarkljy.github.io/2018/01/13/多线程/1573750504030.png">
-  <link rel="canonical" href="https://quarkljy.github.io/2018/01/13/多线程/">
+<meta name="twitter:image" content="https://quarkljy.github.io/2018/12/29/多线程/1573750504030.png">
+  <link rel="canonical" href="https://quarkljy.github.io/2018/12/29/多线程/">
 
 
 <script id="page-configurations">
@@ -245,7 +245,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="en">
-    <link itemprop="mainEntityOfPage" href="https://quarkljy.github.io/2018/01/13/多线程/">
+    <link itemprop="mainEntityOfPage" href="https://quarkljy.github.io/2018/12/29/多线程/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Quark">
@@ -276,7 +276,7 @@
                 
               
 
-              <time title="Created: 2018-01-13 14:40:11" itemprop="dateCreated datePublished" datetime="2018-01-13T14:40:11+08:00">2018-01-13</time>
+              <time title="Created: 2018-12-29 14:40:11" itemprop="dateCreated datePublished" datetime="2018-12-29T14:40:11+08:00">2018-12-29</time>
             </span>
           
             <span class="post-meta-item">
@@ -349,11 +349,11 @@
 </ol><a id="more"></a>
 <p><font color="red">运行状态</font>：拿到锁不一定会运行，线程进可运行状态，还得拿到CPU时间片才会真正运行，也即是同步方法运行时要有锁和CPU的时间片。</p>
 <p><strong>锁池和阻塞状态区别</strong>：锁池的里的线程没有持有锁！阻塞状态的线程持有锁！</p>
-<p><img src="/2018/01/13/多线程/1573750504030.png" alt="1573750504030"></p>
+<p><img src="/2018/12/29/多线程/1573750504030.png" alt="1573750504030"></p>
 <h5 id="2-线程常用的方法"><a href="#2-线程常用的方法" class="headerlink" title="2. 线程常用的方法"></a>2. 线程常用的方法</h5><ul>
 <li><p><strong>notify()/notifyAll():</strong> 用synchronized中，notify（）唤醒一个wait（）线程，notifyAll()唤醒所有进入wait（）的线程，<strong>两者调用时候都不时立马释放锁，而是等synchronized里临界区资源执行完毕才会释放锁；</strong>threadB2.notifyAll();也只是通知使用threadB2对象锁的线程，如果其他线程使用的锁不是threadB2，那么其他线程将不会被唤醒。</p>
-<p><img src="/2018/01/13/多线程/1573920378159.png" alt="1573920378159"></p>
-<p><img src="/2018/01/13/多线程/1573824766625.png" alt="1573824766625"></p>
+<p><img src="/2018/12/29/多线程/1573920378159.png" alt="1573920378159"></p>
+<p><img src="/2018/12/29/多线程/1573824766625.png" alt="1573824766625"></p>
 </li>
 </ul>
 <ul>
@@ -374,7 +374,7 @@
   <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ThreadA2</span> <span class="keyword">extends</span> <span class="title">Thread</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> ThreadB2 threadB2;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">ThreadA2</span><span class="params">(ThreadB2 threadB2)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.threadB2 = threadB2;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">synchronized</span> (threadB2) &#123;</span><br><span class="line">         </span><br><span class="line">                threadB2.join(); </span><br><span class="line">            <span class="comment">//讲究锁的时候，threadB2是对象！！！讲到运行时候，threadB2是运行的线程！！</span></span><br><span class="line">            <span class="comment">//锁和线程是两码事</span></span><br><span class="line">            </span><br><span class="line">            <span class="comment">/*</span></span><br><span class="line"><span class="comment">            1）线程threadA2threadA2执行的！ 先执行，给对象threadB2加锁标志，得以执行</span></span><br><span class="line"><span class="comment">            代码块 synchronized (threadB2) &#123; </span></span><br><span class="line"><span class="comment">             //todo somrthing</span></span><br><span class="line"><span class="comment">             &#125;</span></span><br><span class="line"><span class="comment">             </span></span><br><span class="line"><span class="comment">             2）执行到 代码块 threadB2.join(); 时，会使得threadB2这个对象上的锁标志擦除</span></span><br><span class="line"><span class="comment">             3）A线程的失去锁，进入等待状态。threadB2对象没有锁标志了，此时 threadB2和threadC2两个线程可以竞争给thread2加锁，谁能成功加锁就可以运行！</span></span><br><span class="line"><span class="comment">             谁加锁谁才有权力去解锁，所以threadA2线程可以执行threadB2.join()方法不报错且正常释放锁 ，threadB2.join()这里不是threadB2线程执行的，是threadA2执行的！</span></span><br><span class="line"><span class="comment">             </span></span><br><span class="line"><span class="comment">             4)threadA2执行完毕会进入等待状态，进入threadB2的等待池！！！，只有threadB2执行完threadA2才可以几所执行。</span></span><br><span class="line"><span class="comment">             </span></span><br><span class="line"><span class="comment">             总之，线程和锁对象是一起时，要分得清他们是！！！</span></span><br><span class="line"><span class="comment">            */</span></span><br><span class="line">            </span><br><span class="line">            </span><br><span class="line">              </span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 
-<p>  <img src="/2018/01/13/多线程/1573919319475.png" alt="1573919319475"></p>
+<p>  <img src="/2018/12/29/多线程/1573919319475.png" alt="1573919319475"></p>
 <ul>
 <li>不释放t1线程的锁的情况：<strong>t1线程的对象锁和t2线程的对象锁不一样</strong>，在t1线程里运行t2.join(),会让t1进入阻塞状态，但是t1不会失去锁（<strong>释放的是t2线程监视的对象锁</strong>），等t2线程运行结束，t1会继续运行。</li>
 <li>释放t1线程的锁的情况：<strong>t1线程的对象锁和t2线程需要的对象锁一样</strong>，在t1线程中运行t2.join(),t1会释放锁，t2或者其他竞争该对象锁的线程随机获得该对象锁，直到t2线程运行结束，t1才会继续运行。</li>
@@ -422,14 +422,18 @@
           <div class="post-nav">
             <div class="post-nav-next post-nav-item">
               
+                <a href="/2018/01/17/JUC多线程/" rel="next" title="JUC多线程">
+                  <i class="fa fa-chevron-left"></i> JUC多线程
+                </a>
+              
             </div>
 
             <span class="post-nav-divider"></span>
 
             <div class="post-nav-prev post-nav-item">
               
-                <a href="/2018/01/17/JUC多线程/" rel="prev" title="JUC多线程">
-                  JUC多线程 <i class="fa fa-chevron-right"></i>
+                <a href="/2019/01/01/mysql的事务和隔离级别以及锁/" rel="prev" title="mysql的事务和隔离级别以及锁">
+                  mysql的事务和隔离级别以及锁 <i class="fa fa-chevron-right"></i>
                 </a>
               
             </div>
@@ -498,7 +502,7 @@
         
           <a href="/archives/">
         
-          <span class="site-state-item-count">13</span>
+          <span class="site-state-item-count">12</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -662,7 +666,7 @@
       repo: 'quarkljy.github.io',
       owner: 'quarkljy',
       admin: ['quarkljy'],
-      id: '1dcfd5984dd4fdfb09fbcb71065836b9',
+      id: '1f6f242188f1f320e9ae248f6416a845',
         language: 'en',
       
       distractionFreeMode: 'true'
