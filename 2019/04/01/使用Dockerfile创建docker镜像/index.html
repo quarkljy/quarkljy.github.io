@@ -77,7 +77,7 @@
 <meta property="og:image" content="https://quarkljy.github.io/2019/04/01/使用Dockerfile创建docker镜像/1574884339140.png">
 <meta property="og:image" content="https://quarkljy.github.io/2019/04/01/使用Dockerfile创建docker镜像/1575023859723.png">
 <meta property="og:image" content="https://quarkljy.github.io/2019/04/01/使用Dockerfile创建docker镜像/1575023898613.png">
-<meta property="og:updated_time" content="2019-12-26T09:29:43.898Z">
+<meta property="og:updated_time" content="2019-12-28T15:42:45.350Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="使用Dockerfile创建docker镜像">
 <meta name="twitter:description" content="总结Dockerfile创建的docker镜像的常用命令">
@@ -486,6 +486,8 @@
 <p><img src="/2019/04/01/使用Dockerfile创建docker镜像/1575023859723.png" alt="1575023859723"></p>
 <p><img src="/2019/04/01/使用Dockerfile创建docker镜像/1575023898613.png" alt="1575023898613"></p>
 <p>不指定持久化卷，就需要在run的时候指定<code>-v 宿主机文件夹1：容器文件夹2</code>  </p>
+<h5 id="补充2"><a href="#补充2" class="headerlink" title="补充2"></a>补充2</h5><p>总之要理解命令何时执行</p>
+<p>Dockerfile文件的的CMD和ENTRYPOINT命令是在<strong>运行成容器</strong>的时候才会执行的，其他的几乎都是构建镜像就直接执行。CMD里可以穿参数给ENTRYPOINT。</p>
 
     </div>
 
@@ -563,7 +565,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-前言"><span class="nav-text">1. 前言</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Dockerfile文件的命令"><span class="nav-text">Dockerfile文件的命令</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#补充"><span class="nav-text">补充</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-前言"><span class="nav-text">1. 前言</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Dockerfile文件的命令"><span class="nav-text">Dockerfile文件的命令</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#补充"><span class="nav-text">补充</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#补充2"><span class="nav-text">补充2</span></a></li></ol></div>
         
       </div>
       <!--/noindex-->
@@ -582,7 +584,7 @@
         
           <a href="/archives/">
         
-          <span class="site-state-item-count">15</span>
+          <span class="site-state-item-count">16</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>

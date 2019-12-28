@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+
+
+
+
+
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.4.1">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.4.1" color="#222">
+
+<link rel="stylesheet" href="/css/main.css?v=7.4.1">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2">
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '7.4.1',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":"default"},
+    back2top: {"enable":true,"sidebar":true,"scrollpercent":true},
+    bookmark: {"enable":true,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: 'Copy',
+      copy_success: 'Copied',
+      copy_failure: 'Copy failed'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="把本地项目打包成镜像并上传到私有仓库。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="远程服务器搭建docker私有仓库并使用maven上传镜像">
+<meta property="og:url" content="https://quarkljy.github.io/2019/05/28/远程服务器搭建docker私有仓库并使用maven上传镜像/index.html">
+<meta property="og:site_name" content="Quark&#39;s Blogs">
+<meta property="og:description" content="把本地项目打包成镜像并上传到私有仓库。">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="https://quarkljy.github.io/2019/05/28/远程服务器搭建docker私有仓库并使用maven上传镜像/1577548770962.png">
+<meta property="og:image" content="https://quarkljy.github.io/2019/05/28/远程服务器搭建docker私有仓库并使用maven上传镜像/1577549551731.png">
+<meta property="og:image" content="https://quarkljy.github.io/2019/05/28/远程服务器搭建docker私有仓库并使用maven上传镜像/1577549663508.png">
+<meta property="og:image" content="https://quarkljy.github.io/2019/05/28/远程服务器搭建docker私有仓库并使用maven上传镜像/1577550395412.png">
+<meta property="og:image" content="https://quarkljy.github.io/2019/05/28/远程服务器搭建docker私有仓库并使用maven上传镜像/1577550653783.png">
+<meta property="og:image" content="https://quarkljy.github.io/2019/05/28/远程服务器搭建docker私有仓库并使用maven上传镜像/1577551976762.png">
+<meta property="og:image" content="https://quarkljy.github.io/2019/05/28/远程服务器搭建docker私有仓库并使用maven上传镜像/1577552088066.png">
+<meta property="og:image" content="https://quarkljy.github.io/2019/05/28/远程服务器搭建docker私有仓库并使用maven上传镜像/1577552176519.png">
+<meta property="og:image" content="https://quarkljy.github.io/2019/05/28/远程服务器搭建docker私有仓库并使用maven上传镜像/1577552238008.png">
+<meta property="og:image" content="https://quarkljy.github.io/2019/05/28/远程服务器搭建docker私有仓库并使用maven上传镜像/1577552617000.png">
+<meta property="og:image" content="https://quarkljy.github.io/2019/05/28/远程服务器搭建docker私有仓库并使用maven上传镜像/1577552403346.png">
+<meta property="og:image" content="https://quarkljy.github.io/2019/05/28/远程服务器搭建docker私有仓库并使用maven上传镜像/1577552917993.png">
+<meta property="og:image" content="https://quarkljy.github.io/2019/05/28/远程服务器搭建docker私有仓库并使用maven上传镜像/1577553012325.png">
+<meta property="og:updated_time" content="2019-12-28T17:13:35.741Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="远程服务器搭建docker私有仓库并使用maven上传镜像">
+<meta name="twitter:description" content="把本地项目打包成镜像并上传到私有仓库。">
+<meta name="twitter:image" content="https://quarkljy.github.io/2019/05/28/远程服务器搭建docker私有仓库并使用maven上传镜像/1577548770962.png">
+  <link rel="canonical" href="https://quarkljy.github.io/2019/05/28/远程服务器搭建docker私有仓库并使用maven上传镜像/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>远程服务器搭建docker私有仓库并使用maven上传镜像 | Quark's Blogs</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Quark's Blogs</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">One Week, One Blog</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+      
+      
+        
+        
+        <li class="menu-item menu-item-home">
+      
+    
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+      
+    
+      
+      
+        
+        
+        <li class="menu-item menu-item-archives">
+      
+    
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+      
+    
+      
+      
+        
+        
+        <li class="menu-item menu-item-categories">
+      
+    
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>Categories</a>
+
+  </li>
+      
+    
+      
+      
+        
+        
+        <li class="menu-item menu-item-about">
+      
+    
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>About</a>
+
+  </li>
+      
+    
+      
+      
+        
+        
+        <li class="menu-item menu-item-tags">
+      
+    
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>Tags</a>
+
+  </li>
+      
+    
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+  <a href="https://github.com/quarkljy" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+            
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="en">
+    <link itemprop="mainEntityOfPage" href="https://quarkljy.github.io/2019/05/28/远程服务器搭建docker私有仓库并使用maven上传镜像/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Quark">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Quark's Blogs">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            远程服务器搭建docker私有仓库并使用maven上传镜像
+            
+
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              
+                
+              
+
+              <time title="Created: 2019-05-28 21:49:47" itemprop="dateCreated datePublished" datetime="2019-05-28T21:49:47+08:00">2019-05-28</time>
+            </span>
+          
+
+          
+            <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">Views: </span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+          
+            <div class="post-description">把本地项目打包成镜像并上传到私有仓库。</div>
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h5 id="1-前言"><a href="#1-前言" class="headerlink" title="1. 前言"></a>1. 前言</h5><p>有时候需要把本地的项目文件快速部署到云服务上，使用docker部署是个不错方法。因此搭建私仓库私有仓库实现快速部署。</p><h5 id="2-远程服务器搭建私有仓库"><a href="#2-远程服务器搭建私有仓库" class="headerlink" title="2. 远程服务器搭建私有仓库"></a>2. 远程服务器搭建私有仓库</h5><h6 id="2-1-创建私有仓库"><a href="#2-1-创建私有仓库" class="headerlink" title="2.1 创建私有仓库"></a>2.1 创建私有仓库</h6><ul>
+<li><p>拉取运行<code>registry</code>镜像</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">docker run -d \</span><br><span class="line"> -p 5000:5000 \</span><br><span class="line"> --restart=always \</span><br><span class="line"> --name registry \</span><br><span class="line"> -v /quark/registry:/var/lib/registry \</span><br><span class="line"> registry:2</span><br></pre></td></tr></table></figure>
+
+<p><code>-p 5000:5000 \</code>参数可以加，也可以不加，这个是把私有仓库递给公网的端口。</p>
+</li>
+<li><p>修改一些配置文件</p>
+<p>如果你的registry开放了5000端口，则需要修改/etc/docker/daemon.json文件</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/docker/daemon.json</span><br></pre></td></tr></table></figure>
+
+<p>给这个json文件添加一行，ip地址要修改成你自己的服务器的公网地址</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;<span class="attr">"insecure-registries"</span>: [<span class="string">"106.52.114.205:5000"</span>]&#125;</span><br></pre></td></tr></table></figure>
+
+<p>再修改另一个文件</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim /usr/lib/systemd/system/docker.service</span><br></pre></td></tr></table></figure>
+
+<p>将以下这行数据修改</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ExecStart=/usr/bin/dockerd -H fd://  --containerd=/run/containerd/containerd.sock</span><br></pre></td></tr></table></figure>
+
+<p>改成</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ExecStart=/usr/bin/dockerd -H fd:// -H tcp://0.0.0.0:2375 -H unix:///var/run/docker.sock --containerd=/run/containerd/containerd.sock</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2019/05/28/远程服务器搭建docker私有仓库并使用maven上传镜像/1577548770962.png" alt="1577548770962"></p>
+<p>这里有个坑，官网说的是改为</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ExecStart=/usr/bin/dockerd -H fd:// -H tcp://127.0.0.1:2375 -H unix:///var/run/docker.sock --containerd=/run/containerd/containerd.sock</span><br></pre></td></tr></table></figure>
+
+<p>官方文档中写的ctp://127.0.0.1:2375只能本地访问。 需要改成tcp://0.0.0.0:2375。 127.0.0.1是本地接口，只能本地调用。 而0.0.0.0代表本机所有网络接口。</p>
+<p><code>0.0.0.0:2375</code>表示任何都可以打包和上传镜像，<code>0.0.0.0</code>表示任何ipv4地址，所以我们可以在本地window的idea里用maven插件打包并上传镜像</p>
+<p>注意，此种方式暴露2375端，容易被黑客扫描到入侵安装挖币程序，因此谨慎使用。生产环境是不会这么部署docker私有仓库，我们自己用是可以的</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">systemctl daemon-reload</span><br><span class="line">systemctl restart docker</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul><a id="more"></a>
+
+<h6 id="2-2-打包上传镜像"><a href="#2-2-打包上传镜像" class="headerlink" title="2.2 打包上传镜像"></a>2.2 打包上传镜像</h6><p>项目的pom文件添加插件</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">build</span>&gt;</span></span><br><span class="line">       <span class="tag">&lt;<span class="name">plugins</span>&gt;</span></span><br><span class="line">           <span class="tag">&lt;<span class="name">plugin</span>&gt;</span></span><br><span class="line">               <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">               <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-maven-plugin<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">           <span class="tag">&lt;/<span class="name">plugin</span>&gt;</span></span><br><span class="line">           <span class="tag">&lt;<span class="name">plugin</span>&gt;</span></span><br><span class="line">               <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.spotify<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">               <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>docker-maven-plugin<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">               <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.1.0<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">               <span class="tag">&lt;<span class="name">executions</span>&gt;</span></span><br><span class="line">                   <span class="tag">&lt;<span class="name">execution</span>&gt;</span></span><br><span class="line">                       <span class="tag">&lt;<span class="name">id</span>&gt;</span>build-image<span class="tag">&lt;/<span class="name">id</span>&gt;</span></span><br><span class="line">                       <span class="tag">&lt;<span class="name">phase</span>&gt;</span>package<span class="tag">&lt;/<span class="name">phase</span>&gt;</span></span><br><span class="line">                       <span class="tag">&lt;<span class="name">goals</span>&gt;</span></span><br><span class="line">                           <span class="tag">&lt;<span class="name">goal</span>&gt;</span>build<span class="tag">&lt;/<span class="name">goal</span>&gt;</span></span><br><span class="line">                       <span class="tag">&lt;/<span class="name">goals</span>&gt;</span></span><br><span class="line">                   <span class="tag">&lt;/<span class="name">execution</span>&gt;</span></span><br><span class="line">               <span class="tag">&lt;/<span class="name">executions</span>&gt;</span></span><br><span class="line">               <span class="tag">&lt;<span class="name">configuration</span>&gt;</span></span><br><span class="line">                   <span class="tag">&lt;<span class="name">imageName</span>&gt;</span>quark/$&#123;project.artifactId&#125;:$&#123;project.version&#125;<span class="tag">&lt;/<span class="name">imageName</span>&gt;</span></span><br><span class="line">                   <span class="tag">&lt;<span class="name">dockerHost</span>&gt;</span>http://106.52.114.205:2375<span class="tag">&lt;/<span class="name">dockerHost</span>&gt;</span></span><br><span class="line">                   <span class="tag">&lt;<span class="name">baseImage</span>&gt;</span>openjdk:8-jre<span class="tag">&lt;/<span class="name">baseImage</span>&gt;</span></span><br><span class="line">                   <span class="comment">&lt;!--                    不能是 /dev， 容器里/dev文件夹下有其他的文件A，直接挂载到宿主机，</span></span><br><span class="line"><span class="comment">                   会使得容器里的系统找不到运行的文件A,/dev/spring-logs文件夹是空文件夹，可以直接挂载宿主机的外的任意空文件夹/quark/dev/log下，容器内的程序的日志会直接写到宿主机的/quark/dev/log下--&gt;</span></span><br><span class="line">                   <span class="tag">&lt;<span class="name">volumes</span>&gt;</span>/dev/spring-logs<span class="tag">&lt;/<span class="name">volumes</span>&gt;</span></span><br><span class="line">                   <span class="tag">&lt;<span class="name">entryPoint</span>&gt;</span>["java", "-jar", "-Dspring.profiles.active=dev","/$&#123;project.build.finalName&#125;.jar"]</span><br><span class="line">                   <span class="tag">&lt;/<span class="name">entryPoint</span>&gt;</span></span><br><span class="line">                   <span class="tag">&lt;<span class="name">resources</span>&gt;</span></span><br><span class="line">                       <span class="tag">&lt;<span class="name">resource</span>&gt;</span></span><br><span class="line">                           <span class="tag">&lt;<span class="name">targetPath</span>&gt;</span>/<span class="tag">&lt;/<span class="name">targetPath</span>&gt;</span></span><br><span class="line">                           <span class="tag">&lt;<span class="name">directory</span>&gt;</span>$&#123;project.build.directory&#125;<span class="tag">&lt;/<span class="name">directory</span>&gt;</span></span><br><span class="line">                           <span class="tag">&lt;<span class="name">include</span>&gt;</span>$&#123;project.build.finalName&#125;.jar<span class="tag">&lt;/<span class="name">include</span>&gt;</span></span><br><span class="line">                       <span class="tag">&lt;/<span class="name">resource</span>&gt;</span></span><br><span class="line">                   <span class="tag">&lt;/<span class="name">resources</span>&gt;</span></span><br><span class="line">               <span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br><span class="line">           <span class="tag">&lt;/<span class="name">plugin</span>&gt;</span></span><br><span class="line">       <span class="tag">&lt;/<span class="name">plugins</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;/<span class="name">build</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">project</span> <span class="attr">xmlns</span>=<span class="string">"http://maven.apache.org/POM/4.0.0"</span></span></span><br><span class="line"><span class="tag">         <span class="attr">xmlns:xsi</span>=<span class="string">"http://www.w3.org/2001/XMLSchema-instance"</span></span></span><br><span class="line"><span class="tag">         <span class="attr">xsi:schemaLocation</span>=<span class="string">"http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!--注意，这个父类需要根据你自己的情况修改--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">parent</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>springboot-learning<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.qaurk.springboot-learning<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.0.0-SNAPSHOT<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">parent</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">modelVersion</span>&gt;</span>4.0.0<span class="tag">&lt;/<span class="name">modelVersion</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.qaurk.springboot-learning<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>redis-sentinel<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.0.0-SNAPSHOT<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">properties</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">java.version</span>&gt;</span>1.8<span class="tag">&lt;/<span class="name">java.version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">properties</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependencies</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- https://mvnrepository.com/artifact/com.alibaba/fastjson --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.alibaba<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>fastjson<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.2.62<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-web<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.projectlombok<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>lombok<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">optional</span>&gt;</span>true<span class="tag">&lt;/<span class="name">optional</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>redis.clients<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>jedis<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">version</span>&gt;</span>3.1.0<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-test<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">scope</span>&gt;</span>test<span class="tag">&lt;/<span class="name">scope</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependencies</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">build</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">plugins</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">plugin</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-maven-plugin<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">plugin</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">plugin</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.spotify<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>docker-maven-plugin<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.1.0<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">executions</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">execution</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">id</span>&gt;</span>build-image<span class="tag">&lt;/<span class="name">id</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">phase</span>&gt;</span>package<span class="tag">&lt;/<span class="name">phase</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">goals</span>&gt;</span></span><br><span class="line">                            <span class="tag">&lt;<span class="name">goal</span>&gt;</span>build<span class="tag">&lt;/<span class="name">goal</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;/<span class="name">goals</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;/<span class="name">execution</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="name">executions</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">configuration</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">imageName</span>&gt;</span>quark/$&#123;project.artifactId&#125;:$&#123;project.version&#125;<span class="tag">&lt;/<span class="name">imageName</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">dockerHost</span>&gt;</span>http://106.52.114.205:2375<span class="tag">&lt;/<span class="name">dockerHost</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">baseImage</span>&gt;</span>openjdk:8-jre<span class="tag">&lt;/<span class="name">baseImage</span>&gt;</span></span><br><span class="line">                    <span class="comment">&lt;!--                    一一定要是这个，不能是 /dev， 容器里/dev文件夹下有其他的文件A，直接挂载到宿主机，</span></span><br><span class="line"><span class="comment">                    会使得容器里的系统找不到运行的文件A,/dev/spring-logs文件夹是空文件夹，可以直接挂载宿主机的外的任意空文件夹/quark/dev/log下，容器内的程序的日志会直接写到宿主机的/quark/dev/log下--&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">volumes</span>&gt;</span>/dev/spring-logs<span class="tag">&lt;/<span class="name">volumes</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">entryPoint</span>&gt;</span>["java", "-jar", "-Dspring.profiles.active=dev","/$&#123;project.build.finalName&#125;.jar"]</span><br><span class="line">                    <span class="tag">&lt;/<span class="name">entryPoint</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">resources</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">resource</span>&gt;</span></span><br><span class="line">                            <span class="tag">&lt;<span class="name">targetPath</span>&gt;</span>/<span class="tag">&lt;/<span class="name">targetPath</span>&gt;</span></span><br><span class="line">                            <span class="tag">&lt;<span class="name">directory</span>&gt;</span>$&#123;project.build.directory&#125;<span class="tag">&lt;/<span class="name">directory</span>&gt;</span></span><br><span class="line">                            <span class="tag">&lt;<span class="name">include</span>&gt;</span>$&#123;project.build.finalName&#125;.jar<span class="tag">&lt;/<span class="name">include</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;/<span class="name">resource</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;/<span class="name">resources</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">plugin</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">plugins</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">build</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">project</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>使用maven打包上传，如图所示</p>
+<p><img src="/2019/05/28/远程服务器搭建docker私有仓库并使用maven上传镜像/1577549551731.png" alt="1577549551731"></p>
+<p>再到服务器查看镜像，看到镜像存在</p>
+<p><img src="/2019/05/28/远程服务器搭建docker私有仓库并使用maven上传镜像/1577549663508.png" alt="1577549663508"></p>
+<h5 id="3-部署运行镜像并测试"><a href="#3-部署运行镜像并测试" class="headerlink" title="3. 部署运行镜像并测试"></a>3. 部署运行镜像并测试</h5><h6 id="3-1编写部署需要的文件"><a href="#3-1编写部署需要的文件" class="headerlink" title="3.1编写部署需要的文件"></a>3.1编写部署需要的文件</h6><p>跟上一篇的几乎一模一样</p>
+<ul>
+<li><p><strong>Redis集群的docker-compose.yml</strong></p>
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">version:</span> <span class="string">'3'</span></span><br><span class="line"><span class="attr">services:</span></span><br><span class="line"><span class="attr">  master:</span></span><br><span class="line"><span class="attr">    image:</span> <span class="string">redis</span></span><br><span class="line"><span class="attr">    container_name:</span> <span class="string">redis-master</span></span><br><span class="line">    <span class="comment">#--masterauth 123456  开始的主机也要传入认证密码，不然一旦主从切换后，变成从机，就无法连接上新主机</span></span><br><span class="line"><span class="attr">    command:</span> <span class="string">redis-server</span> <span class="bullet">--requirepass</span> <span class="number">123456</span> <span class="bullet">--masterauth</span> <span class="number">123456</span> <span class="bullet">--port</span> <span class="number">6380</span></span><br><span class="line"><span class="attr">    network_mode:</span> <span class="string">host</span></span><br><span class="line"><span class="attr">  slave1:</span></span><br><span class="line"><span class="attr">    image:</span> <span class="string">redis</span>                <span class="comment">## 镜像</span></span><br><span class="line"><span class="attr">    container_name:</span> <span class="string">redis-slave-1</span></span><br><span class="line">    <span class="comment"># --slaveof 106.52.114.205 6379 要填写外网ip，否则就用内网ip，本地window会连不上服务器的redis，因为哨兵返回的ip是内网的ip172.18.0.2 ，</span></span><br><span class="line">    <span class="comment">#而对windows来说，172.18.0.2 是它本地的，并不是远程服务器的，172.18.0.2段的ip都是绑定本地，连接这个只会连到本地，无法给别人远程访问</span></span><br><span class="line">    <span class="comment">#因为是使用host模式，所以必须传入新的端口，否则端口占用，会使得容器启动失败</span></span><br><span class="line">    <span class="comment">#command 对应CMD的参数 CMD的参数会传给 docker-entrypoint.sh</span></span><br><span class="line"><span class="attr">    command:</span> <span class="string">redis-server</span> <span class="bullet">--slaveof</span> <span class="number">106.52</span><span class="number">.114</span><span class="number">.205</span> <span class="number">6380</span> <span class="bullet">--requirepass</span> <span class="number">123456</span> <span class="bullet">--masterauth</span> <span class="number">123456</span> <span class="bullet">--port</span> <span class="number">6381</span></span><br><span class="line"><span class="attr">    depends_on:</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">master</span></span><br><span class="line">    <span class="comment">#网络模式为直连，跟宿主机公用一个网络</span></span><br><span class="line"><span class="attr">    network_mode:</span> <span class="string">host</span></span><br><span class="line"><span class="attr">  slave2:</span></span><br><span class="line"><span class="attr">    image:</span> <span class="string">redis</span>                <span class="comment">## 镜像</span></span><br><span class="line"><span class="attr">    container_name:</span> <span class="string">redis-slave-2</span></span><br><span class="line">    <span class="comment">#传入的命令和参数</span></span><br><span class="line"><span class="attr">    command:</span> <span class="string">redis-server</span> <span class="bullet">--slaveof</span> <span class="number">106.52</span><span class="number">.114</span><span class="number">.205</span> <span class="number">6380</span> <span class="bullet">--requirepass</span> <span class="number">123456</span> <span class="bullet">--masterauth</span> <span class="number">123456</span> <span class="bullet">--port</span> <span class="number">6382</span></span><br><span class="line">    <span class="comment"># 要确定启动顺序</span></span><br><span class="line"><span class="attr">    depends_on:</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">master</span></span><br><span class="line"><span class="attr">    network_mode:</span> <span class="string">host</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>编写哨兵的配置文件</strong></p>
+<p>sentinel1.conf</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">port 26380</span><br><span class="line">dir /tmp</span><br><span class="line">sentinel monitor mymaster 106.52.114.205 6380 2</span><br><span class="line">sentinel auth-pass mymaster 123456</span><br><span class="line">sentinel down-after-milliseconds mymaster 30000</span><br><span class="line">sentinel parallel-syncs mymaster 1</span><br><span class="line">sentinel failover-timeout mymaster 10000</span><br><span class="line">sentinel deny-scripts-reconfig yes</span><br></pre></td></tr></table></figure>
+
+<p>sentinel2.conf</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">port 26381</span><br><span class="line">dir /tmp</span><br><span class="line">sentinel monitor mymaster 106.52.114.205 6380 2</span><br><span class="line">sentinel auth-pass mymaster 123456</span><br><span class="line">sentinel down-after-milliseconds mymaster 30000</span><br><span class="line">sentinel parallel-syncs mymaster 1</span><br><span class="line">sentinel failover-timeout mymaster 10000</span><br><span class="line">sentinel deny-scripts-reconfig yes</span><br></pre></td></tr></table></figure>
+
+<p>sentinel3.conf</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">port 26382</span><br><span class="line">dir /tmp</span><br><span class="line">sentinel monitor mymaster 106.52.114.205 6380 2</span><br><span class="line">sentinel auth-pass mymaster 123456</span><br><span class="line">sentinel down-after-milliseconds mymaster 30000</span><br><span class="line">sentinel parallel-syncs mymaster 1</span><br><span class="line">sentinel failover-timeout mymaster 10000</span><br><span class="line">sentinel deny-scripts-reconfig yes</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>哨兵集群的docker-compose.yml</strong></p>
+<p>注意，这里添加我们的springboot项目镜像运行命令</p>
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">version:</span> <span class="string">'3'</span></span><br><span class="line"><span class="attr">services:</span></span><br><span class="line"><span class="attr">  sentinel1:</span></span><br><span class="line"><span class="attr">    image:</span> <span class="string">redis</span>       <span class="comment">## 镜像</span></span><br><span class="line"><span class="attr">    container_name:</span> <span class="string">redis-sentinel-1</span></span><br><span class="line"><span class="attr">    command:</span> <span class="string">redis-sentinel</span> <span class="string">/usr/local/etc/redis/sentinel.conf</span></span><br><span class="line"><span class="attr">    volumes:</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">./sentinel1.conf:/usr/local/etc/redis/sentinel.conf</span></span><br><span class="line"><span class="attr">    network_mode:</span> <span class="string">host</span></span><br><span class="line"><span class="attr">  sentinel2:</span></span><br><span class="line"><span class="attr">    image:</span> <span class="string">redis</span>                <span class="comment">## 镜像</span></span><br><span class="line"><span class="attr">    container_name:</span> <span class="string">redis-sentinel-2</span></span><br><span class="line"><span class="attr">    command:</span> <span class="string">redis-sentinel</span> <span class="string">/usr/local/etc/redis/sentinel.conf</span></span><br><span class="line"><span class="attr">    volumes:</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">./sentinel2.conf:/usr/local/etc/redis/sentinel.conf</span></span><br><span class="line"><span class="attr">    network_mode:</span> <span class="string">host</span></span><br><span class="line"><span class="attr">  sentinel3:</span></span><br><span class="line"><span class="attr">    image:</span> <span class="string">redis</span>                <span class="comment">## 镜像</span></span><br><span class="line"><span class="attr">    container_name:</span> <span class="string">redis-sentinel-3</span></span><br><span class="line"><span class="attr">    command:</span> <span class="string">redis-sentinel</span> <span class="string">/usr/local/etc/redis/sentinel.conf</span></span><br><span class="line"><span class="attr">    volumes:</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">./sentinel3.conf:/usr/local/etc/redis/sentinel.conf</span></span><br><span class="line"><span class="attr">    network_mode:</span> <span class="string">host</span></span><br><span class="line"><span class="attr">  java-demo:</span></span><br><span class="line"><span class="attr">    image:</span> <span class="string">quark/redis-sentinel:1.0.0-SNAPSHOT</span></span><br><span class="line"><span class="attr">    container_name:</span> <span class="string">my-springboot-redis</span></span><br><span class="line"><span class="attr">    volumes:</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">/quark/dev/logs/:/dev/spring-logs</span></span><br><span class="line"><span class="attr">    ports:</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">"8088:8088"</span></span><br><span class="line"><span class="attr">    depends_on:</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">sentinel1</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">sentinel2</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">sentinel3</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>启动脚本</strong></p>
+<p>容器启动脚本start.sh</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span>!/bin/sh</span><br><span class="line">echo "开始执行"</span><br><span class="line">echo "开始搭建redis主从集群"</span><br><span class="line">docker-compose up -d</span><br><span class="line">echo "redis主从集群搭建完毕"</span><br><span class="line">cd sentinel</span><br><span class="line">echo "进入到sentinel目录"</span><br><span class="line">echo "开始搭建哨兵集群"</span><br><span class="line">docker-compose up -d</span><br><span class="line">echo "哨兵集群搭建完毕"</span><br><span class="line">echo "执行成功"</span><br><span class="line">docker ps</span><br><span class="line">docker logs -f my-springboot-redis</span><br></pre></td></tr></table></figure>
+
+<p>容器清除脚本stop.sh</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span>!/bin/sh</span><br><span class="line">echo "开始执行"</span><br><span class="line">docker stop redis-master</span><br><span class="line">docker stop redis-slave-1</span><br><span class="line">docker stop redis-slave-2</span><br><span class="line"></span><br><span class="line">docker stop redis-sentinel-1</span><br><span class="line">docker stop redis-sentinel-2</span><br><span class="line">docker stop redis-sentinel-3</span><br><span class="line">docker my-springboot-redis</span><br><span class="line"></span><br><span class="line">docker rm redis-master</span><br><span class="line">docker rm redis-slave-1</span><br><span class="line">docker rm redis-slave-2</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">docker rm redis-sentinel-1</span><br><span class="line">docker rm redis-sentinel-2</span><br><span class="line">docker rm redis-sentinel-3</span><br><span class="line">docker rm my-springboot-redis</span><br><span class="line"></span><br><span class="line">echo "执行成功"</span><br></pre></td></tr></table></figure>
+
+<p>容器重启脚本run.sh</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span>!/bin/sh</span><br><span class="line">echo "开始执行"</span><br><span class="line">docker stop redis-master</span><br><span class="line">docker stop redis-slave-1</span><br><span class="line">docker stop redis-slave-2</span><br><span class="line"></span><br><span class="line">docker stop redis-sentinel-1</span><br><span class="line">docker stop redis-sentinel-2</span><br><span class="line">docker stop redis-sentinel-3</span><br><span class="line">docker my-springboot-redis</span><br><span class="line"></span><br><span class="line">docker start redis-master</span><br><span class="line">docker start redis-slave-1</span><br><span class="line">docker start redis-slave-2</span><br><span class="line"></span><br><span class="line">docker start redis-sentinel-1</span><br><span class="line">docker start redis-sentinel-2</span><br><span class="line">docker start redis-sentinel-3</span><br><span class="line">docker start my-springboot-redis</span><br><span class="line"></span><br><span class="line">echo "执行成功"</span><br><span class="line">docker ps</span><br><span class="line">docker logs -f my-springboot-redis</span><br></pre></td></tr></table></figure>
+
+<p>注意**：脚本的必须是Unix(LF)的，换行的符号是\n。不然脚本执行的时候会报错</p>
+<p><img src="/2019/05/28/远程服务器搭建docker私有仓库并使用maven上传镜像/1577550395412.png" alt="1577550395412"></p>
+<p>最终部署需要的文件如下</p>
+<p><img src="/2019/05/28/远程服务器搭建docker私有仓库并使用maven上传镜像/1577550653783.png" alt="1577550653783"></p>
+</li>
+</ul>
+<h6 id="3-2-上传配置文件并部署集群"><a href="#3-2-上传配置文件并部署集群" class="headerlink" title="3.2 上传配置文件并部署集群"></a>3.2 上传配置文件并部署集群</h6><p>上一篇文章有说，不再啰嗦。结果如图</p>
+<p><img src="/2019/05/28/远程服务器搭建docker私有仓库并使用maven上传镜像/1577551976762.png" alt="1577551976762"></p>
+<h6 id="3-3搭建集群"><a href="#3-3搭建集群" class="headerlink" title="3.3搭建集群"></a>3.3搭建集群</h6><p>运行容器启动脚本</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./start.sh</span><br></pre></td></tr></table></figure>
+
+<p>日志如下</p>
+<p><img src="/2019/05/28/远程服务器搭建docker私有仓库并使用maven上传镜像/1577552088066.png" alt="1577552088066"></p>
+<h6 id="3-4-测试"><a href="#3-4-测试" class="headerlink" title="3.4 测试"></a>3.4 测试</h6><p>postman测试</p>
+<ul>
+<li><p>set值</p>
+<p><img src="/2019/05/28/远程服务器搭建docker私有仓库并使用maven上传镜像/1577552176519.png" alt="1577552176519"></p>
+</li>
+<li><p>get值</p>
+<p><img src="/2019/05/28/远程服务器搭建docker私有仓库并使用maven上传镜像/1577552238008.png" alt="1577552238008"></p>
+</li>
+<li><p>控制台查看</p>
+<p><img src="/2019/05/28/远程服务器搭建docker私有仓库并使用maven上传镜像/1577552617000.png" alt="1577552617000"></p>
+</li>
+<li><p>Redis-Desktop查看</p>
+<p><img src="/2019/05/28/远程服务器搭建docker私有仓库并使用maven上传镜像/1577552403346.png" alt="1577552403346"></p>
+</li>
+</ul>
+<h5 id="4-总结"><a href="#4-总结" class="headerlink" title="4. 总结"></a>4. 总结</h5><ol>
+<li>先搭建私有仓库，开发端口</li>
+<li>maven打包上传镜像</li>
+<li>编写脚本一键部署。注意给脚本的换行要改为  Unix(LF)的\n。脚本要授权。</li>
+</ol>
+<h5 id="5-补充"><a href="#5-补充" class="headerlink" title="5. 补充"></a>5. 补充</h5><ol>
+<li><p>在宿主机查看容器内程序在控制台打印的日志命令</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker logs  -f  [container id]</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>容器的持久化目录不能随便设置</p>
+<p>比如maven打包镜像时直接设置持久化目录为/dev时不对的，运行会出错</p>
+</li>
+</ol>
+<p><img src="/2019/05/28/远程服务器搭建docker私有仓库并使用maven上传镜像/1577552917993.png" alt="1577552917993"></p>
+<p>应该改为其他的任意空目录存放容器运行时springboot项目程序生产日志</p>
+<p>这里的<code>/dev/spring-logs</code>恰好时容器的目录，也是springboot项目程序存放日志的目录</p>
+<p><img src="/2019/05/28/远程服务器搭建docker私有仓库并使用maven上传镜像/1577553012325.png" alt="1577553012325"></p>
+
+    </div>
+
+    
+    
+    
+        
+      
+
+      <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/2019/05/28/MyCat配置读写分离和分库分表/" rel="next" title="MyCat配置读写分离和分库分表">
+                  <i class="fa fa-chevron-left"></i> MyCat配置读写分离和分库分表
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+                <a href="/2019/06/02/Swagger文档的使用/" rel="prev" title="Swagger文档的使用">
+                  Swagger文档的使用 <i class="fa fa-chevron-right"></i>
+                </a>
+              
+            </div>
+          </div>
+        
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    
+    <div class="comments" id="gitalk-container"></div>
+  
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+        
+        
+        
+        
+      
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-前言"><span class="nav-text">1. 前言</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-远程服务器搭建私有仓库"><span class="nav-text">2. 远程服务器搭建私有仓库</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#2-1-创建私有仓库"><span class="nav-text">2.1 创建私有仓库</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#2-2-打包上传镜像"><span class="nav-text">2.2 打包上传镜像</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-部署运行镜像并测试"><span class="nav-text">3. 部署运行镜像并测试</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#3-1编写部署需要的文件"><span class="nav-text">3.1编写部署需要的文件</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#3-2-上传配置文件并部署集群"><span class="nav-text">3.2 上传配置文件并部署集群</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#3-3搭建集群"><span class="nav-text">3.3搭建集群</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#3-4-测试"><span class="nav-text">3.4 测试</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4-总结"><span class="nav-text">4. 总结</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#5-补充"><span class="nav-text">5. 补充</span></a></li></ol></div>
+        
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/images/avatar.png"
+      alt="Quark">
+  <p class="site-author-name" itemprop="name">Quark</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">16</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-categories">
+        
+          
+            <a href="/categories/">
+          
+        
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">categories</span>
+        </a>
+      </div>
+    
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="https://github.com/quarkljy" title="GitHub &rarr; https://github.com/quarkljy" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="/quarkljy@gmail.com" title="E-Mail &rarr; quarkljy@gmail.com"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+    
+  </div>
+
+
+
+      </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+      
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Quark</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+  
+    <span class="post-meta-divider">|</span>
+  
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/js/utils.js?v=7.4.1"></script><script src="/js/motion.js?v=7.4.1"></script>
+<script src="/js/schemes/pisces.js?v=7.4.1"></script>
+<script src="/js/next-boot.js?v=7.4.1"></script><script src="/js/bookmark.js?v=7.4.1"></script>
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID: 'ac9ad8a38774c86401c5',
+      clientSecret: '32151ac2d31b78b8755e5ae11b37dc1f8f590b20',
+      repo: 'quarkljy.github.io',
+      owner: 'quarkljy',
+      admin: ['quarkljy'],
+      id: 'a766088308a40770290f85b423b9b095',
+        language: 'en',
+      
+      distractionFreeMode: 'true'
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+</script>
+
+</body>
+</html>
