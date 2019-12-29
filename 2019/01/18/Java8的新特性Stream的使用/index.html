@@ -64,7 +64,7 @@
 <meta property="og:site_name" content="Quark&#39;s Blogs">
 <meta property="og:description" content="重点介绍集合的流的使用。">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2019-12-27T01:24:33.768Z">
+<meta property="og:updated_time" content="2019-12-29T03:51:21.718Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Java8的新特性stream的使用">
 <meta name="twitter:description" content="重点介绍集合的流的使用。">
@@ -403,7 +403,7 @@
 <li><p><strong>toSet</strong> 将Type收集为一个set，可以去重复。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Set&lt;Type&gt; types = dishes.stream().map(Dish::getType).collect(Collectors.toSet());</span><br></pre></td></tr></table></figure>
 </li>
-<li><p>*<em>toMap *</em>将一个数组转为map，做缓存，方便多次计算获取。toMap提供的方法k和v的生成函数。(注意，上述demo是一个坑，不可以这样用！！！, 请使用toMap(Function, Function, BinaryOperator))</p>
+<li><p>*<em>toMap *</em>将一个数组转为map，做缓存，方便多次计算获取。toMap提供的方法k和v的生成函数。(注意，上述demo是一个坑，不可以这样用！！！ 请使用toMap(Function, Function, BinaryOperator))</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Map&lt;Type, Dish&gt; byType = dishes.stream().collect(toMap(Dish::getType, d -&gt; d));</span><br></pre></td></tr></table></figure>
 
 </li>
@@ -527,7 +527,7 @@
         
           <a href="/archives/">
         
-          <span class="site-state-item-count">16</span>
+          <span class="site-state-item-count">17</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -540,7 +540,7 @@
             <a href="/categories/">
           
         
-        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-count">7</span>
         <span class="site-state-item-name">categories</span>
         </a>
       </div>

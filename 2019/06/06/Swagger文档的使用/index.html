@@ -60,20 +60,20 @@
   <meta name="description" content="Swagger是当前最好用的Restful API文档生成的开源项目，通过swagger-spring项目实现了与SpingMVC 框架的无缝集成功能，方便生成spring restful风格的接口文档，同时swagger-ui还可以测试spring restful风格的接口功能。本文技术自己使用Swagger的过程。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Swagger文档的使用">
-<meta property="og:url" content="https://quarkljy.github.io/2019/06/02/Swagger文档的使用/index.html">
+<meta property="og:url" content="https://quarkljy.github.io/2019/06/06/Swagger文档的使用/index.html">
 <meta property="og:site_name" content="Quark&#39;s Blogs">
 <meta property="og:description" content="Swagger是当前最好用的Restful API文档生成的开源项目，通过swagger-spring项目实现了与SpingMVC 框架的无缝集成功能，方便生成spring restful风格的接口文档，同时swagger-ui还可以测试spring restful风格的接口功能。本文技术自己使用Swagger的过程。">
 <meta property="og:locale" content="en">
-<meta property="og:image" content="https://quarkljy.github.io/2019/06/02/Swagger文档的使用/1573899555498.png">
-<meta property="og:image" content="https://quarkljy.github.io/2019/06/02/Swagger文档的使用/1573899019111.png">
-<meta property="og:image" content="https://quarkljy.github.io/2019/06/02/Swagger文档的使用/1573898086701.png">
-<meta property="og:image" content="https://quarkljy.github.io/2019/06/02/Swagger文档的使用/1573898063085.png">
-<meta property="og:updated_time" content="2019-12-26T10:46:04.248Z">
+<meta property="og:image" content="https://quarkljy.github.io/2019/06/06/Swagger文档的使用/1573899555498.png">
+<meta property="og:image" content="https://quarkljy.github.io/2019/06/06/Swagger文档的使用/1573899019111.png">
+<meta property="og:image" content="https://quarkljy.github.io/2019/06/06/Swagger文档的使用/1573898086701.png">
+<meta property="og:image" content="https://quarkljy.github.io/2019/06/06/Swagger文档的使用/1573898063085.png">
+<meta property="og:updated_time" content="2019-12-29T03:48:54.889Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Swagger文档的使用">
 <meta name="twitter:description" content="Swagger是当前最好用的Restful API文档生成的开源项目，通过swagger-spring项目实现了与SpingMVC 框架的无缝集成功能，方便生成spring restful风格的接口文档，同时swagger-ui还可以测试spring restful风格的接口功能。本文技术自己使用Swagger的过程。">
-<meta name="twitter:image" content="https://quarkljy.github.io/2019/06/02/Swagger文档的使用/1573899555498.png">
-  <link rel="canonical" href="https://quarkljy.github.io/2019/06/02/Swagger文档的使用/">
+<meta name="twitter:image" content="https://quarkljy.github.io/2019/06/06/Swagger文档的使用/1573899555498.png">
+  <link rel="canonical" href="https://quarkljy.github.io/2019/06/06/Swagger文档的使用/">
 
 
 <script id="page-configurations">
@@ -245,7 +245,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="en">
-    <link itemprop="mainEntityOfPage" href="https://quarkljy.github.io/2019/06/02/Swagger文档的使用/">
+    <link itemprop="mainEntityOfPage" href="https://quarkljy.github.io/2019/06/06/Swagger文档的使用/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Quark">
@@ -276,7 +276,7 @@
                 
               
 
-              <time title="Created: 2019-06-02 17:56:29" itemprop="dateCreated datePublished" datetime="2019-06-02T17:56:29+08:00">2019-06-02</time>
+              <time title="Created: 2019-06-06 12:56:29" itemprop="dateCreated datePublished" datetime="2019-06-06T12:56:29+08:00">2019-06-06</time>
             </span>
           
             <span class="post-meta-item">
@@ -331,14 +331,14 @@
 <p>直接在启动类上标注<code>@EnableSwagger2</code>，会扫描全体包，但是会多出许多没必要的接口</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@SpringBootApplication</span></span><br><span class="line"><span class="meta">@EnableSwagger</span>2</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DemoSwaggerApplication</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        SpringApplication.run(DemoSwaggerApplication.class, args);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p><img src="/2019/06/02/Swagger文档的使用/1573899555498.png" alt="1573899555498"></p>
+<p><img src="/2019/06/06/Swagger文档的使用/1573899555498.png" alt="1573899555498"></p>
 <h5 id="3-注解说明"><a href="#3-注解说明" class="headerlink" title="3.  注解说明"></a>3.  注解说明</h5><ul>
 <li><p>@API: 用在类上 ，<strong>默认会把所有Controller层的方法都放文档上</strong></p>
 <ul>
 <li>tags：标签名，一般用来说明是什么类</li>
 <li>description：标签描述</li>
 </ul>
-<p><img src="/2019/06/02/Swagger文档的使用/1573899019111.png" alt="1573899019111"></p>
+<p><img src="/2019/06/06/Swagger文档的使用/1573899019111.png" alt="1573899019111"></p>
 </li>
 <li><p>@ApiImplicitParams：包含多个 @ApiImplicitParam</p>
 </li>
@@ -356,12 +356,12 @@
 <li>code = 200 ，状态码</li>
 <li>message = “成功”，状态码描述</li>
 </ul>
-<p><img src="/2019/06/02/Swagger文档的使用/1573898086701.png" alt="1573898086701"></p>
+<p><img src="/2019/06/06/Swagger文档的使用/1573898086701.png" alt="1573898086701"></p>
 </li>
 <li><p>@ApiModel： 用在返回对象的类上，比如实体类User</p>
 </li>
 <li><p>@ApiModelProperty ：用在参数对象的字段上，比如实体类User的age字段</p>
-<p><img src="/2019/06/02/Swagger文档的使用/1573898063085.png" alt="1573898063085"></p>
+<p><img src="/2019/06/06/Swagger文档的使用/1573898063085.png" alt="1573898063085"></p>
 </li>
 <li><p>@ApiIgnore()：用于类，方法，方法参数，表示这个方法或者类被忽略。</p>
 </li>
@@ -382,7 +382,7 @@
           <div class="post-nav">
             <div class="post-nav-next post-nav-item">
               
-                <a href="/2019/05/28/远程服务器搭建docker私有仓库并使用maven上传镜像/" rel="next" title="远程服务器搭建docker私有仓库并使用maven上传镜像">
+                <a href="/2019/06/01/远程服务器搭建docker私有仓库并使用maven上传镜像/" rel="next" title="远程服务器搭建docker私有仓库并使用maven上传镜像">
                   <i class="fa fa-chevron-left"></i> 远程服务器搭建docker私有仓库并使用maven上传镜像
                 </a>
               
@@ -458,7 +458,7 @@
         
           <a href="/archives/">
         
-          <span class="site-state-item-count">16</span>
+          <span class="site-state-item-count">17</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -471,7 +471,7 @@
             <a href="/categories/">
           
         
-        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-count">7</span>
         <span class="site-state-item-name">categories</span>
         </a>
       </div>
@@ -622,7 +622,7 @@
       repo: 'quarkljy.github.io',
       owner: 'quarkljy',
       admin: ['quarkljy'],
-      id: '4ca5b0399f7ddc587d06129a2f276074',
+      id: '5a6878d5e7e769849bccf8398a59c53f',
         language: 'en',
       
       distractionFreeMode: 'true'

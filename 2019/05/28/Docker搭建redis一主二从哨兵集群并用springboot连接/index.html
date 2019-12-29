@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+
+
+
+
+
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.4.1">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.4.1" color="#222">
+
+<link rel="stylesheet" href="/css/main.css?v=7.4.1">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2">
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '7.4.1',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":"default"},
+    back2top: {"enable":true,"sidebar":true,"scrollpercent":true},
+    bookmark: {"enable":true,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: 'Copy',
+      copy_success: 'Copied',
+      copy_failure: 'Copy failed'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="部署redis一主二从集群，并开启哨兵监控模式，使用springboot项目本地连接远程集群">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Docker搭建redis一主二从哨兵集群并用springboot连接">
+<meta property="og:url" content="https://quarkljy.github.io/2019/05/28/Docker搭建redis一主二从哨兵集群并用springboot连接/index.html">
+<meta property="og:site_name" content="Quark&#39;s Blogs">
+<meta property="og:description" content="部署redis一主二从集群，并开启哨兵监控模式，使用springboot项目本地连接远程集群">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="https://quarkljy.github.io/2019/05/28/Docker搭建redis一主二从哨兵集群并用springboot连接/1577527729142.png">
+<meta property="og:image" content="https://quarkljy.github.io/2019/05/28/Docker搭建redis一主二从哨兵集群并用springboot连接/1577522281008.png">
+<meta property="og:image" content="https://quarkljy.github.io/2019/05/28/Docker搭建redis一主二从哨兵集群并用springboot连接/1577522528929.png">
+<meta property="og:image" content="https://quarkljy.github.io/2019/05/28/Docker搭建redis一主二从哨兵集群并用springboot连接/1577522576355.png">
+<meta property="og:image" content="https://quarkljy.github.io/2019/05/28/Docker搭建redis一主二从哨兵集群并用springboot连接/1577522742793.png">
+<meta property="og:image" content="https://quarkljy.github.io/2019/05/28/Docker搭建redis一主二从哨兵集群并用springboot连接/1577524121362.png">
+<meta property="og:image" content="https://quarkljy.github.io/2019/05/28/Docker搭建redis一主二从哨兵集群并用springboot连接/1577524391174.png">
+<meta property="og:image" content="https://quarkljy.github.io/2019/05/28/Docker搭建redis一主二从哨兵集群并用springboot连接/1577524679437.png">
+<meta property="og:image" content="https://quarkljy.github.io/2019/05/28/Docker搭建redis一主二从哨兵集群并用springboot连接/1577525067005.png">
+<meta property="og:image" content="https://quarkljy.github.io/2019/05/28/Docker搭建redis一主二从哨兵集群并用springboot连接/1577526366823.png">
+<meta property="og:image" content="https://quarkljy.github.io/2019/05/28/Docker搭建redis一主二从哨兵集群并用springboot连接/1577526465261.png">
+<meta property="og:image" content="https://quarkljy.github.io/2019/05/28/Docker搭建redis一主二从哨兵集群并用springboot连接/1577526538882.png">
+<meta property="og:image" content="https://quarkljy.github.io/2019/05/28/Docker搭建redis一主二从哨兵集群并用springboot连接/1577526827862.png">
+<meta property="og:image" content="https://quarkljy.github.io/2019/05/28/Docker搭建redis一主二从哨兵集群并用springboot连接/1577527873742.png">
+<meta property="og:image" content="https://quarkljy.github.io/2019/05/28/Docker搭建redis一主二从哨兵集群并用springboot连接/1577529088323.png">
+<meta property="og:updated_time" content="2019-12-29T03:51:37.545Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Docker搭建redis一主二从哨兵集群并用springboot连接">
+<meta name="twitter:description" content="部署redis一主二从集群，并开启哨兵监控模式，使用springboot项目本地连接远程集群">
+<meta name="twitter:image" content="https://quarkljy.github.io/2019/05/28/Docker搭建redis一主二从哨兵集群并用springboot连接/1577527729142.png">
+  <link rel="canonical" href="https://quarkljy.github.io/2019/05/28/Docker搭建redis一主二从哨兵集群并用springboot连接/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>Docker搭建redis一主二从哨兵集群并用springboot连接 | Quark's Blogs</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Quark's Blogs</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">One Week, One Blog</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+      
+      
+        
+        
+        <li class="menu-item menu-item-home">
+      
+    
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+      
+    
+      
+      
+        
+        
+        <li class="menu-item menu-item-archives">
+      
+    
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+      
+    
+      
+      
+        
+        
+        <li class="menu-item menu-item-categories">
+      
+    
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>Categories</a>
+
+  </li>
+      
+    
+      
+      
+        
+        
+        <li class="menu-item menu-item-about">
+      
+    
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>About</a>
+
+  </li>
+      
+    
+      
+      
+        
+        
+        <li class="menu-item menu-item-tags">
+      
+    
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>Tags</a>
+
+  </li>
+      
+    
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+  <a href="https://github.com/quarkljy" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+            
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="en">
+    <link itemprop="mainEntityOfPage" href="https://quarkljy.github.io/2019/05/28/Docker搭建redis一主二从哨兵集群并用springboot连接/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Quark">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Quark's Blogs">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            Docker搭建redis一主二从哨兵集群并用springboot连接
+            
+
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              
+                
+              
+
+              <time title="Created: 2019-05-28 18:56:29" itemprop="dateCreated datePublished" datetime="2019-05-28T18:56:29+08:00">2019-05-28</time>
+            </span>
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/redis/" itemprop="url" rel="index">
+                    <span itemprop="name">redis</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">Views: </span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+          
+            <div class="post-description">部署redis一主二从集群，并开启哨兵监控模式，使用springboot项目本地连接远程集群</div>
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h5 id="1-前言"><a href="#1-前言" class="headerlink" title="1. 前言"></a>1. 前言</h5><p>redis主从复制可以实现读写分离，哨兵模式实现高可用性。哨兵可以实现监控通知，为客户端提高配置功能。</p><ul>
+<li>监控：哨兵不断的检查master和slave是否正常的运行。</li>
+<li>通知：当监控的某台Redis实例发生问题时，可以通过API通知系统管理员和其他的应用程序。</li>
+<li>自动故障转移：如果一个master不正常运行了，哨兵可以启动一个故障转移进程，将一个slave升级成为master，其他的slave被重新配置使用新的master，并且应用程序使用Redis服务端通知的新地址。</li>
+<li>配置提供者：哨兵作为Redis客户端发现的权威来源：客户端连接到哨兵请求当前可靠的master的地址。如果发生故障，哨兵将报告新地址。</li>
+</ul><a id="more"></a>
+
+<h5 id="2-创建Redis主从集群的docker-compose文件"><a href="#2-创建Redis主从集群的docker-compose文件" class="headerlink" title="2. 创建Redis主从集群的docker-compose文件"></a>2. 创建Redis主从集群的docker-compose文件</h5><p>设置一个主容器和两个从容器，并在启动时设置密码。由于是要用本地电脑连接远程的redis集群，直接使用宿主机的网络,网络模式使用<code>host</code></p>
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">version:</span> <span class="string">'3'</span></span><br><span class="line"><span class="attr">services:</span></span><br><span class="line"><span class="attr">  master:</span></span><br><span class="line"><span class="attr">    image:</span> <span class="string">redis</span></span><br><span class="line"><span class="attr">    container_name:</span> <span class="string">redis-master</span></span><br><span class="line">    <span class="comment">#--masterauth 123456  开始的主机也要传入认证密码，不然一旦主从切换后，变成从机，就无法连接上新主机</span></span><br><span class="line"><span class="attr">    command:</span> <span class="string">redis-server</span> <span class="bullet">--requirepass</span> <span class="number">123456</span> <span class="bullet">--masterauth</span> <span class="number">123456</span> <span class="bullet">--port</span> <span class="number">6380</span></span><br><span class="line"><span class="attr">    network_mode:</span> <span class="string">host</span></span><br><span class="line"><span class="attr">  slave1:</span></span><br><span class="line"><span class="attr">    image:</span> <span class="string">redis</span>                <span class="comment">## 镜像</span></span><br><span class="line"><span class="attr">    container_name:</span> <span class="string">redis-slave-1</span></span><br><span class="line">    <span class="comment"># --slaveof 106.52.114.205 6379 要填写外网ip，否则就用内网ip，本地window会连不上服务器的redis，因为哨兵返回的ip是内网的ip172.18.0.2 ，</span></span><br><span class="line">    <span class="comment">#而对windows来说，172.18.0.2 是它本地的，并不是远程服务器的，172.18.0.2段的ip都是绑定本地，连接这个只会连到本地，无法给别人远程访问</span></span><br><span class="line">    <span class="comment">#因为是使用host模式，所以必须传入新的端口，否则端口占用，会使得容器启动失败</span></span><br><span class="line">    <span class="comment">#command 对应CMD的参数 CMD的参数会传给 docker-entrypoint.sh</span></span><br><span class="line"><span class="attr">    command:</span> <span class="string">redis-server</span> <span class="bullet">--slaveof</span> <span class="number">106.52</span><span class="number">.114</span><span class="number">.205</span> <span class="number">6380</span> <span class="bullet">--requirepass</span> <span class="number">123456</span> <span class="bullet">--masterauth</span> <span class="number">123456</span> <span class="bullet">--port</span> <span class="number">6381</span></span><br><span class="line"><span class="attr">    depends_on:</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">master</span></span><br><span class="line">    <span class="comment">#网络模式为直连，跟宿主机公用一个网络</span></span><br><span class="line"><span class="attr">    network_mode:</span> <span class="string">host</span></span><br><span class="line"><span class="attr">  slave2:</span></span><br><span class="line"><span class="attr">    image:</span> <span class="string">redis</span>                <span class="comment">## 镜像</span></span><br><span class="line"><span class="attr">    container_name:</span> <span class="string">redis-slave-2</span></span><br><span class="line">    <span class="comment">#传入的命令和参数</span></span><br><span class="line"><span class="attr">    command:</span> <span class="string">redis-server</span> <span class="bullet">--slaveof</span> <span class="number">106.52</span><span class="number">.114</span><span class="number">.205</span> <span class="number">6380</span> <span class="bullet">--requirepass</span> <span class="number">123456</span> <span class="bullet">--masterauth</span> <span class="number">123456</span> <span class="bullet">--port</span> <span class="number">6382</span></span><br><span class="line">    <span class="comment"># 要确定启动顺序</span></span><br><span class="line"><span class="attr">    depends_on:</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">master</span></span><br><span class="line"><span class="attr">    network_mode:</span> <span class="string">host</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="3-创建哨兵的配置文件和docker-compose文件"><a href="#3-创建哨兵的配置文件和docker-compose文件" class="headerlink" title="3. 创建哨兵的配置文件和docker-compose文件"></a>3. 创建哨兵的配置文件和docker-compose文件</h5><h6 id="3-1-哨兵配置文件"><a href="#3-1-哨兵配置文件" class="headerlink" title="3.1 哨兵配置文件"></a>3.1 哨兵配置文件</h6><p>使用三个哨兵所以需要配置三份。由于是使用nost模式，所以这三分配置文件的端口不能相同。<code>106.52.114.205</code>服务器公网的ip</p>
+<p>sentinel1.conf的端口为26380</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">port 26380</span><br><span class="line">dir /tmp</span><br><span class="line">sentinel monitor mymaster 106.52.114.205 6380 2</span><br><span class="line">sentinel auth-pass mymaster 123456</span><br><span class="line">sentinel down-after-milliseconds mymaster 30000</span><br><span class="line">sentinel parallel-syncs mymaster 1</span><br><span class="line">sentinel failover-timeout mymaster 10000</span><br><span class="line">sentinel deny-scripts-reconfig yes</span><br></pre></td></tr></table></figure>
+
+<p>sentinel2.conf的端口为26381</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">port 26381</span><br><span class="line">dir /tmp</span><br><span class="line">sentinel monitor mymaster 106.52.114.205 6380 2</span><br><span class="line">sentinel auth-pass mymaster 123456</span><br><span class="line">sentinel down-after-milliseconds mymaster 30000</span><br><span class="line">sentinel parallel-syncs mymaster 1</span><br><span class="line">sentinel failover-timeout mymaster 10000</span><br><span class="line">sentinel deny-scripts-reconfig yes</span><br></pre></td></tr></table></figure>
+
+<p>sentinel3.conf的端口为26382</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">port 26382</span><br><span class="line">dir /tmp</span><br><span class="line">sentinel monitor mymaster 106.52.114.205 6380 2</span><br><span class="line">sentinel auth-pass mymaster 123456</span><br><span class="line">sentinel down-after-milliseconds mymaster 30000</span><br><span class="line">sentinel parallel-syncs mymaster 1</span><br><span class="line">sentinel failover-timeout mymaster 10000</span><br><span class="line">sentinel deny-scripts-reconfig yes</span><br></pre></td></tr></table></figure>
+
+<p>细心可以发现，除了端口值不同，其他都相同，这是因为哨兵是通过监控redis主机获取其他从机、其他哨兵的存在的，所以只需要设置自身运行的端口就好了，其他的配置会在哨兵模式运行起来后自动修改。</p>
+<p>下面是运行后的配置文件</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">port 26380</span><br><span class="line">dir <span class="string">"/tmp"</span></span><br><span class="line">sentinel myid cb3856ca09d466c04d720ee8fed3c73e97c3fab0</span><br><span class="line">sentinel deny-scripts-reconfig yes</span><br><span class="line">sentinel monitor mymaster 106.52.114.205 6381 2</span><br><span class="line">sentinel failover-timeout mymaster 100000</span><br><span class="line">sentinel auth-pass mymaster 123456</span><br><span class="line"><span class="comment"># Generated by CONFIG REWRITE</span></span><br><span class="line">sentinel config-epoch mymaster 3</span><br><span class="line">sentinel leader-epoch mymaster 3</span><br><span class="line">sentinel known-replica mymaster 106.52.114.205 6379</span><br><span class="line">sentinel known-replica mymaster 106.52.114.205 6380</span><br><span class="line">sentinel known-sentinel mymaster 172.16.0.9 26380 6a57add618a6d1e945ee779795df17f2ece241c6</span><br><span class="line">sentinel known-sentinel mymaster 172.16.0.9 26381 9256bc42104f9f4543b3900919137becc4989e65</span><br><span class="line">sentinel current-epoch 3</span><br></pre></td></tr></table></figure>
+
+<p>这是主机变了，变成6381，是因为docker的redis集群建立起来后，主动停止了redis-master容器的运行，哨兵把6381端口的redis-slave-1从机变成主机。6380的redis-master容器又重新运行，上线后成为从机。哨兵的配置文件会自行改变，比之前多了一些信息。</p>
+<h6 id="3-2-哨兵集群的docker-compose文件"><a href="#3-2-哨兵集群的docker-compose文件" class="headerlink" title="3.2 哨兵集群的docker-compose文件"></a>3.2 哨兵集群的docker-compose文件</h6><p>哨兵容器的网络依然使用宿主机的网络，网络模式为<code>host</code></p>
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">version:</span> <span class="string">'3'</span></span><br><span class="line"><span class="attr">services:</span></span><br><span class="line"><span class="attr">  sentinel1:</span></span><br><span class="line"><span class="attr">    image:</span> <span class="string">redis</span>       <span class="comment">## 镜像</span></span><br><span class="line"><span class="attr">    container_name:</span> <span class="string">redis-sentinel-1</span></span><br><span class="line"><span class="attr">    command:</span> <span class="string">redis-sentinel</span> <span class="string">/usr/local/etc/redis/sentinel.conf</span></span><br><span class="line"><span class="attr">    volumes:</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">./sentinel1.conf:/usr/local/etc/redis/sentinel.conf</span></span><br><span class="line"><span class="attr">    network_mode:</span> <span class="string">host</span></span><br><span class="line"><span class="attr">  sentinel2:</span></span><br><span class="line"><span class="attr">    image:</span> <span class="string">redis</span>                <span class="comment">## 镜像</span></span><br><span class="line"><span class="attr">    container_name:</span> <span class="string">redis-sentinel-2</span></span><br><span class="line"><span class="attr">    command:</span> <span class="string">redis-sentinel</span> <span class="string">/usr/local/etc/redis/sentinel.conf</span></span><br><span class="line"><span class="attr">    volumes:</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">./sentinel2.conf:/usr/local/etc/redis/sentinel.conf</span></span><br><span class="line"><span class="attr">    network_mode:</span> <span class="string">host</span></span><br><span class="line"><span class="attr">  sentinel3:</span></span><br><span class="line"><span class="attr">    image:</span> <span class="string">redis</span>                <span class="comment">## 镜像</span></span><br><span class="line"><span class="attr">    container_name:</span> <span class="string">redis-sentinel-3</span></span><br><span class="line"><span class="attr">    command:</span> <span class="string">redis-sentinel</span> <span class="string">/usr/local/etc/redis/sentinel.conf</span></span><br><span class="line"><span class="attr">    volumes:</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">./sentinel3.conf:/usr/local/etc/redis/sentinel.conf</span></span><br><span class="line"><span class="attr">    network_mode:</span> <span class="string">host</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="4-一键启动-停止脚本"><a href="#4-一键启动-停止脚本" class="headerlink" title="4.  一键启动/停止脚本"></a>4.  一键启动/停止脚本</h5><p>编写两个脚本，纯粹是为了方便</p>
+<p>脚本一定要改为Unix（LF）模式</p>
+<p><img src="/2019/05/28/Docker搭建redis一主二从哨兵集群并用springboot连接/1577527729142.png" alt="1577527729142"></p>
+<ul>
+<li>start.sh</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">!/bin/sh</span></span><br><span class="line">echo "开始执行"</span><br><span class="line">echo "开始搭建redis主从集群"</span><br><span class="line">docker-compose up -d</span><br><span class="line">echo "redis主从集群搭建完毕"</span><br><span class="line">cd sentinel</span><br><span class="line">echo "进入到sentinel目录"</span><br><span class="line">echo "开始搭建哨兵集群"</span><br><span class="line">docker-compose up -d</span><br><span class="line">echo "哨兵集群搭建完毕"</span><br><span class="line">echo "执行成功"</span><br><span class="line">docker ps</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>stop.sh</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">!/bin/sh</span></span><br><span class="line">echo "开始执行"</span><br><span class="line">docker stop redis-master</span><br><span class="line">docker stop redis-slave-1</span><br><span class="line">docker stop redis-slave-2</span><br><span class="line"></span><br><span class="line">docker stop redis-sentinel-1</span><br><span class="line">docker stop redis-sentinel-2</span><br><span class="line">docker stop redis-sentinel-3</span><br><span class="line"></span><br><span class="line">docker rm redis-master</span><br><span class="line">docker rm redis-slave-1</span><br><span class="line">docker rm redis-slave-2</span><br><span class="line"></span><br><span class="line">docker rm redis-sentinel-1</span><br><span class="line">docker rm redis-sentinel-2</span><br><span class="line">docker rm redis-sentinel-3</span><br><span class="line">echo "执行成功"</span><br></pre></td></tr></table></figure>
+
+<p><strong>注意</strong>：执行start.sh 脚本后，再执行stop.sh脚本，然后又执行start.sh脚本，可能会出错，出现未预料到的情况。因为哨兵的配置文件被哨兵集群修改过了。所以，在重新执行start.sh脚本前，应该重新配置哨兵的sentinel.conf文件。</p>
+<p>至此，配置文件全部写好，注意文件的顺序顺序，要注意文件的存放位置</p>
+<p><img src="/2019/05/28/Docker搭建redis一主二从哨兵集群并用springboot连接/1577522281008.png" alt="1577522281008"></p>
+<h5 id="5-部署集群"><a href="#5-部署集群" class="headerlink" title="5. 部署集群"></a>5. 部署集群</h5><p>将redis文件下的文件群全部上传到远程服务器的<code>/quark/redis</code>目录，目录可以随意。我用的是smarTTY客户端。</p>
+<p><img src="/2019/05/28/Docker搭建redis一主二从哨兵集群并用springboot连接/1577522528929.png" alt="1577522528929"></p>
+<p><img src="/2019/05/28/Docker搭建redis一主二从哨兵集群并用springboot连接/1577522576355.png" alt="1577522576355"></p>
+<p>上传成功</p>
+<p><img src="/2019/05/28/Docker搭建redis一主二从哨兵集群并用springboot连接/1577522742793.png" alt="1577522742793"></p>
+<p>然后对脚本进行授权，不然无法执行</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">chomd +777 start.sh</span><br><span class="line">chomd +777 stop.sh</span><br></pre></td></tr></table></figure>
+
+<p>然后在当前目录<code>/quark/redis</code>下执行start.sh脚本，</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./start.sh</span><br></pre></td></tr></table></figure>
+
+<p>执行结果</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">Creating redis-master ... done</span><br><span class="line">开始搭建redis主从集群</span><br><span class="line">Creating redis-slave-1 ... done</span><br><span class="line">Creating redis-slave-2 ... </span><br><span class="line">Creating redis-slave-1 ... </span><br><span class="line">redis主从集群搭建完毕</span><br><span class="line">进入到sentinel目录</span><br><span class="line">开始搭建哨兵集群</span><br><span class="line">Creating redis-sentinel-2 ... done</span><br><span class="line">Creating redis-sentinel-3 ... </span><br><span class="line">Creating redis-sentinel-2 ... </span><br><span class="line">哨兵集群搭建完毕</span><br><span class="line">执行成功</span><br><span class="line">CONTAINER ID        IMAGE               COMMAND                  CREATED                  STATUS                  PORTS               NAMES</span><br><span class="line">dbd5c0884874        redis               "docker-entrypoint.s…"   Less than a second ago   Up Less than a second                       redis-sentinel-1</span><br><span class="line">80b0095ba7cb        redis               "docker-entrypoint.s…"   Less than a second ago   Up Less than a second                       redis-sentinel-3</span><br><span class="line">f7e4b5f8d7c3        redis               "docker-entrypoint.s…"   Less than a second ago   Up Less than a second                       redis-sentinel-2</span><br><span class="line">948a22fd88d0        redis               "docker-entrypoint.s…"   1 second ago             Up 1 second                                 redis-slave-2</span><br><span class="line">c7a23e35b888        redis               "docker-entrypoint.s…"   1 second ago             Up 1 second                                 redis-slave-1</span><br><span class="line">d94c20920352        redis               "docker-entrypoint.s…"   2 seconds ago            Up 1 second                                 redis-master</span><br><span class="line">[root@VM_0_9_centos redis]#</span><br></pre></td></tr></table></figure>
+
+<p>通过哨兵日志查看主从状态</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker logs -f redis-sentinel-1</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2019/05/28/Docker搭建redis一主二从哨兵集群并用springboot连接/1577524121362.png" alt="1577524121362"></p>
+<p>解释</p>
+<ol>
+<li>6380端口的redis是主机</li>
+<li>有两个从机，分别是6381 6382端口的redis</li>
+<li>有其他两个哨兵 26381，26382</li>
+</ol>
+<p>通过主机日志查看主从状态</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker logs -f redis-master</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2019/05/28/Docker搭建redis一主二从哨兵集群并用springboot连接/1577524391174.png" alt="1577524391174"></p>
+<p>关闭主机</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker stop redis-master</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker logs -f redis-sentinel-1</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2019/05/28/Docker搭建redis一主二从哨兵集群并用springboot连接/1577524679437.png" alt="1577524679437"></p>
+<p>解释</p>
+<ol>
+<li>有两个哨兵监控到主机停止响应，2个投票达到要求</li>
+<li>把6381从机变成主机</li>
+<li>先把6380当作从机</li>
+<li>6380从机还是没在规定时间内响应，哨兵认为该从机宕机，从而下线。</li>
+</ol>
+<p>此时，哨兵的配置文件发送改变，如下</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">port 26380</span><br><span class="line">dir <span class="string">"/tmp"</span></span><br><span class="line">sentinel myid 600548e644ee7956ae5c051fd0d5fd8bb30c6fe6</span><br><span class="line">sentinel deny-scripts-reconfig yes</span><br><span class="line">sentinel monitor mymaster 106.52.114.205 6381 2</span><br><span class="line">sentinel failover-timeout mymaster 10000</span><br><span class="line">sentinel auth-pass mymaster 123456</span><br><span class="line">sentinel config-epoch mymaster 1</span><br><span class="line"><span class="comment"># Generated by CONFIG REWRITE</span></span><br><span class="line">sentinel leader-epoch mymaster 1</span><br><span class="line">sentinel known-replica mymaster 106.52.114.205 6382</span><br><span class="line">sentinel known-replica mymaster 106.52.114.205 6380</span><br><span class="line">sentinel known-sentinel mymaster 172.16.0.9 26382 86ceb58b352e43a5262775a64bcb212819f8d4d5</span><br><span class="line">sentinel known-sentinel mymaster 172.16.0.9 26381 9aa1a6a57e2ccee19eab6f70e5359dc5705b3f6a</span><br><span class="line">sentinel current-epoch 1</span><br></pre></td></tr></table></figure>
+
+<p>重启 redis-master 容器</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker start redis-master</span><br></pre></td></tr></table></figure>
+
+<p>从哨兵的日志可以看到，6380的redis重新上线，变成从机</p>
+<p><img src="/2019/05/28/Docker搭建redis一主二从哨兵集群并用springboot连接/1577525067005.png" alt="1577525067005"></p>
+<h5 id="6-spring-boot连接测试"><a href="#6-spring-boot连接测试" class="headerlink" title="6. spring-boot连接测试"></a>6. spring-boot连接测试</h5><ul>
+<li>创建项目</li>
+</ul>
+<p>编写pom.xml</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">project</span> <span class="attr">xmlns</span>=<span class="string">"http://maven.apache.org/POM/4.0.0"</span></span></span><br><span class="line"><span class="tag">         <span class="attr">xmlns:xsi</span>=<span class="string">"http://www.w3.org/2001/XMLSchema-instance"</span></span></span><br><span class="line"><span class="tag">         <span class="attr">xsi:schemaLocation</span>=<span class="string">"http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!--注意，这个父类需要根据你自己的情况修改--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">parent</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>springboot-learning<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.qaurk.springboot-learning<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.0.0-SNAPSHOT<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">parent</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">modelVersion</span>&gt;</span>4.0.0<span class="tag">&lt;/<span class="name">modelVersion</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.qaurk.springboot-learning<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>redis-sentinel<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.0.0-SNAPSHOT<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">properties</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">java.version</span>&gt;</span>1.8<span class="tag">&lt;/<span class="name">java.version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">properties</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependencies</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- https://mvnrepository.com/artifact/com.alibaba/fastjson --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.alibaba<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>fastjson<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.2.62<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-web<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.projectlombok<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>lombok<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">optional</span>&gt;</span>true<span class="tag">&lt;/<span class="name">optional</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>redis.clients<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>jedis<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">version</span>&gt;</span>3.1.0<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-test<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">scope</span>&gt;</span>test<span class="tag">&lt;/<span class="name">scope</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependencies</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">project</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>applicaton.properties文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">java.redis.pool.max-total=10</span><br><span class="line">java.redis.pool.max-idle=5</span><br><span class="line">java.redis.pool.min-idle=5</span><br><span class="line"># 多个用逗号隔开，host:port,host2:port2</span><br><span class="line">java.redis.sentinel.nodes=106.52.114.205:26380,106.52.114.205:26381,106.52.114.205:26382</span><br><span class="line">java.redis.sentinel.password=123456</span><br><span class="line">java.redis.sentinel.master-name=mymaster</span><br><span class="line">java.redis.sentinel.pool.max-total=10</span><br><span class="line">java.redis.sentinel.pool.max-idle=5</span><br><span class="line">java.redis.sentinel.pool.min-idle=5</span><br></pre></td></tr></table></figure>
+
+<p>RedisSentinelPool.java</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.quark.redissentinel.utils;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> lombok.extern.slf4j.Slf4j;</span><br><span class="line"><span class="keyword">import</span> org.apache.commons.pool2.impl.GenericObjectPoolConfig;</span><br><span class="line"><span class="keyword">import</span> org.springframework.beans.factory.annotation.Value;</span><br><span class="line"><span class="keyword">import</span> org.springframework.util.StringUtils;</span><br><span class="line"><span class="keyword">import</span> redis.clients.jedis.Jedis;</span><br><span class="line"><span class="keyword">import</span> redis.clients.jedis.JedisPoolConfig;</span><br><span class="line"><span class="keyword">import</span> redis.clients.jedis.JedisSentinelPool;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.Arrays;</span><br><span class="line"><span class="keyword">import</span> java.util.HashSet;</span><br><span class="line"><span class="keyword">import</span> java.util.Set;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Created by quark</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Slf</span>4j</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RedisSentinelPool</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Value</span>(<span class="string">"$&#123;java.redis.pool.max-total:10&#125;"</span>)</span><br><span class="line">    <span class="keyword">private</span> Integer redisMaxTotal;</span><br><span class="line">    <span class="meta">@Value</span>(<span class="string">"$&#123;java.redis.pool.min-idle&#125;"</span>)</span><br><span class="line">    <span class="keyword">private</span> Integer redisMaxIdle;</span><br><span class="line">    <span class="meta">@Value</span>(<span class="string">"$&#123;java.redis.pool.min-idle&#125;"</span>)</span><br><span class="line">    <span class="keyword">private</span> Integer redisMinIdle;</span><br><span class="line">    <span class="meta">@Value</span>(<span class="string">"$&#123;java.redis.sentinel.nodes&#125;"</span>)</span><br><span class="line">    <span class="keyword">private</span> String redisSentinelNodes;</span><br><span class="line">    <span class="meta">@Value</span>(<span class="string">"$&#123;java.redis.sentinel.password&#125;"</span>)</span><br><span class="line">    <span class="keyword">private</span> String redisSentinelPassword;</span><br><span class="line">    <span class="meta">@Value</span>(<span class="string">"$&#123;java.redis.sentinel.master-name&#125;"</span>)</span><br><span class="line">    <span class="keyword">private</span> String redisSentinelMasterName;</span><br><span class="line">    <span class="meta">@Value</span>(<span class="string">"$&#123;java.redis.sentinel.pool.max-total&#125;"</span>)</span><br><span class="line">    <span class="keyword">private</span> Integer redisSentinelMaxTotal;</span><br><span class="line">    <span class="meta">@Value</span>(<span class="string">"$&#123;java.redis.sentinel.pool.max-idle&#125;"</span>)</span><br><span class="line">    <span class="keyword">private</span> Integer redisSentinelMaxIdle;</span><br><span class="line">    <span class="meta">@Value</span>(<span class="string">"$&#123;java.redis.sentinel.pool.min-idle&#125;"</span>)</span><br><span class="line">    <span class="keyword">private</span> Integer redisSentinelMinIdle;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> JedisSentinelPool jedisPool;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">init</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        JedisPoolConfig jedisPoolConfig = <span class="keyword">new</span> JedisPoolConfig();</span><br><span class="line">        jedisPoolConfig.setMaxTotal(redisMaxTotal);</span><br><span class="line">        jedisPoolConfig.setMaxIdle(redisMaxIdle);</span><br><span class="line">        jedisPoolConfig.setMinIdle(redisMinIdle);</span><br><span class="line">        String[] hosts = redisSentinelNodes.split(<span class="string">","</span>);</span><br><span class="line">        Set&lt;String&gt; sentinels = <span class="keyword">new</span> HashSet&lt;&gt;(Arrays.asList(hosts));</span><br><span class="line">        GenericObjectPoolConfig poolConfig = <span class="keyword">new</span> GenericObjectPoolConfig();</span><br><span class="line">        poolConfig.setMaxTotal(redisSentinelMaxTotal);</span><br><span class="line">        poolConfig.setMaxIdle(redisSentinelMaxIdle);</span><br><span class="line">        poolConfig.setMinIdle(redisSentinelMinIdle);</span><br><span class="line">        poolConfig.setTestOnBorrow(<span class="keyword">true</span>);</span><br><span class="line">        <span class="keyword">if</span> (StringUtils.isEmpty(redisSentinelPassword)) &#123;</span><br><span class="line">            jedisPool = <span class="keyword">new</span> JedisSentinelPool(redisSentinelMasterName, sentinels, jedisPoolConfig);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            jedisPool = <span class="keyword">new</span> JedisSentinelPool(redisSentinelMasterName, sentinels, jedisPoolConfig, redisSentinelPassword);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (isConnectSuccess()) &#123;</span><br><span class="line">            <span class="comment">// 初始化成功</span></span><br><span class="line">            log.info(<span class="string">"++++++ Init Redis Sentinel Pool SUCCESS! ++++++"</span>);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="comment">// 初始化失败</span></span><br><span class="line">            log.info(<span class="string">"++++++ Init Redis Sentinel Pool FAILURE! ++++++"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * Del long.</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> key the key</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> the long</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">long</span> <span class="title">del</span><span class="params">(String key)</span> </span>&#123;</span><br><span class="line">        Jedis jedis = getRedis();</span><br><span class="line">        <span class="keyword">long</span> result = jedis.del(key);</span><br><span class="line">        recycleRedis(jedis);</span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 获取当前key的生成时长</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> key the key</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> the long</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">long</span> <span class="title">ttl</span><span class="params">(String key)</span> </span>&#123;</span><br><span class="line">        Jedis jedis = getRedis();</span><br><span class="line">        <span class="keyword">long</span> result = jedis.ttl(key);</span><br><span class="line">        recycleRedis(jedis);</span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * Get string.</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> key the key</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> the string</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">get</span><span class="params">(String key)</span> </span>&#123;</span><br><span class="line">        Jedis jedis = getRedis();</span><br><span class="line">        String result = jedis.get(key);</span><br><span class="line">        recycleRedis(jedis);</span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * Sets .</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> key           the key</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> value         the value</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> expireSeconds the expire seconds</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> the</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">setex</span><span class="params">(String key, String value, <span class="keyword">int</span> expireSeconds)</span> </span>&#123;</span><br><span class="line">        Jedis jedis = getRedis();</span><br><span class="line">        String result = jedis.setex(key, expireSeconds, value);</span><br><span class="line">        recycleRedis(jedis);</span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 重新初始化连接池</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">reload</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        close();</span><br><span class="line">        init();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 销毁Redis连接池</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">close</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (<span class="keyword">null</span> != jedisPool) &#123;</span><br><span class="line">            jedisPool.close();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 资源回收</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> jedis jedis实例</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">recycleRedis</span><span class="params">(Jedis jedis)</span> </span>&#123;</span><br><span class="line">        jedis.close();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> 连接池中的Jedis实例</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> Jedis <span class="title">getRedis</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> jedisPool.getResource();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> 是否成功连接上redis</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">boolean</span> <span class="title">isConnectSuccess</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        Jedis jedis = getRedis();</span><br><span class="line">        String ping = jedis.ping();</span><br><span class="line">        recycleRedis(jedis);</span><br><span class="line">        <span class="keyword">return</span> ping.equals(<span class="string">"PONG"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>JedisConfig.java</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.quark.redissentinel.config;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.quark.redissentinel.utils.RedisSentinelPool;</span><br><span class="line"><span class="keyword">import</span> lombok.extern.slf4j.Slf4j;</span><br><span class="line"><span class="keyword">import</span> org.springframework.context.annotation.Bean;</span><br><span class="line"><span class="keyword">import</span> org.springframework.context.annotation.Configuration;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Created by quark</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Slf</span>4j</span><br><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">JedisConfig</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Bean</span>(initMethod = <span class="string">"init"</span>, destroyMethod = <span class="string">"close"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> RedisSentinelPool <span class="title">redisPool</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> RedisSentinelPool();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Person.java</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.quark.redissentinel.pojo;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> lombok.Data;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Created by quark</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Data</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Person</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> Integer id;</span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line">    <span class="keyword">private</span>  Integer age;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>RSController.java</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.quark.redissentinel.controller;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.alibaba.fastjson.JSON;</span><br><span class="line"><span class="keyword">import</span> com.alibaba.fastjson.JSONObject;</span><br><span class="line"><span class="keyword">import</span> com.quark.redissentinel.pojo.Person;</span><br><span class="line"><span class="keyword">import</span> com.quark.redissentinel.utils.RedisSentinelPool;</span><br><span class="line"><span class="keyword">import</span> lombok.extern.slf4j.Slf4j;</span><br><span class="line"><span class="keyword">import</span> org.springframework.beans.factory.annotation.Autowired;</span><br><span class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.*;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Created by quark</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Slf</span>4j</span><br><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RSController</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> RedisSentinelPool redisSentinelPool;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@PostMapping</span> (<span class="string">"set"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> Person <span class="title">setPerson</span><span class="params">(@RequestBody Person person)</span> </span>&#123;</span><br><span class="line">        Person person1 = <span class="keyword">new</span> Person();</span><br><span class="line">        person1.setId(person.getId());</span><br><span class="line">        person1.setName(<span class="string">"傻瓜"</span>);</span><br><span class="line">        person1.setAge(<span class="number">18</span>);</span><br><span class="line">        String string = JSON.toJSONString(person1);</span><br><span class="line">        System.out.println(string);</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            redisSentinelPool.setex(person1.getId() + <span class="string">""</span>, string, <span class="number">60</span>);</span><br><span class="line">            log.info(<span class="string">"发送成功： "</span> + person1);</span><br><span class="line">            <span class="keyword">return</span> person1;</span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">            log.info(<span class="string">"发送失败： "</span> + e.getMessage());</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">@GetMapping</span>(<span class="string">"get"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> Person <span class="title">getPerson</span><span class="params">(Integer id)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            String person_str = redisSentinelPool.get(id + <span class="string">""</span>);</span><br><span class="line"></span><br><span class="line">            Person person = JSON.parseObject(person_str,Person.class);</span><br><span class="line">            log.info(<span class="string">"获取成功： "</span> + person);</span><br><span class="line">            <span class="keyword">return</span> person;</span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">            log.info(<span class="string">"获取失败： "</span> + e.getMessage());</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>启动测试</p>
+<p><img src="/2019/05/28/Docker搭建redis一主二从哨兵集群并用springboot连接/1577526366823.png" alt="1577526366823"></p>
+<p>通过Redis-Desktop客户端查看数据</p>
+<p><img src="/2019/05/28/Docker搭建redis一主二从哨兵集群并用springboot连接/1577526465261.png" alt="1577526465261"></p>
+<p>主机从机都有数据</p>
+<p><img src="/2019/05/28/Docker搭建redis一主二从哨兵集群并用springboot连接/1577526538882.png" alt="1577526538882"></p>
+</li>
+</ul>
+<h5 id="7-补充"><a href="#7-补充" class="headerlink" title="7.补充"></a>7.补充</h5><ul>
+<li><p>linux系统的<code>/usr/bin</code>下的可执行文件可以在任何目录下用文件名直接运行</p>
+<p>比如<code>redis-server</code> </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">redis-server --slaveof 106.52.114.205 6380 --requirepass 123456 --masterauth 123456 --port 6387</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2019/05/28/Docker搭建redis一主二从哨兵集群并用springboot连接/1577526827862.png" alt="1577526827862"></p>
+<p>这里<code>redis-server</code>内部应该有处理<code>--slaveof 106.52.114.205 6380 --requirepass 123456 --masterauth 123456 --port 6387</code>等参数的函数，把``–AAA  BBB CCC –DDD EEE<code>解析 AAA 作为key ,</code>BBB CCC<code>作为AAA的对应值，然后解析</code>DDD<code>作为key ,</code>EEE`作为DDD的对应值</p>
+<p>​    比如<code>vim</code></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim xxxx</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2019/05/28/Docker搭建redis一主二从哨兵集群并用springboot连接/1577527873742.png" alt="1577527873742"></p>
+</li>
+<li><p>shell脚本传递参数的方式</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash">0: 脚本本身文件名称</span></span><br><span class="line"><span class="meta">$</span><span class="bash">1: 命令行第一个参数，<span class="variable">$2</span>为第二个，以此类推</span></span><br><span class="line"><span class="meta">$</span><span class="bash">*: 所有参数列表</span></span><br><span class="line"><span class="meta">$</span><span class="bash">@: 所有参数列表</span></span><br><span class="line"><span class="meta">$</span><span class="bash"><span class="comment">#: 参数个数</span></span></span><br><span class="line"><span class="meta">$</span><span class="bash">$: 脚本运行时的PID</span></span><br><span class="line"><span class="meta">$</span><span class="bash">?: 脚本退出码</span></span><br><span class="line"></span><br><span class="line">∗与@的区别</span><br><span class="line"></span><br><span class="line">当命令行为test.sh 1 2 3</span><br><span class="line">"$*“表示"1 2 3”</span><br><span class="line">"$@“表示"1” “2” “3”</span><br><span class="line">二者没有被引号括起来时是一样的都为"1 2 3"，只有当被引号括起来后才表现出差异</span><br></pre></td></tr></table></figure>
+
+<p>如编写脚本</p>
+<p>test.sh</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/sh</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">export</span>  AA=<span class="variable">$1</span> <span class="comment">#export表示全局变量，其他脚本可以使用</span></span><br><span class="line">BB=33</span><br><span class="line">CC=<span class="variable">$3</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"第一AA <span class="variable">$AA</span>"</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"第二BB <span class="variable">$BB</span>"</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"第二CC <span class="variable">$CC</span>"</span></span><br><span class="line">sh test2.sh</span><br></pre></td></tr></table></figure>
+
+<p>test2.sh</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/sh</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"另一个脚本的AA <span class="variable">$AA</span>"</span></span><br></pre></td></tr></table></figure>
+
+<p>执行</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sh test.sh 11  22  33</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2019/05/28/Docker搭建redis一主二从哨兵集群并用springboot连接/1577529088323.png" alt="1577529088323"></p>
+</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+        
+      
+
+      <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/2019/05/16/Docker搭建mysql一主二从复制集群/" rel="next" title="Docker搭建mysql一主二从复制集群">
+                  <i class="fa fa-chevron-left"></i> Docker搭建mysql一主二从复制集群
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+                <a href="/2019/05/28/MyCat配置读写分离和分库分表/" rel="prev" title="MyCat配置读写分离和分库分表">
+                  MyCat配置读写分离和分库分表 <i class="fa fa-chevron-right"></i>
+                </a>
+              
+            </div>
+          </div>
+        
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    
+    <div class="comments" id="gitalk-container"></div>
+  
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+        
+        
+        
+        
+      
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-前言"><span class="nav-text">1. 前言</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-创建Redis主从集群的docker-compose文件"><span class="nav-text">2. 创建Redis主从集群的docker-compose文件</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-创建哨兵的配置文件和docker-compose文件"><span class="nav-text">3. 创建哨兵的配置文件和docker-compose文件</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#3-1-哨兵配置文件"><span class="nav-text">3.1 哨兵配置文件</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#3-2-哨兵集群的docker-compose文件"><span class="nav-text">3.2 哨兵集群的docker-compose文件</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4-一键启动-停止脚本"><span class="nav-text">4.  一键启动/停止脚本</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#5-部署集群"><span class="nav-text">5. 部署集群</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#6-spring-boot连接测试"><span class="nav-text">6. spring-boot连接测试</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#7-补充"><span class="nav-text">7.补充</span></a></li></ol></div>
+        
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/images/avatar.png"
+      alt="Quark">
+  <p class="site-author-name" itemprop="name">Quark</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">17</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-categories">
+        
+          
+            <a href="/categories/">
+          
+        
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">categories</span>
+        </a>
+      </div>
+    
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="https://github.com/quarkljy" title="GitHub &rarr; https://github.com/quarkljy" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="/quarkljy@gmail.com" title="E-Mail &rarr; quarkljy@gmail.com"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+    
+  </div>
+
+
+
+      </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+      
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Quark</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+  
+    <span class="post-meta-divider">|</span>
+  
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/js/utils.js?v=7.4.1"></script><script src="/js/motion.js?v=7.4.1"></script>
+<script src="/js/schemes/pisces.js?v=7.4.1"></script>
+<script src="/js/next-boot.js?v=7.4.1"></script><script src="/js/bookmark.js?v=7.4.1"></script>
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID: 'ac9ad8a38774c86401c5',
+      clientSecret: '32151ac2d31b78b8755e5ae11b37dc1f8f590b20',
+      repo: 'quarkljy.github.io',
+      owner: 'quarkljy',
+      admin: ['quarkljy'],
+      id: '54c18fb4370d6aed858a6ecb878ccfde',
+        language: 'en',
+      
+      distractionFreeMode: 'true'
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+</script>
+
+</body>
+</html>
