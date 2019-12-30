@@ -400,14 +400,14 @@
 
 <p>有volume卷时，在运行容器时，若没有指定 宿主机文件夹和这些卷对应，那么就会在宿主机的某个文件夹下自动创建一个文件夹与之对应，数据同步。</p>
 <p>例如Dockerfile文件为</p>
-<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">FROM</span> centos</span><br><span class="line"><span class="keyword">RUN</span> mkdir /data1</span><br><span class="line"><span class="keyword">RUN</span> mkdir /data3</span><br><span class="line"><span class="keyword">RUN</span> echo "hello docker"</span><br><span class="line"><span class="keyword">VOLUME</span> ["/data1","/data3"]</span><br><span class="line"><span class="keyword">CMD</span> /bin/bash</span><br></pre></td></tr></table></figure>
+<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">FROM</span> centos</span><br><span class="line"><span class="keyword">RUN</span><span class="bash"> mkdir /data1</span></span><br><span class="line"><span class="keyword">RUN</span><span class="bash"> mkdir /data3</span></span><br><span class="line"><span class="keyword">RUN</span><span class="bash"> <span class="built_in">echo</span> <span class="string">"hello docker"</span></span></span><br><span class="line"><span class="keyword">VOLUME</span><span class="bash"> [<span class="string">"/data1"</span>,<span class="string">"/data3"</span>]</span></span><br><span class="line"><span class="keyword">CMD</span><span class="bash"> /bin/bash</span></span><br></pre></td></tr></table></figure>
 
 <p>制作docker镜像</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker build -f dockerfile2 -t my .</span><br></pre></td></tr></table></figure>
 
 <p><img src="/2019/04/01/使用Dockerfile创建docker镜像/1574879963553.png" alt="1574879963553"></p>
 <p>启动docker</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">docker run -it --name=testdocker my</span><br><span class="line"><span class="meta">#</span>因为Dockerfile的 最后一条命令是 /bin/bash ，所以启动就会进入容器内部</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">docker run -it --name=testdocker my</span><br><span class="line"><span class="meta">#</span><span class="bash">因为Dockerfile的 最后一条命令是 /bin/bash ，所以启动就会进入容器内部</span></span><br></pre></td></tr></table></figure>
 
 <p>在容器内的/data1下创建 iii文件，文件内容为 <code>docker my</code></p>
 <p><img src="/2019/04/01/使用Dockerfile创建docker镜像/1574880521217.png" alt="1574880521217"></p>
@@ -584,7 +584,7 @@
         
           <a href="/archives/">
         
-          <span class="site-state-item-count">17</span>
+          <span class="site-state-item-count">19</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -597,7 +597,7 @@
             <a href="/categories/">
           
         
-        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-count">8</span>
         <span class="site-state-item-name">categories</span>
         </a>
       </div>
