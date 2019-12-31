@@ -81,7 +81,7 @@
 <meta property="og:image" content="https://quarkljy.github.io/2019/07/31/SpringCloud学习之旅（三）-SpringSession和Redis管理共享session/image-20191231221514998.png">
 <meta property="og:image" content="https://quarkljy.github.io/2019/07/31/SpringCloud学习之旅（三）-SpringSession和Redis管理共享session/image-20191231221606023.png">
 <meta property="og:image" content="https://quarkljy.github.io/2019/07/31/SpringCloud学习之旅（三）-SpringSession和Redis管理共享session/image-20191231221657037.png">
-<meta property="og:updated_time" content="2019-12-31T14:21:47.844Z">
+<meta property="og:updated_time" content="2019-12-31T14:24:27.173Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="SpringCloud学习之旅（三）-- SpringSession和Redis管理共享session">
 <meta name="twitter:description" content="SpringSession和Redis管理共享session。深刻理解session。">
@@ -396,8 +396,6 @@
 <p><img src="/2019/07/31/SpringCloud学习之旅（三）-SpringSession和Redis管理共享session/image-20191231214254632.png" alt="image-20191231214254632"></p>
 <p>浏览器访问 <code>http://localhost:8890/user/get</code>，得到</p>
 <p><img src="/2019/07/31/SpringCloud学习之旅（三）-SpringSession和Redis管理共享session/image-20191231214337502.png" alt="image-20191231214337502"></p>
-<p>可能有同学问，这个UUID 一样和不一样有啥含义？</p>
-<p>这个UUID代表一次会话中某个微服务M存放到session的数据，访问不同的端口（代表访问不同微服务），得到一样的UUID（代表不同微服务能从session里取到微服务M的存放的数据），说明这个session是被微服务集群共享的且一致的。微服务A可以把自己的从数据库查询到的用户名字<code>name</code>set进这个共享session里，另外一个微服务B可以从session里取出微服务A的数据<code>name</code>,同时它也可以把自己从数据库查询到用户订单数据<code>order</code>,<code>set</code>进session里，之后微服务A、微服务C都可以从session里<code>get</code>出这个用户的<code>name</code>和<code>order</code>。</p>
 <p>浏览器访问 <code>http://localhost:8889/user/set</code>,注意，这个这里是set，不是get。</p>
 <p><img src="/2019/07/31/SpringCloud学习之旅（三）-SpringSession和Redis管理共享session/image-20191231221412070.png" alt="image-20191231221412070"></p>
 <p>浏览器访问 <code>http://localhost:8888/user/get</code>，得到</p>
@@ -406,6 +404,8 @@
 <p><img src="/2019/07/31/SpringCloud学习之旅（三）-SpringSession和Redis管理共享session/image-20191231221606023.png" alt="image-20191231221606023"></p>
 <p>浏览器访问 <code>http://localhost:8890/user/get</code>，得到</p>
 <p><img src="/2019/07/31/SpringCloud学习之旅（三）-SpringSession和Redis管理共享session/image-20191231221657037.png" alt="image-20191231221657037"></p>
+<p>可能有同学问，这个UUID 一样和不一样有啥含义？</p>
+<p>这个UUID代表一次会话中某个微服务M存放到session的数据，访问不同的端口（代表访问不同微服务），得到一样的UUID（代表不同微服务能从session里取到微服务M的存放的数据），说明这个session是被微服务集群共享的且一致的。微服务A可以把自己的从数据库查询到的用户名字<code>name</code> <code>set</code>进这个共享session里，另外一个微服务B可以从session里取出微服务A的数据<code>name</code>,同时它也可以把自己从数据库查询到用户订单数据<code>order</code> <code>set</code>进session里，之后微服务A、微服务C都可以从session里<code>get</code>出这个用户的<code>name</code>和<code>order</code>。</p>
 <h5 id="5-总结"><a href="#5-总结" class="headerlink" title="5. 总结"></a>5. 总结</h5><ol>
 <li><p>不要把sessionid和session搞混了。sessionid只是一串不重复的特殊编号，和服务器的session是匹配的。真正存放数据的是服务器内存或者redis里的session对象；</p>
 </li>
