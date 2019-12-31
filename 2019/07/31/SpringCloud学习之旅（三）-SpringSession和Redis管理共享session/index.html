@@ -76,7 +76,7 @@
 <meta property="og:image" content="https://quarkljy.github.io/2019/07/31/SpringCloud学习之旅（三）-SpringSession和Redis管理共享session/image-20191231214154468.png">
 <meta property="og:image" content="https://quarkljy.github.io/2019/07/31/SpringCloud学习之旅（三）-SpringSession和Redis管理共享session/image-20191231214254632.png">
 <meta property="og:image" content="https://quarkljy.github.io/2019/07/31/SpringCloud学习之旅（三）-SpringSession和Redis管理共享session/image-20191231214337502.png">
-<meta property="og:updated_time" content="2019-12-31T14:01:33.382Z">
+<meta property="og:updated_time" content="2019-12-31T14:04:00.703Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="SpringCloud学习之旅（三）-- SpringSession和Redis管理共享session">
 <meta name="twitter:description" content="SpringSession和Redis管理共享session。深刻理解session。">
@@ -391,8 +391,11 @@
 <p><img src="/2019/07/31/SpringCloud学习之旅（三）-SpringSession和Redis管理共享session/image-20191231214337502.png" alt="image-20191231214337502"></p>
 <p>可能有同学问，这个UUID 一样和不一样有啥含义？</p>
 <p>这个UUID代表一次会话中某个微服务M存放到session的数据，访问不同的端口（代表访问不同微服务），得到一样的UUID（代表不同微服务能从session里取到微服务M的存放的数据），说明这个session是被微服务集群共享的且一致的。微服务A可以把自己的从数据库查询到的用户名字<code>name</code>set进这个共享session里，另外一个微服务B可以从session里取出微服务A的数据<code>name</code>,同时它也可以把自己从数据库查询到用户订单数据<code>order</code>,<code>set</code>进session里，之后微服务A、微服务C都可以从session里<code>get</code>出这个用户的<code>name</code>和<code>order</code>。</p>
-<h5 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h5><ol>
-<li>不要把sessionid和session搞混了。sessionid只是一串不重复的特殊编号，和服务器的session是匹配的。真正存放数据的是服务器内存类的session对象。</li>
+<h5 id="5-总结"><a href="#5-总结" class="headerlink" title="5. 总结"></a>5. 总结</h5><ol>
+<li><p>不要把sessionid和session搞混了。sessionid只是一串不重复的特殊编号，和服务器的session是匹配的。真正存放数据的是服务器内存类的session对象；</p>
+</li>
+<li><p>session可以存用户有关的数据，比如名字，订单数据等。</p>
+</li>
 </ol>
 
     </div>
@@ -467,7 +470,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-前言"><span class="nav-text">1. 前言</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#1-1-session是什么？"><span class="nav-text">1.1 session是什么？</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#1-2-分布式-session-一致性问题"><span class="nav-text">1.2  分布式 session 一致性问题</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-分布式session解决方案"><span class="nav-text">2. 分布式session解决方案</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-搭建项目"><span class="nav-text">3. 搭建项目</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4-测试"><span class="nav-text">4. 测试</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#总结"><span class="nav-text">总结</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-前言"><span class="nav-text">1. 前言</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#1-1-session是什么？"><span class="nav-text">1.1 session是什么？</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#1-2-分布式-session-一致性问题"><span class="nav-text">1.2  分布式 session 一致性问题</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-分布式session解决方案"><span class="nav-text">2. 分布式session解决方案</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-搭建项目"><span class="nav-text">3. 搭建项目</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4-测试"><span class="nav-text">4. 测试</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#5-总结"><span class="nav-text">5. 总结</span></a></li></ol></div>
         
       </div>
       <!--/noindex-->
