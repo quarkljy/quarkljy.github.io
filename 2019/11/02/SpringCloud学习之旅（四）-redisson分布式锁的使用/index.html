@@ -59,29 +59,29 @@
 
   <meta name="description" content="redisson分布式锁的使用场景和源码解析。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="SpringCloud学习之旅（四）- redisson分布式锁的使用">
-<meta property="og:url" content="https://quarkljy.github.io/2019/11/02/SpringCloud学习之旅（四）- redisson分布式锁的使用/index.html">
+<meta property="og:title" content="SpringCloud学习之旅（四）-redisson分布式锁的使用">
+<meta property="og:url" content="https://quarkljy.github.io/2019/11/02/SpringCloud学习之旅（四）-redisson分布式锁的使用/index.html">
 <meta property="og:site_name" content="Quark&#39;s Blogs">
 <meta property="og:description" content="redisson分布式锁的使用场景和源码解析。">
 <meta property="og:locale" content="en">
-<meta property="og:image" content="https://quarkljy.github.io/2019/11/02/SpringCloud学习之旅（四）-%20redisson分布式锁的使用/image-20200102152624888.png">
-<meta property="og:image" content="https://quarkljy.github.io/2019/11/02/SpringCloud学习之旅（四）-%20redisson分布式锁的使用/image-20200102153424993.png">
-<meta property="og:image" content="https://quarkljy.github.io/2019/11/02/SpringCloud学习之旅（四）-%20redisson分布式锁的使用/image-20200102154328564.png">
-<meta property="og:image" content="https://quarkljy.github.io/2019/11/02/SpringCloud学习之旅（四）-%20redisson分布式锁的使用/image-20200102155503932.png">
-<meta property="og:image" content="https://quarkljy.github.io/2019/11/02/SpringCloud学习之旅（四）-%20redisson分布式锁的使用/image-20200102155520257.png">
-<meta property="og:image" content="https://quarkljy.github.io/2019/11/02/SpringCloud学习之旅（四）-%20redisson分布式锁的使用/image-20200102160025977.png">
-<meta property="og:image" content="https://quarkljy.github.io/2019/11/02/SpringCloud学习之旅（四）-%20redisson分布式锁的使用/image-20200102160436459.png">
-<meta property="og:image" content="https://quarkljy.github.io/2019/11/02/SpringCloud学习之旅（四）-%20redisson分布式锁的使用/image-20200102155433043.png">
-<meta property="og:image" content="https://quarkljy.github.io/2019/11/02/SpringCloud学习之旅（四）-%20redisson分布式锁的使用/image-20200102161229326.png">
-<meta property="og:image" content="https://quarkljy.github.io/2019/11/02/SpringCloud学习之旅（四）-%20redisson分布式锁的使用/image-20200102161139867.png">
-<meta property="og:image" content="https://quarkljy.github.io/2019/11/02/SpringCloud学习之旅（四）-%20redisson分布式锁的使用/image-20200102164303265.png">
-<meta property="og:image" content="https://quarkljy.github.io/2019/11/02/SpringCloud学习之旅（四）-%20redisson分布式锁的使用/image-20200102163231255.png">
-<meta property="og:updated_time" content="2020-01-02T08:48:03.544Z">
+<meta property="og:image" content="https://quarkljy.github.io/2019/11/02/SpringCloud学习之旅（四）-redisson分布式锁的使用/image-20200102152624888.png">
+<meta property="og:image" content="https://quarkljy.github.io/2019/11/02/SpringCloud学习之旅（四）-redisson分布式锁的使用/image-20200102153424993.png">
+<meta property="og:image" content="https://quarkljy.github.io/2019/11/02/SpringCloud学习之旅（四）-redisson分布式锁的使用/image-20200102154328564.png">
+<meta property="og:image" content="https://quarkljy.github.io/2019/11/02/SpringCloud学习之旅（四）-redisson分布式锁的使用/image-20200102155503932.png">
+<meta property="og:image" content="https://quarkljy.github.io/2019/11/02/SpringCloud学习之旅（四）-redisson分布式锁的使用/image-20200102155520257.png">
+<meta property="og:image" content="https://quarkljy.github.io/2019/11/02/SpringCloud学习之旅（四）-redisson分布式锁的使用/image-20200102160025977.png">
+<meta property="og:image" content="https://quarkljy.github.io/2019/11/02/SpringCloud学习之旅（四）-redisson分布式锁的使用/image-20200102160436459.png">
+<meta property="og:image" content="https://quarkljy.github.io/2019/11/02/SpringCloud学习之旅（四）-redisson分布式锁的使用/image-20200102155433043.png">
+<meta property="og:image" content="https://quarkljy.github.io/2019/11/02/SpringCloud学习之旅（四）-redisson分布式锁的使用/image-20200102161229326.png">
+<meta property="og:image" content="https://quarkljy.github.io/2019/11/02/SpringCloud学习之旅（四）-redisson分布式锁的使用/image-20200102161139867.png">
+<meta property="og:image" content="https://quarkljy.github.io/2019/11/02/SpringCloud学习之旅（四）-redisson分布式锁的使用/image-20200102164303265.png">
+<meta property="og:image" content="https://quarkljy.github.io/2019/11/02/SpringCloud学习之旅（四）-redisson分布式锁的使用/image-20200102163231255.png">
+<meta property="og:updated_time" content="2020-01-02T08:51:52.116Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="SpringCloud学习之旅（四）- redisson分布式锁的使用">
+<meta name="twitter:title" content="SpringCloud学习之旅（四）-redisson分布式锁的使用">
 <meta name="twitter:description" content="redisson分布式锁的使用场景和源码解析。">
-<meta name="twitter:image" content="https://quarkljy.github.io/2019/11/02/SpringCloud学习之旅（四）-%20redisson分布式锁的使用/image-20200102152624888.png">
-  <link rel="canonical" href="https://quarkljy.github.io/2019/11/02/SpringCloud学习之旅（四）- redisson分布式锁的使用/">
+<meta name="twitter:image" content="https://quarkljy.github.io/2019/11/02/SpringCloud学习之旅（四）-redisson分布式锁的使用/image-20200102152624888.png">
+  <link rel="canonical" href="https://quarkljy.github.io/2019/11/02/SpringCloud学习之旅（四）-redisson分布式锁的使用/">
 
 
 <script id="page-configurations">
@@ -95,7 +95,7 @@
   };
 </script>
 
-  <title>SpringCloud学习之旅（四）- redisson分布式锁的使用 | Quark's Blogs</title>
+  <title>SpringCloud学习之旅（四）-redisson分布式锁的使用 | Quark's Blogs</title>
   
 
 
@@ -253,7 +253,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="en">
-    <link itemprop="mainEntityOfPage" href="https://quarkljy.github.io/2019/11/02/SpringCloud学习之旅（四）- redisson分布式锁的使用/">
+    <link itemprop="mainEntityOfPage" href="https://quarkljy.github.io/2019/11/02/SpringCloud学习之旅（四）-redisson分布式锁的使用/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Quark">
@@ -267,7 +267,7 @@
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            SpringCloud学习之旅（四）- redisson分布式锁的使用
+            SpringCloud学习之旅（四）-redisson分布式锁的使用
             
 
           
@@ -316,19 +316,19 @@
 <h5 id="2-场景模拟"><a href="#2-场景模拟" class="headerlink" title="2.场景模拟"></a>2.场景模拟</h5><p>假设一个每日投一票的场景，就不说抢购的啦。</p>
 <p>假设一个用户每天可以投票，那么一次用户连续三次点击投票按钮，按钮触发三次请求，三次请求负载均衡到投票集群的A,B,C节点上。</p>
 <p>如果数据没有乐观锁判定更新，那么A，B,C同时向数据库查询，就有可能都得到今日未投票的的结果，于是A,B,C进行日投票操作，分别给总投票数增加1，都成功了，那么用户当天完成了投三次票，违背每日投一票的规则。</p>
-<p><img src="/2019/11/02/SpringCloud学习之旅（四）- redisson分布式锁的使用/image-20200102152624888.png" alt="image-20200102152624888"></p>
+<p><img src="/2019/11/02/SpringCloud学习之旅（四）-redisson分布式锁的使用/image-20200102152624888.png" alt="image-20200102152624888"></p>
 <p>Redis做分布式锁时，用户的在A,B,C节点的请求并发向Redis申请锁，其中B节点获取到锁（由用户的id充当），A和C节点tryLock被阻塞住重试，B节点查询mysql数据库可知用户今日未投票，于是给总票数加1.释放锁。此时A在重试中获得到锁，向mysql数据库查询得知用户今日已经投票，因此，不去进行给总票数加1的操作，并释放锁，接着C在重试中获得到锁，向mysql数据库查询得知用户今日已经投票，因此，不去进行给总票数加1的操作，并释放锁。</p>
-<p><img src="/2019/11/02/SpringCloud学习之旅（四）- redisson分布式锁的使用/image-20200102153424993.png" alt="image-20200102153424993"></p>
+<p><img src="/2019/11/02/SpringCloud学习之旅（四）-redisson分布式锁的使用/image-20200102153424993.png" alt="image-20200102153424993"></p>
 <h5 id="3-redisson源码分析"><a href="#3-redisson源码分析" class="headerlink" title="3. redisson源码分析"></a>3. redisson源码分析</h5><p>使用redisson来做分布式锁。自己不是不能写，而是写的太垃圾。既然都已经有完美的轮子了，自己就不要重复造啦。自己造得有缺陷你敢用吗哈哈哈？比如可重入性怎么设计？重入几次就要都要记录，释放得时候也要释放几次，自己的锁时间过期了，别人也不能释放这个锁。总之，写起来还是很麻烦。</p>
 <p>在redisson分布式锁中，主要用到以下两个方法</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">tryLock()</span><br><span class="line">lock()</span><br></pre></td></tr></table></figure>
 
 <h6 id="3-1-tryLock"><a href="#3-1-tryLock" class="headerlink" title="3.1 tryLock()"></a>3.1 tryLock()</h6><p><code>tryLock()</code></p>
-<p><img src="/2019/11/02/SpringCloud学习之旅（四）- redisson分布式锁的使用/image-20200102154328564.png" alt="image-20200102154328564"></p>
+<p><img src="/2019/11/02/SpringCloud学习之旅（四）-redisson分布式锁的使用/image-20200102154328564.png" alt="image-20200102154328564"></p>
 <p><code>tryAcquire ()</code></p>
-<p><img src="/2019/11/02/SpringCloud学习之旅（四）- redisson分布式锁的使用/image-20200102155503932.png" alt="image-20200102155503932"></p>
+<p><img src="/2019/11/02/SpringCloud学习之旅（四）-redisson分布式锁的使用/image-20200102155503932.png" alt="image-20200102155503932"></p>
 <p><code>tryLockInnerAsync</code>  </p>
-<p><img src="/2019/11/02/SpringCloud学习之旅（四）- redisson分布式锁的使用/image-20200102155520257.png" alt="image-20200102155520257"></p>
+<p><img src="/2019/11/02/SpringCloud学习之旅（四）-redisson分布式锁的使用/image-20200102155520257.png" alt="image-20200102155520257"></p>
 <p>通过lua脚本来实现加锁的操作</p>
 <ol>
 <li>判断lock键是否存在，不存在直接调用hset存储当前线程信息并且设置过期时间,返回nil，告诉客户端直接获取到锁。</li>
@@ -336,7 +336,7 @@
 <li>被其它线程已经锁定，返回锁有效期的剩余时间，告诉客户端需要等待。 </li>
 </ol>
 <h6 id="3-2-unlock"><a href="#3-2-unlock" class="headerlink" title="3.2 unlock()"></a><strong>3.2 unlock()</strong></h6><p><code>unlock()</code></p>
-<p><img src="/2019/11/02/SpringCloud学习之旅（四）- redisson分布式锁的使用/image-20200102160025977.png" alt="image-20200102160025977"></p>
+<p><img src="/2019/11/02/SpringCloud学习之旅（四）-redisson分布式锁的使用/image-20200102160025977.png" alt="image-20200102160025977"></p>
 <ol>
 <li>如果lock键不存在，发消息说锁已经可用，发送一个消息</li>
 <li>如果锁不是被当前线程锁定，则返回nil</li>
@@ -346,12 +346,12 @@
 </ol>
 <h6 id="3-3-查看加锁的值"><a href="#3-3-查看加锁的值" class="headerlink" title="3.3 查看加锁的值"></a>3.3 查看加锁的值</h6><p>我们运行一下程序，但是只加锁不解锁，直观查看redisson是如何操作redis的</p>
 <p>把解锁的代码注释掉，运行程序发送一次请求。</p>
-<p><img src="/2019/11/02/SpringCloud学习之旅（四）- redisson分布式锁的使用/image-20200102160436459.png" alt="image-20200102160436459"></p>
+<p><img src="/2019/11/02/SpringCloud学习之旅（四）-redisson分布式锁的使用/image-20200102160436459.png" alt="image-20200102160436459"></p>
 <p>使用redis-desktop查看，发现redisson存入redis的数据类型是hash，hash中的key是一个uuid，key对应value是一个整数，代表锁获取的次数（因为要求实现可重入）。</p>
-<p><img src="/2019/11/02/SpringCloud学习之旅（四）- redisson分布式锁的使用/image-20200102155433043.png" alt="image-20200102155433043"></p>
+<p><img src="/2019/11/02/SpringCloud学习之旅（四）-redisson分布式锁的使用/image-20200102155433043.png" alt="image-20200102155433043"></p>
 <p>增加两次tryLock(),运行程序发送一次请求</p>
-<p><img src="/2019/11/02/SpringCloud学习之旅（四）- redisson分布式锁的使用/image-20200102161229326.png" alt="image-20200102161229326"></p>
-<p><img src="/2019/11/02/SpringCloud学习之旅（四）- redisson分布式锁的使用/image-20200102161139867.png" alt="image-20200102161139867"></p>
+<p><img src="/2019/11/02/SpringCloud学习之旅（四）-redisson分布式锁的使用/image-20200102161229326.png" alt="image-20200102161229326"></p>
+<p><img src="/2019/11/02/SpringCloud学习之旅（四）-redisson分布式锁的使用/image-20200102161139867.png" alt="image-20200102161139867"></p>
 <h5 id="4-搭建项目和测试"><a href="#4-搭建项目和测试" class="headerlink" title="4. 搭建项目和测试"></a>4. 搭建项目和测试</h5><h6 id="4-1搭建项目"><a href="#4-1搭建项目" class="headerlink" title="4.1搭建项目"></a>4.1搭建项目</h6><p>以抢购为场景，不是投票了哈</p>
 <p>远程Redis数据库自己搭建启动哈。我是用docker启动的。 <code>--requirepass 123456</code>表示密码123456</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -d --name redis -p 6379:6379 redis redis-server --requirepass 123456</span><br></pre></td></tr></table></figure>
@@ -378,22 +378,22 @@
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.quark.distributedlockredisson.controller;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> lombok.extern.slf4j.Slf4j;</span><br><span class="line"><span class="keyword">import</span> org.redisson.api.RLock;</span><br><span class="line"><span class="keyword">import</span> org.redisson.api.RedissonClient;</span><br><span class="line"><span class="keyword">import</span> org.springframework.beans.factory.annotation.Autowired;</span><br><span class="line"><span class="keyword">import</span> org.springframework.data.redis.core.RedisTemplate;</span><br><span class="line"><span class="keyword">import</span> org.springframework.data.redis.core.StringRedisTemplate;</span><br><span class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.GetMapping;</span><br><span class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.Mapping;</span><br><span class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.PostMapping;</span><br><span class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.RestController;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> javax.annotation.PostConstruct;</span><br><span class="line"><span class="keyword">import</span> java.util.concurrent.TimeUnit;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Created by quark</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Slf</span>4j</span><br><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">OrderController</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> StringRedisTemplate redisTemplate;</span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> RedissonClient redissonClient;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> String stock = <span class="string">"stock:201912230006"</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> String order = <span class="string">"order:201912230006"</span>;</span><br><span class="line">    <span class="keyword">private</span> String stockNum = <span class="string">"50"</span>;</span><br><span class="line">    <span class="keyword">private</span> String orderNum = <span class="string">"0"</span>;</span><br><span class="line">    <span class="meta">@PostConstruct</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">InitStock</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        redisTemplate.opsForValue().set(stock, stockNum);</span><br><span class="line">        redisTemplate.opsForValue().set(order, orderNum);</span><br><span class="line">        String s1 = redisTemplate.opsForValue().get(stock);</span><br><span class="line">        String s2 = redisTemplate.opsForValue().get(order);</span><br><span class="line">        log.info(<span class="string">"初始化数据库成功，库存为： &#123;&#125;，订单数量为： &#123;&#125;。"</span>,s1,s2);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">@GetMapping</span>(<span class="string">"order"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">order</span><span class="params">()</span> <span class="keyword">throws</span> InterruptedException </span>&#123;</span><br><span class="line">        <span class="comment">//坑 一</span></span><br><span class="line">        <span class="comment">//锁不能跟订单id重复啊，不然就是修改同一个key-value,所以会出错</span></span><br><span class="line">        RLock lock = redissonClient.getLock(stock+<span class="string">":lock"</span>);</span><br><span class="line">        <span class="keyword">boolean</span> flag = <span class="keyword">false</span>;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line"><span class="comment">//            lock.lock(20,TimeUnit.SECONDS);</span></span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                flag = !lock.tryLock(<span class="number">20</span>, TimeUnit.SECONDS);</span><br><span class="line">            &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                log.error(<span class="string">"尝试加锁出错"</span>, e.getMessage());</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> (flag) &#123;</span><br><span class="line">                log.warn(<span class="string">"系统繁忙，抢购失败，换个姿势再来？^_^"</span>);</span><br><span class="line">                <span class="keyword">return</span> <span class="string">"FAILED"</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            String newStock = redisTemplate.opsForValue().get(stock);</span><br><span class="line">            <span class="comment">//坑二 </span></span><br><span class="line"><span class="comment">//            newStock == "0"  巨坑,这里永远是false,因为他们的内存地址是不同的,所以,一般的相等比较,务必使用equals().</span></span><br><span class="line">            <span class="keyword">if</span> (<span class="string">"0"</span>.equals(newStock)) &#123;</span><br><span class="line">                log.warn(<span class="string">"女装卖完了，活动结束啦，下次活动欢迎再来抢购"</span>);</span><br><span class="line">                <span class="keyword">return</span> <span class="string">"FAILED"</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">//模拟数据库下单 减库存和增加订单</span></span><br><span class="line">            Long decrement = <span class="keyword">null</span>;</span><br><span class="line">            Long increment = <span class="keyword">null</span>;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                decrement = redisTemplate.opsForValue().decrement(stock);</span><br><span class="line">                increment = redisTemplate.opsForValue().increment(order);</span><br><span class="line">                log.info(<span class="string">"恭喜你抢购女装成功"</span>);</span><br><span class="line">                log.info(<span class="string">"查询得到数据库成功，女装库存为： &#123;&#125;，女装订单数量为： &#123;&#125;。"</span>,decrement,increment);</span><br><span class="line">            &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">                log.info(<span class="string">"-----抢购失败，换个姿势再来？-------"</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">finally</span> &#123;</span><br><span class="line">            <span class="comment">//一定是先加锁再解锁，所以不用担心解了别人的锁?  不对，因为如果是因为中间处理延迟导致系统运行缓慢，使得锁时间超时失效，别的用户请求加锁成功，而此时这里才运行到解锁，那么就有可能导致解了别人的锁。</span></span><br><span class="line">            <span class="comment">//所以，每次加锁，除了productid,还要默认加一个UUID做为value</span></span><br><span class="line">            lock.unlock();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"OK"</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>整个项目文件结构如下</p>
-<p><img src="/2019/11/02/SpringCloud学习之旅（四）- redisson分布式锁的使用/image-20200102164303265.png" alt="image-20200102164303265"></p>
+<p><img src="/2019/11/02/SpringCloud学习之旅（四）-redisson分布式锁的使用/image-20200102164303265.png" alt="image-20200102164303265"></p>
 <h6 id="4-2测试"><a href="#4-2测试" class="headerlink" title="4.2测试"></a>4.2测试</h6><p>启动测试，向<code>http://localhost:8891/order</code>，发送请求，可以正常下单。</p>
 <p>集群的高并发模拟就不弄了。电脑太垃圾模拟不来。。</p>
-<p><img src="/2019/11/02/SpringCloud学习之旅（四）- redisson分布式锁的使用/image-20200102163231255.png" alt="image-20200102163231255"></p>
+<p><img src="/2019/11/02/SpringCloud学习之旅（四）-redisson分布式锁的使用/image-20200102163231255.png" alt="image-20200102163231255"></p>
 <h5 id="5-总结"><a href="#5-总结" class="headerlink" title="5. 总结"></a>5. 总结</h5><ol>
 <li><p>分布式锁的思想跟线程锁的思想是一样的。可以这么类比，某业务的微服务集群是一个“JVM”，那么集群里的多节点就是多线程，分布式锁就是这个“JVM”的线程锁。</p>
 </li>
 <li><p>redisson的分布式锁在每次重入之后，会刷新过期时间，保证业务代码在锁未失效前运行完！！！</p>
 </li>
 <li><p>要注意啊，上锁的标志不能跟订单号一模一样，不然会报错。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> String stock = <span class="string">"stock:201912230006"</span>;</span><br><span class="line"><span class="comment">//</span></span><br><span class="line">RLock lock = redissonClient.getLock(stock);</span><br><span class="line"><span class="comment">//</span></span><br><span class="line">redisTemplate.opsForValue().set(stock, stockNum)</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">      <span class="comment">// 坑一</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> String stock = <span class="string">"stock:201912230006"</span>;</span><br><span class="line">    <span class="comment">// </span></span><br><span class="line">RLock lock = redissonClient.getLock(stock);</span><br><span class="line">    <span class="comment">//</span></span><br><span class="line">redisTemplate.opsForValue().set(stock, stockNum)</span><br></pre></td></tr></table></figure>
 
 <p>应该修改为</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> String stock = <span class="string">"stock:201912230006"</span>;</span><br><span class="line"><span class="comment">//</span></span><br><span class="line">RLock lock = redissonClient.getLock(stock+<span class="string">"stock"</span>);</span><br><span class="line"><span class="comment">//</span></span><br><span class="line">redisTemplate.opsForValue().set(stock, stockNum)</span><br></pre></td></tr></table></figure>
 </li>
-<li><p>判断字符串等是否相等的时候，务必优先使用<code>equals()</code>,或者其他的函数，不能直接使用==，否则会有意料不到的事情发生，如下</p>
+<li><p>判断字符串等是否相等的时候，务必优先使用<code>equals()</code>或者其他的函数，不能直接使用==，否则会有意料不到的事情发生，如下</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">String newStock = redisTemplate.opsForValue().get(stock);</span><br><span class="line">            <span class="comment">//坑二 </span></span><br><span class="line"><span class="comment">//            newStock == "0"  巨坑,这里永远是false,因为他们的内存地址是不同的,所以,一般的相等比较,务必使用equals().</span></span><br><span class="line">            <span class="keyword">if</span> (<span class="string">"0"</span>.equals(newStock)) &#123;</span><br><span class="line">                log.warn(<span class="string">"女装卖完了，活动结束啦，下次活动欢迎再来抢购"</span>);</span><br><span class="line">                <span class="keyword">return</span> <span class="string">"FAILED"</span>;</span><br><span class="line">            &#125;</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>不要重复造轮子</p>
@@ -655,7 +655,7 @@
       repo: 'quarkljy.github.io',
       owner: 'quarkljy',
       admin: ['quarkljy'],
-      id: '0b2830bf95357a12c2ff28680d3d009c',
+      id: '30d3f7e95f9f5983712e2efa65ba7a8a',
         language: 'en',
       
       distractionFreeMode: 'true'
