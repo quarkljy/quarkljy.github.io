@@ -76,7 +76,7 @@
 <meta property="og:image" content="https://quarkljy.github.io/2019/11/02/SpringCloud学习之旅（四）-%20redisson分布式锁的使用/image-20200102161139867.png">
 <meta property="og:image" content="https://quarkljy.github.io/2019/11/02/SpringCloud学习之旅（四）-%20redisson分布式锁的使用/image-20200102164303265.png">
 <meta property="og:image" content="https://quarkljy.github.io/2019/11/02/SpringCloud学习之旅（四）-%20redisson分布式锁的使用/image-20200102163231255.png">
-<meta property="og:updated_time" content="2020-01-02T08:47:37.711Z">
+<meta property="og:updated_time" content="2020-01-02T08:48:03.544Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="SpringCloud学习之旅（四）- redisson分布式锁的使用">
 <meta name="twitter:description" content="redisson分布式锁的使用场景和源码解析。">
@@ -385,7 +385,7 @@
 <h5 id="5-总结"><a href="#5-总结" class="headerlink" title="5. 总结"></a>5. 总结</h5><ol>
 <li><p>分布式锁的思想跟线程锁的思想是一样的。可以这么类比，某业务的微服务集群是一个“JVM”，那么集群里的多节点就是多线程，分布式锁就是这个“JVM”的线程锁。</p>
 </li>
-<li><p>redisson的分布式锁在每次重入之后，会刷新过期时间，保证业务代码在锁未失效前运行完整！！！</p>
+<li><p>redisson的分布式锁在每次重入之后，会刷新过期时间，保证业务代码在锁未失效前运行完！！！</p>
 </li>
 <li><p>要注意啊，上锁的标志不能跟订单号一模一样，不然会报错。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> String stock = <span class="string">"stock:201912230006"</span>;</span><br><span class="line"><span class="comment">//</span></span><br><span class="line">RLock lock = redissonClient.getLock(stock);</span><br><span class="line"><span class="comment">//</span></span><br><span class="line">redisTemplate.opsForValue().set(stock, stockNum)</span><br></pre></td></tr></table></figure>
