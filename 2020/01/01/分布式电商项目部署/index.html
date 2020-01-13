@@ -90,20 +90,22 @@
 <meta property="og:image" content="https://quarkljy.github.io/2020/01/01/分布式电商项目部署/image-20200111185736185.png">
 <meta property="og:image" content="https://quarkljy.github.io/2020/01/01/分布式电商项目部署/image-20200111185900196.png">
 <meta property="og:image" content="https://quarkljy.github.io/2020/01/01/分布式电商项目部署/image-20200111185935980.png">
-<meta property="og:image" content="https://quarkljy.github.io/2020/01/01/分布式电商项目部署/image-20200111190045553.png">
-<meta property="og:image" content="https://quarkljy.github.io/2020/01/01/分布式电商项目部署/image-20200111190756663.png">
-<meta property="og:image" content="https://quarkljy.github.io/2020/01/01/分布式电商项目部署/image-20200111190919980.png">
+<meta property="og:image" content="https://quarkljy.github.io/2020/01/01/分布式电商项目部署/image-20200113104525725.png">
+<meta property="og:image" content="https://quarkljy.github.io/2020/01/01/分布式电商项目部署/image-20200113104554136.png">
+<meta property="og:image" content="https://quarkljy.github.io/2020/01/01/分布式电商项目部署/image-20200113104628925.png">
+<meta property="og:image" content="https://quarkljy.github.io/2020/01/01/分布式电商项目部署/image-20200113104653018.png">
+<meta property="og:image" content="https://quarkljy.github.io/2020/01/01/分布式电商项目部署/image-20200113104730021.png">
 <meta property="og:image" content="https://quarkljy.github.io/2020/01/01/分布式电商项目部署/image-20200111192423267.png">
 <meta property="og:image" content="https://quarkljy.github.io/2020/01/01/分布式电商项目部署/image-20200111192308652.png">
 <meta property="og:image" content="https://quarkljy.github.io/2020/01/01/分布式电商项目部署/image-20200111192839793.png">
 <meta property="og:image" content="https://quarkljy.github.io/2020/01/01/分布式电商项目部署/image-20200111191947826.png">
 <meta property="og:image" content="https://quarkljy.github.io/2020/01/01/分布式电商项目部署/image-20200111193315871.png">
 <meta property="og:image" content="https://quarkljy.github.io/2020/01/01/分布式电商项目部署/image-20200111193423844.png">
-<meta property="og:image" content="https://quarkljy.github.io/2020/01/01/分布式电商项目部署/image-20200111193613423.png">
-<meta property="og:image" content="https://quarkljy.github.io/2020/01/01/分布式电商项目部署/image-20200111193730893.png">
 <meta property="og:image" content="https://quarkljy.github.io/2020/01/01/分布式电商项目部署/image-20200111194247763.png">
+<meta property="og:image" content="https://quarkljy.github.io/2020/01/01/分布式电商项目部署/image-20200111193730893.png">
+<meta property="og:image" content="https://quarkljy.github.io/2020/01/01/分布式电商项目部署/image-20200111193613423.png">
 <meta property="og:image" content="https://quarkljy.github.io/2020/01/01/分布式电商项目部署/image-20200111194038513.png">
-<meta property="og:updated_time" content="2020-01-11T12:14:49.498Z">
+<meta property="og:updated_time" content="2020-01-13T03:00:19.854Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="分布式电商项目部署">
 <meta name="twitter:description" content="docker搭建数据库等基础环境，由于docker的容器内出现请求被拒绝的错误，导致大多数服务无法运行，所以改用jar的形式部署。">
@@ -443,13 +445,13 @@
 <p>以下命令在容器内运行</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">elasticsearch-plugin install https://github.com/medcl/elasticsearch-analysis-ik/releases/download/v6.4.0/elasticsearch-analysis-ik-6.4.0.zip</span><br></pre></td></tr></table></figure>
 
-<p>慢慢等它下载完。然后 elasticsearch容器</p>
+<p>慢慢等它下载完。然后 重启elasticsearch容器</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker restart elasticsearch</span><br></pre></td></tr></table></figure>
 
 <h6 id="2-8-安装kibana"><a href="#2-8-安装kibana" class="headerlink" title="2.8 安装kibana"></a>2.8 安装kibana</h6><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">docker run --name kibana -p 5601:5601 \</span><br><span class="line">--link elasticsearch:es \</span><br><span class="line">-e "elasticsearch.hosts=http://es:9200" \</span><br><span class="line">-d kibana:6.4.0</span><br></pre></td></tr></table></figure>
 
 <p>浏览器访问 <a href="http://106.52.114.205:5601/" target="_blank" rel="noopener">http://106.52.114.205:5601/</a></p>
-<p>我的elasticsearch已经导入的商品数据，所以可以查得出goods</p>
+<p>我的elasticsearch已经导入的商品数据，所以可以查得出goods的索引信息</p>
 <p><img src="/2020/01/01/分布式电商项目部署/image-20200111173218816.png" alt="image-20200111173218816"></p>
 <p><img src="/2020/01/01/分布式电商项目部署/image-20200111173312081.png" alt="image-20200111173312081"></p>
 <h6 id="2-9-安装nginx"><a href="#2-9-安装nginx" class="headerlink" title="2.9 安装nginx"></a>2.9 安装nginx</h6><p>先nginx.conf上传到服务端的/quark/nginx/conf文件夹下</p>
@@ -471,27 +473,27 @@
 </ol>
 <p><img src="/2020/01/01/分布式电商项目部署/image-20200111174716998.png" alt="image-20200111174716998"></p>
 <ol start="3">
-<li>启动启动类</li>
+<li>启动itemservice的启动类</li>
 </ol>
 <p><img src="/2020/01/01/分布式电商项目部署/image-20200111174759128.png" alt="image-20200111174759128"></p>
 <ol start="4">
 <li>运行起来后，浏览器访问 <a href="http://localhost:8099/loadData" target="_blank" rel="noopener">http://localhost:8099/loadData</a></li>
 </ol>
 <p>就会自动给elasticsearch导入数据。</p>
-<p>注意，<strong>这一步之前自己不要往数据库乱添加数据</strong>。一定要是leyou.sql的未修改过数据，不然可能会报错。如下图是我自己乱添加一个数据，导致往elasticsearch导入数据出错。</p>
+<p>注意，<strong>这一步之前自己不要往数据库乱添加数据</strong>。一定要是leyou.sql的未修改过数据，不然可能会报错。如下图是我自己乱添加了一个数据，导致往elasticsearch导入数据出错。</p>
 <p><img src="/2020/01/01/分布式电商项目部署/image-20200111175336917.png" alt="image-20200111175336917"></p>
 <p>补充1 解释</p>
 <p>这里跟视频里的不一样，主要是因为使用search-service的Fgein调用Item-service微服务总是超时，所以不得不把向elasticsearch导入数据的部分代码切换item微服务里</p>
 <p><img src="/2020/01/01/分布式电商项目部署/image-20200111175903618.png" alt="image-20200111175903618"></p>
 <p>补充2  解释</p>
-<p>一定是先创建索引添加索引映射之后再导入数据，不然，对于部分长文本的字段，elasticsearch会把它当作可以拆分可以索引的文本看待，而不是当作keyword。</p>
-<p>我第一次导入数据的时候，方法是分为两步，第一步是</p>
+<p>一定是先创建索引添加索引映射之后再导入数据，不然，对于部分长文本的字段，elasticsearch自动会把它当作可以分词可以索引的文本看待，而不是当作keyword。</p>
+<p>比如，我第一次导入数据的时候，方法是分为两步，第一步是</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    template.createIndex(Goods.class);</span><br><span class="line"></span><br><span class="line">    template.putMapping(Goods.class);</span><br><span class="line">    log.info(<span class="string">"创建索引成功"</span>);</span><br><span class="line">&#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">    log.info(<span class="string">"创建索引失败：&#123;&#125;"</span>,e);</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>第二步是</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> page = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">int</span> rows = <span class="number">100</span>;</span><br><span class="line">        <span class="keyword">int</span> size = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">do</span> &#123;</span><br><span class="line">            <span class="comment">// 查询spu信息</span></span><br><span class="line">            PageResult&lt;Spu&gt; result = goodsClient.querySpuPage(page, rows, <span class="keyword">true</span>, <span class="keyword">null</span>);</span><br><span class="line">            List&lt;Spu&gt; spuList = result.getItems();</span><br><span class="line">            <span class="keyword">if</span> (CollectionUtils.isEmpty(spuList)) &#123;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            List&lt;Goods&gt; goodsList = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">            <span class="keyword">for</span> (Spu spu : spuList) &#123;</span><br><span class="line">                <span class="comment">// 构建成goods</span></span><br><span class="line">                Goods goods = searchService.buildGoods(spu);</span><br><span class="line">                goodsList.add(goods);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">// 存入索引库</span></span><br><span class="line">            goodsRepository.saveAll(goodsList);</span><br><span class="line">            log.info(<span class="string">"-------------导入数据成功--------"</span>);</span><br><span class="line">            <span class="comment">// 翻页</span></span><br><span class="line">            page++;</span><br><span class="line"></span><br><span class="line">            size = spuList.size();</span><br><span class="line">        &#125; <span class="keyword">while</span> (size == <span class="number">100</span>);</span><br></pre></td></tr></table></figure>
 
-<p>我没有运行第一步就直接执行第二部，导致 skus的数据类型变成可以索引的text（本应该是keyword）。重启的是时候，发现总是报错。</p>
+<p>我没有运行第一步就直接执行第二步，导致 skus的数据类型变成可以索引的text（本应该是keyword）。重启的是时候，发现总是报错。</p>
 <p><img src="/2020/01/01/分布式电商项目部署/image-20200111180223961.png" alt="image-20200111180223961"></p>
 <ol start="5">
 <li><p>恢复ip源</p>
@@ -511,20 +513,25 @@
 <p>然后，在当前目录下给脚本增加权限</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chmod +777 mall.sh</span><br></pre></td></tr></table></figure>
 
-<p>别急，还没有完成。如果你是直接用数据库里用户登录，那么你需要先把rsa的公钥和私钥一并上传到服务器的<code>/quark/rsa</code>目录下。</p>
+<p>别急，还没有完成。如果你是直接用数据库里用户登录，那么你需要先把rsa的公钥和私钥一并上传到服务器的<code>/quark/rsa</code>目录下，因为这两个用户的加密钥匙是我生成的，重新生成肯定不对，无法解密数据库的加密信息。</p>
 <p><img src="/2020/01/01/分布式电商项目部署/image-20200111182625396.png" alt="image-20200111182625396"></p>
-<p>然后，回到jar包所在的目录，执行mall.sh脚本，jar包就后台运行了。</p>
+<p>然后，回到服务器jar包所在的目录，执行mall.sh脚本，jar包就后台运行了。</p>
 <p>等一阵子，等服务启动完。</p>
 <p>然后浏览器访问 <a href="http://106.52.114.205:10086" target="_blank" rel="noopener">http://106.52.114.205:10086</a></p>
 <p>可以看到所有服务都启动了。</p>
 <p><img src="/2020/01/01/分布式电商项目部署/image-20200111183036547.png" alt="image-20200111183036547"></p>
-<h5 id="5-部署后端前台"><a href="#5-部署后端前台" class="headerlink" title="5. 部署后端前台"></a>5. 部署后端前台</h5><p>请看manage-web仓库的readme</p>
+<h5 id="5-部署后台管理页面"><a href="#5-部署后台管理页面" class="headerlink" title="5. 部署后台管理页面"></a>5. 部署后台管理页面</h5><p>请看manage-web仓库的readme</p>
 <p><a href="https://github.com/quarkljy/manage-web" target="_blank" rel="noopener">https://github.com/quarkljy/manage-web</a></p>
-<h5 id="6-部署门户前台"><a href="#6-部署门户前台" class="headerlink" title="6. 部署门户前台"></a>6. 部署门户前台</h5><p>请看portal仓库的readme</p>
+<h5 id="6-部署门户页面"><a href="#6-部署门户页面" class="headerlink" title="6. 部署门户页面"></a>6. 部署门户页面</h5><p>请看portal仓库的readme</p>
 <p><a href="https://github.com/quarkljy/portal" target="_blank" rel="noopener">https://github.com/quarkljy/portal</a></p>
-<h5 id="7-效果"><a href="#7-效果" class="headerlink" title="7. 效果"></a>7. 效果</h5><p>后台管理</p>
+<h5 id="7-效果"><a href="#7-效果" class="headerlink" title="7. 效果"></a>7. 效果</h5><ol>
+<li>后台管理 <a href="http://106.52.114.205/#/login" target="_blank" rel="noopener">http://106.52.114.205/#/login</a></li>
+</ol>
+<p>登录，和门户共用用户，没有做权限管理</p>
 <p><img src="/2020/01/01/分布式电商项目部署/image-20200111185017006.png" alt="image-20200111185017006"></p>
-<p>门户</p>
+<ol start="2">
+<li>门户 <a href="http://106.52.114.205/portal/" target="_blank" rel="noopener">http://106.52.114.205/portal/</a></li>
+</ol>
 <p>首页</p>
 <p><img src="/2020/01/01/分布式电商项目部署/image-20200111185122557.png" alt="image-20200111185122557"></p>
 <p>登录</p>
@@ -533,38 +540,52 @@
 <p><img src="/2020/01/01/分布式电商项目部署/image-20200111185900196.png" alt="image-20200111185900196"></p>
 <p>有过滤条件搜索</p>
 <p><img src="/2020/01/01/分布式电商项目部署/image-20200111185935980.png" alt="image-20200111185935980"></p>
-<p>商品详情页，页面效果不好是因为部分js的地址不对。所以这里不能加入购物车。但不影响后台。最新的代码已经修复。</p>
-<p><img src="/2020/01/01/分布式电商项目部署/image-20200111190045553.png" alt="image-20200111190045553"></p>
+<p>商品详情页</p>
+<p><img src="/2020/01/01/分布式电商项目部署/image-20200113104525725.png" alt="image-20200113104525725"></p>
 <p>购物车</p>
-<p><img src="/2020/01/01/分布式电商项目部署/image-20200111190756663.png" alt="image-20200111190756663"></p>
-<p>支付，购物车的数据没有，所以这里页没有数据，这只是我部署的版本有bug，最新的代码已经修复</p>
-<p><img src="/2020/01/01/分布式电商项目部署/image-20200111190919980.png" alt="image-20200111190919980"></p>
-<h5 id="8-一些补充"><a href="#8-一些补充" class="headerlink" title="8. 一些补充"></a>8. 一些补充</h5><h6 id="8-1短信微服务的不能发短信的问题"><a href="#8-1短信微服务的不能发短信的问题" class="headerlink" title="8.1短信微服务的不能发短信的问题"></a>8.1短信微服务的不能发短信的问题</h6><p>我把user微服务的验证码定死为123456，并注释了，sms的短信发送模板（阿里云短信功能好贵）。但是整个注册流程是没问题的，用户注册时后台依然需要用到rabbitmq和redis（）验证码填123456就好了。</p>
+<p><img src="/2020/01/01/分布式电商项目部署/image-20200113104554136.png" alt="image-20200113104554136"></p>
+<p>结算页</p>
+<p><img src="/2020/01/01/分布式电商项目部署/image-20200113104628925.png" alt="image-20200113104628925"></p>
+<p>支付</p>
+<p><img src="/2020/01/01/分布式电商项目部署/image-20200113104653018.png" alt="image-20200113104653018"></p>
+<p>支付成功</p>
+<p><img src="/2020/01/01/分布式电商项目部署/image-20200113104730021.png" alt="image-20200113104730021"></p>
+<h5 id="8-一些补充"><a href="#8-一些补充" class="headerlink" title="8. 一些补充"></a>8. 一些补充</h5><h6 id="8-1-短信微服务的不能发短信的问题"><a href="#8-1-短信微服务的不能发短信的问题" class="headerlink" title="8.1 短信微服务的不能发短信的问题"></a>8.1 短信微服务的不能发短信的问题</h6><p>我把user微服务的验证码定死为123456，并注释了sms的短信发送模板（阿里云短信功能好贵）。但是整个注册流程是没问题的，用户注册时后台依然需要用到rabbitmq和redis，验证码填123456就好了。</p>
 <p><img src="/2020/01/01/分布式电商项目部署/image-20200111192423267.png" alt="image-20200111192423267"></p>
 <p><img src="/2020/01/01/分布式电商项目部署/image-20200111192308652.png" alt="image-20200111192308652"></p>
-<h6 id="8-2文件存储upload微服务"><a href="#8-2文件存储upload微服务" class="headerlink" title="8.2文件存储upload微服务"></a>8.2文件存储upload微服务</h6><p>这个放弃了fastdfs，改用阿里云oss，然后自己写了个上传模板</p>
+<h6 id="8-2-文件存储upload微服务"><a href="#8-2-文件存储upload微服务" class="headerlink" title="8.2 文件存储upload微服务"></a>8.2 文件存储upload微服务</h6><p>放弃了fastdfs，改用阿里云oss，写了个上传模板</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.leyou.upload.configure;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.aliyun.oss.OSS;</span><br><span class="line"><span class="keyword">import</span> com.aliyun.oss.OSSClientBuilder;</span><br><span class="line"><span class="keyword">import</span> com.aliyun.oss.model.CannedAccessControlList;</span><br><span class="line"><span class="keyword">import</span> com.aliyun.oss.model.CreateBucketRequest;</span><br><span class="line"><span class="keyword">import</span> com.aliyun.oss.model.StorageClass;</span><br><span class="line"><span class="keyword">import</span> lombok.Data;</span><br><span class="line"><span class="keyword">import</span> lombok.extern.slf4j.Slf4j;</span><br><span class="line"><span class="keyword">import</span> org.springframework.boot.context.properties.ConfigurationProperties;</span><br><span class="line"><span class="keyword">import</span> org.springframework.context.annotation.EnableMBeanExport;</span><br><span class="line"><span class="keyword">import</span> org.springframework.jmx.support.RegistrationPolicy;</span><br><span class="line"><span class="keyword">import</span> org.springframework.stereotype.Component;</span><br><span class="line"><span class="keyword">import</span> org.springframework.web.multipart.MultipartFile;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> javax.annotation.PostConstruct;</span><br><span class="line"><span class="keyword">import</span> java.io.InputStream;</span><br><span class="line"><span class="keyword">import</span> java.util.List;</span><br><span class="line"><span class="keyword">import</span> java.util.UUID;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Slf</span>4j</span><br><span class="line"><span class="meta">@Data</span></span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="meta">@ConfigurationProperties</span>(prefix = <span class="string">"ly.upload"</span>)</span><br><span class="line"><span class="meta">@EnableMBeanExport</span>(registration = RegistrationPolicy.IGNORE_EXISTING)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AliyunOss</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> String endpoint;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> String accessKeyId;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> String accessKeySecret;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> String bucketName;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> List&lt;String&gt; allowTypes;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> String baseUrl ;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">upload</span><span class="params">(MultipartFile file)</span> </span>&#123;</span><br><span class="line">        String objectName = <span class="keyword">null</span>;</span><br><span class="line">        OSS ossClient = <span class="keyword">null</span>;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            InputStream inputStream = file.getInputStream();</span><br><span class="line">            String originalFilename = file.getOriginalFilename();</span><br><span class="line">            String replace = UUID.randomUUID().toString().replace(<span class="string">"-"</span>, <span class="string">""</span>);</span><br><span class="line">            objectName = replace +<span class="string">"-"</span>+ originalFilename;</span><br><span class="line">            ossClient=<span class="keyword">new</span> OSSClientBuilder().build(endpoint, accessKeyId, accessKeySecret);</span><br><span class="line">            ossClient.putObject(bucketName, objectName, inputStream);</span><br><span class="line">            <span class="keyword">return</span> baseUrl + objectName;</span><br><span class="line"></span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">            log.error(<span class="string">"[文件上传] AliyunOss出错： &#123;&#125;"</span>, e);</span><br><span class="line">        &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">            <span class="comment">// 关闭OSSClient。</span></span><br><span class="line">            ossClient.shutdown();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@PostConstruct</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">init</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.baseUrl = endpoint.substring(<span class="number">0</span>, <span class="number">7</span>) + bucketName + <span class="string">"."</span> + endpoint.substring(<span class="number">7</span>) + <span class="string">"/"</span>;</span><br><span class="line">        OSS ossClient = <span class="keyword">new</span> OSSClientBuilder().build(endpoint, accessKeyId, accessKeySecret);</span><br><span class="line">        <span class="keyword">boolean</span> exists = ossClient.doesBucketExist(bucketName);</span><br><span class="line">        <span class="keyword">if</span> (!exists) &#123;</span><br><span class="line">            CreateBucketRequest createBucketRequest = <span class="keyword">new</span> CreateBucketRequest(bucketName);</span><br><span class="line">            createBucketRequest.setStorageClass(StorageClass.Standard);</span><br><span class="line">            <span class="comment">// 创建存储空间。</span></span><br><span class="line">            ossClient.createBucket(createBucketRequest);</span><br><span class="line">            <span class="comment">//公共读</span></span><br><span class="line">            ossClient.setBucketAcl(bucketName, CannedAccessControlList.PublicRead);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p>配置数据如下</p>
+<p>所需配置数据如下</p>
 <p><img src="/2020/01/01/分布式电商项目部署/image-20200111192839793.png" alt="image-20200111192839793"></p>
-<h6 id="8-3-jar包停止运行"><a href="#8-3-jar包停止运行" class="headerlink" title="8.3 jar包停止运行"></a>8.3 jar包停止运行</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ps -ef |grep java</span><br></pre></td></tr></table></figure>
+<h6 id="8-3-停止jar包运行"><a href="#8-3-停止jar包运行" class="headerlink" title="8.3  停止jar包运行"></a>8.3  停止jar包运行</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ps -ef |grep java</span><br></pre></td></tr></table></figure>
 
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kill -9 进程id</span><br></pre></td></tr></table></figure>
 
 <p><img src="/2020/01/01/分布式电商项目部署/image-20200111191947826.png" alt="image-20200111191947826"></p>
-<h6 id="8-4-maven打包的问题"><a href="#8-4-maven打包的问题" class="headerlink" title="8.4 maven打包的问题"></a>8.4 maven打包的问题</h6><p>interface和common等没有启动类的项目，不要加spring-boot-maven-plugin插件，否则打包报错</p>
+<h6 id="8-4-maven打包的问题"><a href="#8-4-maven打包的问题" class="headerlink" title="8.4 maven打包的问题"></a>8.4 maven打包的问题</h6><p>有两种方式打包</p>
+<ol>
+<li>使用idea的maven插件打包</li>
+</ol>
+<p>interface和common等没有启动类的项目，不要加spring-boot-maven-plugin插件，否则打包报错</p>
 <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">build</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">plugins</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">plugin</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-maven-plugin<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">plugin</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">plugins</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">build</span>&gt;</span></span><br></pre></td></tr></table></figure>
 
 <p><img src="/2020/01/01/分布式电商项目部署/image-20200111193315871.png" alt="image-20200111193315871"></p>
 <p><img src="/2020/01/01/分布式电商项目部署/image-20200111193423844.png" alt="image-20200111193423844"></p>
-<p>可以在父类pom文件所在的terminal下执行命令给所有项目打包</p>
+<p>使用idea的maven的lifecycle下的插件</p>
+<p><img src="/2020/01/01/分布式电商项目部署/image-20200111194247763.png" alt="image-20200111194247763"></p>
+<p>idea的maven的plugins插件按不要随便用，老爱报错。无语。</p>
+<p><img src="/2020/01/01/分布式电商项目部署/image-20200111193730893.png" alt="image-20200111193730893"></p>
+<p><strong>注意，不要随便往pom文件添加maven插件，不然会报错的。也不要随便添加其他jar包的依赖，一些依赖需要配置数据源，没有数据源就会使得项目启动或者打包出错。</strong></p>
+<ol start="2">
+<li>在终端使用命令行打包</li>
+</ol>
+<p>terminal界面切换到父类pom文件所在目录，执行以下命令给所有项目打包。使用终端命令行打包的时候，你需要先安装好maven,这里是maven安装教程 <a href="https://jingyan.baidu.com/article/046a7b3e80bc06f9c27fa9bb.html" target="_blank" rel="noopener">安装maven</a></p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mvn clean install -DskipTest=true</span><br></pre></td></tr></table></figure>
 
-<p><img src="/2020/01/01/分布式电商项目部署/image-20200111193613423.png" alt="image-20200111193613423">idea的maven的plugins插件按不要随便用，老爱报错。无语。</p>
-<p><img src="/2020/01/01/分布式电商项目部署/image-20200111193730893.png" alt="image-20200111193730893"></p>
-<p>可以使用idea的maven的lifecycle下的插件</p>
-<p><img src="/2020/01/01/分布式电商项目部署/image-20200111194247763.png" alt="image-20200111194247763"></p>
-<h6 id="8-5-order的微信支付回调地址需要修改"><a href="#8-5-order的微信支付回调地址需要修改" class="headerlink" title="8.5 order的微信支付回调地址需要修改"></a>8.5 order的微信支付回调地址需要修改</h6><p><img src="/2020/01/01/分布式电商项目部署/image-20200111194038513.png" alt="image-20200111194038513"></p>
+<p><img src="/2020/01/01/分布式电商项目部署/image-20200111193613423.png" alt="image-20200111193613423"></p>
+<h6 id="8-5-order的微信支付回调地址需要修改"><a href="#8-5-order的微信支付回调地址需要修改" class="headerlink" title="8.5 order的微信支付回调地址需要修改"></a>8.5 order的微信支付回调地址需要修改</h6><p>也就是把ip改成你的服务器ip。</p>
+<p><img src="/2020/01/01/分布式电商项目部署/image-20200111194038513.png" alt="image-20200111194038513"></p>
 
     </div>
 
@@ -638,7 +659,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-前言"><span class="nav-text">1. 前言</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-搭建环境"><span class="nav-text">2. 搭建环境</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#2-1-增加虚拟内存"><span class="nav-text">2.1 增加虚拟内存</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#2-2-安装docker"><span class="nav-text">2.2  安装docker</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#2-2-安装docker-私有仓库，用来保存上传的镜像"><span class="nav-text">2.2  安装docker 私有仓库，用来保存上传的镜像</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#2-3-安装mysql"><span class="nav-text">2.3  安装mysql</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#2-4-安装redis"><span class="nav-text">2.4  安装redis</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#2-6-安装rabbitmq"><span class="nav-text">2.6 安装rabbitmq</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#2-7-安装elasticsearch"><span class="nav-text">2.7 安装elasticsearch</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#2-8-安装kibana"><span class="nav-text">2.8 安装kibana</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#2-9-安装nginx"><span class="nav-text">2.9 安装nginx</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-导入数据"><span class="nav-text">3. 导入数据</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#3-1-往mysql导入数据"><span class="nav-text">3.1 往mysql导入数据</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#3-2-往elasticsearch导入数据"><span class="nav-text">3.2 往elasticsearch导入数据</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4-打包部署"><span class="nav-text">4.打包部署</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#5-部署后端前台"><span class="nav-text">5. 部署后端前台</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#6-部署门户前台"><span class="nav-text">6. 部署门户前台</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#7-效果"><span class="nav-text">7. 效果</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#8-一些补充"><span class="nav-text">8. 一些补充</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#8-1短信微服务的不能发短信的问题"><span class="nav-text">8.1短信微服务的不能发短信的问题</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#8-2文件存储upload微服务"><span class="nav-text">8.2文件存储upload微服务</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#8-3-jar包停止运行"><span class="nav-text">8.3 jar包停止运行</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#8-4-maven打包的问题"><span class="nav-text">8.4 maven打包的问题</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#8-5-order的微信支付回调地址需要修改"><span class="nav-text">8.5 order的微信支付回调地址需要修改</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-前言"><span class="nav-text">1. 前言</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-搭建环境"><span class="nav-text">2. 搭建环境</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#2-1-增加虚拟内存"><span class="nav-text">2.1 增加虚拟内存</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#2-2-安装docker"><span class="nav-text">2.2  安装docker</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#2-2-安装docker-私有仓库，用来保存上传的镜像"><span class="nav-text">2.2  安装docker 私有仓库，用来保存上传的镜像</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#2-3-安装mysql"><span class="nav-text">2.3  安装mysql</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#2-4-安装redis"><span class="nav-text">2.4  安装redis</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#2-6-安装rabbitmq"><span class="nav-text">2.6 安装rabbitmq</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#2-7-安装elasticsearch"><span class="nav-text">2.7 安装elasticsearch</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#2-8-安装kibana"><span class="nav-text">2.8 安装kibana</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#2-9-安装nginx"><span class="nav-text">2.9 安装nginx</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-导入数据"><span class="nav-text">3. 导入数据</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#3-1-往mysql导入数据"><span class="nav-text">3.1 往mysql导入数据</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#3-2-往elasticsearch导入数据"><span class="nav-text">3.2 往elasticsearch导入数据</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4-打包部署"><span class="nav-text">4.打包部署</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#5-部署后台管理页面"><span class="nav-text">5. 部署后台管理页面</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#6-部署门户页面"><span class="nav-text">6. 部署门户页面</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#7-效果"><span class="nav-text">7. 效果</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#8-一些补充"><span class="nav-text">8. 一些补充</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#8-1-短信微服务的不能发短信的问题"><span class="nav-text">8.1 短信微服务的不能发短信的问题</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#8-2-文件存储upload微服务"><span class="nav-text">8.2 文件存储upload微服务</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#8-3-停止jar包运行"><span class="nav-text">8.3  停止jar包运行</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#8-4-maven打包的问题"><span class="nav-text">8.4 maven打包的问题</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#8-5-order的微信支付回调地址需要修改"><span class="nav-text">8.5 order的微信支付回调地址需要修改</span></a></li></ol></li></ol></div>
         
       </div>
       <!--/noindex-->
